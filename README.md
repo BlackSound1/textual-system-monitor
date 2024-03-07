@@ -2,6 +2,10 @@
 
 This is intended to be a simple system monitor app created in Textual.
 
+This is a preliminary design, for now.
+
+![Preliminary design](images/img.png)
+
 # Pipenv
 
 This system uses Pipenv. Install with
