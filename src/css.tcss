@@ -15,7 +15,23 @@
     border-title-align: center;
 }
 
-#temps {
+/*#right {
+    height: 100%;
+    layout: grid;
+    grid-size: 1;
+}*/
+
+#stats {
+    height: 100%;
+    layout: grid;
+    grid-size: 1;
+    background: $panel;
+    border: greenyellow;
+    border-title-color: white;
+    border-title-align: center;
+}
+
+#stats > #temp {
     height: 100%;
     background: $panel;
     border: mediumvioletred;
@@ -23,38 +39,35 @@
     border-title-align: center;
 }
 
-#right {
+#stats > #drives {
     height: 100%;
     layout: grid;
-    grid-size: 1;
-}
-
-#right > #usages {
-    height: 100%;
-    layout: grid;
-    grid-size: 2;
-    background: $panel;
-    border: greenyellow;
-    border-title-color: white;
-    border-title-align: center;
-}
-
-#usages > #drives {
-    height: 100%;
-    layout: grid;
-    /*grid-size: 2;*/
     background: $panel;
     border: red;
     border-title-color: white;
     border-title-align: center;
-    column-span: 1;
 }
 
-#usages > #mem {
+#stats > #mem {
     height: 100%;
     background: $panel;
     border: yellow;
     border-title-color: white;
     border-title-align: center;
-    column-span: 1;
+}
+
+#stats > #cpu {
+    height: 100%;
+    background: $panel;
+    border: blue;
+    border-title-color: white;
+    border-title-align: center;
+}
+
+#stats > #gpu {
+    height: 100%;
+    background: $panel;
+    border: green;
+    border-title-color: white;
+    border-title-align: center;
 }

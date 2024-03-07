@@ -17,12 +17,36 @@ class Temp(Static):
         self.update("This will display current system temperatures")
 
 
-class Usage(Static):
-    BORDER_TITLE = "Usages"
+class MemUsage(Static):
+    BORDER_TITLE = "Memory Usage"
+
+    def on_mount(self) -> None:
+        self.update("This will display current memory usage")
+
+
+class CPU_Usage(Static):
+    BORDER_TITLE = "CPU Usage"
+
+    def on_mount(self) -> None:
+        self.update("This will display current CPU usage")
+
+
+class GPU_Usage(Static):
+    BORDER_TITLE = "GPU Usage"
+
+    def on_mount(self) -> None:
+        self.update("This will display current GPU usage")
+
+
+class Stats(Static):
+    BORDER_TITLE = "Stats"
 
     def compose(self) -> ComposeResult:
+        yield Temp(id="temp")
         yield DriveUsage(id="drives")
         yield MemUsage(id="mem")
+        yield CPU_Usage(id="cpu")
+        yield GPU_Usage(id="gpu")
 
     def on_mount(self) -> None:
         self.update("This will display all current usage stats")
@@ -33,13 +57,6 @@ class DriveUsage(Static):
 
     def on_mount(self) -> None:
         self.update("This will display current drive usage")
-
-
-class MemUsage(Static):
-    BORDER_TITLE = "Memory Usage"
-
-    def on_mount(self) -> None:
-        self.update("This will display current memory usage")
 
 
 class Monitor(App[str]):
@@ -57,9 +74,11 @@ class Monitor(App[str]):
         with Container(id="app-grid"):
             yield Processes(id="processes")
 
-            with Container(id="right"):
-                yield Temp(id="temps")
-                yield Usage(id="usages")
+            yield Stats(id="stats")
+            # with Container(id="right"):
+            #     yield Temp(id="temps")
+            #     yield Stats(id="stats")
+            # yield Usage(id="usages")
 
         yield Footer()
 
