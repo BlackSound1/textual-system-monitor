@@ -1,0 +1,60 @@
+#app-grid {
+    layout: grid;
+    grid-size: 2;  /* two columns */
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+}
+
+#processes {
+    width: 100%;
+    height: 100%;
+    row-span: 2;
+    background: $panel;
+    border: $secondary;
+    border-title-color: white;
+    border-title-align: center;
+}
+
+#temps {
+    height: 100%;
+    background: $panel;
+    border: mediumvioletred;
+    border-title-color: white;
+    border-title-align: center;
+}
+
+#right {
+    height: 100%;
+    layout: grid;
+    grid-size: 1;
+}
+
+#right > #usages {
+    height: 100%;
+    layout: grid;
+    grid-size: 2;
+    background: $panel;
+    border: greenyellow;
+    border-title-color: white;
+    border-title-align: center;
+}
+
+#usages > #drives {
+    height: 100%;
+    layout: grid;
+    /*grid-size: 2;*/
+    background: $panel;
+    border: red;
+    border-title-color: white;
+    border-title-align: center;
+    column-span: 1;
+}
+
+#usages > #mem {
+    height: 100%;
+    background: $panel;
+    border: yellow;
+    border-title-color: white;
+    border-title-align: center;
+    column-span: 1;
+}
