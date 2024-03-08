@@ -1,6 +1,10 @@
 from textual.app import App, ComposeResult
-from textual.containers import Container, VerticalScroll
-from textual.widgets import Header, Footer, Static, Label
+from textual.containers import Container
+from textual.reactive import reactive
+from textual.widgets import Header, Footer, Static
+from psutil import cpu_count, cpu_percent
+
+from utilities import compute_percentage_color
 
 
 class Processes(Static):
@@ -27,8 +31,38 @@ class MemUsage(Static):
 class CPU_Usage(Static):
     BORDER_TITLE = "CPU Usage"
 
+    cores = cpu_count()
+    percents = reactive([0.0])
+    percent_overall = reactive(0.0)  # TODO: Add overall CPU percentage display functionality
+
+    def update_cpu_stats(self) -> None:
+        # self.percents = cpu_percent()
+        self.percents: list = cpu_percent(percpu=True)
+        self.percents_overall: float = cpu_percent()
+
+    def _display_percentages_CPU(self, percentages: list) -> str:
+        string = "\n"
+
+        for i, pct in enumerate(percentages):
+            pct = compute_percentage_color(pct)
+
+            string += f"Core {i + 1}: {pct}" if i == 0 else f" Core {i + 1}: {pct}"
+
+        return string
+
+    def watch_percents(self, percentages: list) -> None:
+        """
+        Watch what heppens when the percents variable is changed and react accordingly.
+
+        :param percentages: The list of percentages
+        :return: None
+        """
+
+        percentage_string = self._display_percentages_CPU(percentages)
+        self.update(f"Cores: {self.cores},\nPercents: {percentage_string}")
+
     def on_mount(self) -> None:
-        self.update("This will display current CPU usage")
+        self.update_cpu = self.set_interval(1 / 5, self.update_cpu_stats, pause=False)
 
 
 class GPU_Usage(Static):
