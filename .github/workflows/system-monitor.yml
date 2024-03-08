@@ -14,22 +14,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      WORKON_HOME: /root
-      PIPENV_PIPFILE: /Pipfile
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.9, pipenv and Pipfile dependencies
+        uses: palewire/install-python-pipenv-pipfile@v3
         with:
           python-version: "3.9.13"
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install --user pipenv
-          if [ -f Pipfile ]; then pipenv install; fi
       - name: Lint with Flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
