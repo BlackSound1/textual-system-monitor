@@ -121,6 +121,7 @@ class Monitor(App[str]):
         ("d", "toggle_dark", "Toggle dark mode"),
     ]
 
+    # TEST
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
 
