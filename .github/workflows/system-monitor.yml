@@ -14,6 +14,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      WORKON_HOME: /root
+      PIPENV_PIPFILE: /Pipfile
 
     steps:
       - name: Checkout repo
