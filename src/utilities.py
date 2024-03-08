@@ -1,3 +1,6 @@
+INTERVAL = 1 / 5
+
+
 def compute_percentage_color(pct: float) -> str:
     """
     Takes a given percentage and returns that percentage, colored according to
@@ -8,10 +11,10 @@ def compute_percentage_color(pct: float) -> str:
     """
 
     if pct <= 75:
-        pct = f"[green]{pct:.2f}[/green]"
+        pct = f"[green]{pct:.1f}[/green]"
     elif 75 < pct < 90:
-        pct = f"[yellow]{pct:.2f}[/yellow]"
+        pct = f"[yellow]{pct:.1f}[/yellow]"
     else:
-        pct = f"[red]{pct:.2f}[/red]"
+        pct = f"[red]{pct:.1f}[/red]"
 
     return pct

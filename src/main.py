@@ -2,9 +2,9 @@ from textual.app import App, ComposeResult
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static
-from psutil import cpu_count, cpu_percent
+from psutil import cpu_count, cpu_percent, virtual_memory
 
-from utilities import compute_percentage_color
+from utilities import compute_percentage_color, INTERVAL
 
 
 class Processes(Static):
@@ -24,8 +24,27 @@ class Temp(Static):
 class MemUsage(Static):
     BORDER_TITLE = "Memory Usage"
 
+    total = virtual_memory().total
+    available = reactive(0)
+    percent = reactive(0.0)
+
+    def update_available(self) -> None:
+        self.available = virtual_memory().available
+
+    def watch_available(self, avail: float) -> None:
+        pct = compute_percentage_color(self.percent)
+        self.update(f"Total memory: {self.total} B\nAvailable memory: {avail} B\nPercentage: {pct}%")
+
+    def update_percent(self) -> None:
+        self.percent = virtual_memory().percent
+
+    def watch_percent(self, pct: float) -> None:
+        pct = compute_percentage_color(pct)
+        self.update(f"Total memory: {self.total} B\nAvailable memory: {self.available} B\nPercentage: {pct}%")
+
     def on_mount(self) -> None:
-        self.update("This will display current memory usage")
+        self.update_available = self.set_interval(INTERVAL, self.update_available)
+        self.update_percent = self.set_interval(INTERVAL, self.update_percent)
 
 
 class CPU_Usage(Static):
@@ -52,7 +71,7 @@ class CPU_Usage(Static):
 
     def watch_percents(self, percentages: list) -> None:
         """
-        Watch what heppens when the percents variable is changed and react accordingly.
+        Watch what happens when the percents variable is changed and react accordingly.
 
         :param percentages: The list of percentages
         :return: None
@@ -62,7 +81,7 @@ class CPU_Usage(Static):
         self.update(f"Cores: {self.cores},\nPercents: {percentage_string}")
 
     def on_mount(self) -> None:
-        self.update_cpu = self.set_interval(1 / 5, self.update_cpu_stats, pause=False)
+        self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_stats)
 
 
 class GPU_Usage(Static):
@@ -107,12 +126,7 @@ class Monitor(App[str]):
 
         with Container(id="app-grid"):
             yield Processes(id="processes")
-
             yield Stats(id="stats")
-            # with Container(id="right"):
-            #     yield Temp(id="temps")
-            #     yield Stats(id="stats")
-            # yield Usage(id="usages")
 
         yield Footer()
 
