@@ -1,8 +1,10 @@
+from typing import List
+
 from textual.app import App, ComposeResult
-from textual.containers import Container
+from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
-from textual.widgets import Header, Footer, Static
-from psutil import cpu_count, cpu_percent, virtual_memory
+from textual.widgets import Header, Footer, Static, ListView, ListItem
+from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage
 
 from utilities import compute_percentage_color, INTERVAL
 
@@ -84,6 +86,41 @@ class GPU_Usage(Static):
         self.update("This will display current GPU usage")
 
 
+class DriveUsage(Static):
+    BORDER_TITLE = "Drive Usage"
+
+    disks: List[dict] = [{"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
+                          "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
+                         for item in disk_partitions()]
+
+    def compose(self) -> ComposeResult:
+        with VerticalScroll():
+            for item in self.disks:
+                try:
+                    usage = disk_usage(item.get('mountpoint'))
+                    pct = usage.percent
+                    used = usage.used
+                    free = usage.free
+                    total = usage.total
+                except PermissionError:
+                    pct = "N/A"
+                    used = "N/A"
+                    free = "N/A"
+                    total = "N/A"
+
+                fs = "N/A" if item.get('fstype') == '' else item.get('fstype')
+
+                yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
+                             f" Filesystem: {fs} | Usage: {pct}% | Total: {total} | "
+                             f"Used: {used} | Free: {free}\n")
+
+    # def on_mount(self) -> None:
+    #
+    #     self.update(f"{self.stuff[0]}")
+    #     # for part in self.stuff:
+    #     #     self.update(f"{part}")
+
+
 class Stats(Static):
     BORDER_TITLE = "Stats"
 
@@ -95,13 +132,6 @@ class Stats(Static):
 
     def on_mount(self) -> None:
         self.update("This will display all current usage stats")
-
-
-class DriveUsage(Static):
-    BORDER_TITLE = "Drive Usage"
-
-    def on_mount(self) -> None:
-        self.update("This will display current drive usage")
 
 
 class Monitor(App[str]):
