@@ -25,14 +25,6 @@
     border-title-align: center;
 }
 
-#stats > #temp {
-    height: 100%;
-    background: $panel;
-    border: mediumvioletred;
-    border-title-color: $text;
-    border-title-align: center;
-}
-
 #stats > #drives {
     height: 100%;
     layout: grid;
@@ -53,7 +45,7 @@
 #stats > #cpu {
     height: 100%;
     background: $panel;
-    border: blue;
+    border: lightblue;
     border-title-color: $text;
     border-title-align: center;
 }
@@ -61,7 +53,7 @@
 #stats > #gpu {
     height: 100%;
     background: $panel;
-    border: green;
+    border: pink;
     border-title-color: $text;
     border-title-align: center;
 }

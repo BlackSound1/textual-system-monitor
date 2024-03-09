@@ -14,13 +14,6 @@ class Processes(Static):
         self.update("This will display current processes")
 
 
-class Temp(Static):
-    BORDER_TITLE = "Temperature"
-
-    def on_mount(self) -> None:
-        self.update("This will display current system temperatures")
-
-
 class MemUsage(Static):
     BORDER_TITLE = "Memory Usage"
 
@@ -95,7 +88,6 @@ class Stats(Static):
     BORDER_TITLE = "Stats"
 
     def compose(self) -> ComposeResult:
-        yield Temp(id="temp")
         yield DriveUsage(id="drives")
         yield MemUsage(id="mem")
         yield CPU_Usage(id="cpu")
