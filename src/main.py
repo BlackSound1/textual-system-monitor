@@ -23,7 +23,6 @@ class Processes(Static):
                 yield Static(f"PID: {process.info.get('pid')}, Name: {name},"
                              f" Username: {process.info.get('username')}, EXE: {exe}\n")
 
-
     # def on_mount(self) -> None:
     #     self.update("This will display current processes")
 
@@ -58,13 +57,14 @@ class CPU_Usage(Static):
     BORDER_TITLE = "CPU Usage"
 
     cores = cpu_count()
-    percents = reactive([0.0])
-    percent_overall = reactive(0.0)  # TODO: Add overall CPU percentage display functionality
+    percents_indiv = reactive([0.0])
+    percent_overall = reactive(0.0)
 
-    def update_cpu_stats(self) -> None:
-        # self.percents = cpu_percent()
-        self.percents: list = cpu_percent(percpu=True)
-        self.percents_overall: float = cpu_percent()
+    def update_cpu_tot(self) -> None:
+        self.percent_overall: float = cpu_percent(percpu=False)
+
+    def update_cpu_indiv(self) -> None:
+        self.percents_indiv: list = cpu_percent(percpu=True)
 
     def _display_percentages_CPU(self, percentages: list) -> str:
         string = "\n"
@@ -76,7 +76,7 @@ class CPU_Usage(Static):
 
         return string
 
-    def watch_percents(self, percentages: list) -> None:
+    def watch_percents_indiv(self, percentages: list) -> None:
         """
         Watch what happens when the percents variable is changed and react accordingly.
 
@@ -85,10 +85,17 @@ class CPU_Usage(Static):
         """
 
         percentage_string = self._display_percentages_CPU(percentages)
-        self.update(f"Cores: {self.cores},\nPercents: {percentage_string}")
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {self.percent_overall}\n\n"
+                    f"Usage (per Core): {percentage_string}")
+
+    def watch_percents_overall(self, percentage: float) -> None:
+        percentage_string = self._display_percentages_CPU(self.percents_indiv)
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {percentage}\n\n"
+                    f"Usage (per Core): {percentage_string}")
 
     def on_mount(self) -> None:
-        self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_stats)
+        self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_indiv)
+        self.update_cpu_tot = self.set_interval(INTERVAL, self.update_cpu_tot)
 
 
 class GPU_Usage(Static):
