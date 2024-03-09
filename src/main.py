@@ -4,7 +4,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static, ListView, ListItem
-from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage
+from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage, process_iter
 
 from utilities import compute_percentage_color, INTERVAL
 
@@ -12,8 +12,20 @@ from utilities import compute_percentage_color, INTERVAL
 class Processes(Static):
     BORDER_TITLE = "Processes"
 
-    def on_mount(self) -> None:
-        self.update("This will display current processes")
+    processes = process_iter(['pid', 'name', 'username', 'exe'])
+
+    def compose(self) -> ComposeResult:
+        with VerticalScroll():
+            for process in self.processes:
+                name = 'N/A' if process.info.get('name') == '' else process.info.get('name')
+                exe = 'N/A' if process.info.get('exe') == '' else process.info.get('exe')
+
+                yield Static(f"PID: {process.info.get('pid')}, Name: {name},"
+                             f" Username: {process.info.get('username')}, EXE: {exe}\n")
+
+
+    # def on_mount(self) -> None:
+    #     self.update("This will display current processes")
 
 
 class MemUsage(Static):
