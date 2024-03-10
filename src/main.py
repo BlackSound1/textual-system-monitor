@@ -78,20 +78,20 @@ class CPU_Usage(Static):
 
     def watch_percents_indiv(self, percentages: list) -> None:
         """
-        Watch what happens when the percents variable is changed and react accordingly.
+        Watch what happens when the percents_indiv variable is changed and react accordingly.
 
         :param percentages: The list of percentages
         :return: None
         """
 
         percentage_string = self._display_percentages_CPU(percentages)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {self.percent_overall}\n\n"
-                    f"Usage (per Core): {percentage_string}")
+        pct = compute_percentage_color(self.percent_overall)
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct}\n\nUsage (per Core): {percentage_string}")
 
     def watch_percents_overall(self, percentage: float) -> None:
         percentage_string = self._display_percentages_CPU(self.percents_indiv)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {percentage}\n\n"
-                    f"Usage (per Core): {percentage_string}")
+        pct = compute_percentage_color(percentage)
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct}\n\nUsage (per Core): {percentage_string}")
 
     def on_mount(self) -> None:
         self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_indiv)
