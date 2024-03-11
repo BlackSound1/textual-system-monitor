@@ -6,7 +6,7 @@ from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static, ListView, ListItem
 from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage, process_iter
 
-from utilities import compute_percentage_color, INTERVAL
+from utilities import compute_percentage_color, INTERVAL, bytes2human
 
 
 class Processes(Static):
@@ -37,16 +37,20 @@ class MemUsage(Static):
     def update_available(self) -> None:
         self.available = virtual_memory().available
 
-    def watch_available(self, avail: float) -> None:
+    def watch_available(self, avail: int) -> None:
         pct = compute_percentage_color(self.percent)
-        self.update(f"Total memory: {self.total} B\nAvailable memory: {avail} B\nPercentage: {pct}%")
+        tot = bytes2human(self.total)
+        avail = bytes2human(avail)
+        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nPercentage Used: {pct}%")
 
     def update_percent(self) -> None:
         self.percent = virtual_memory().percent
 
     def watch_percent(self, pct: float) -> None:
         pct = compute_percentage_color(pct)
-        self.update(f"Total memory: {self.total} B\nAvailable memory: {self.available} B\nPercentage: {pct}%")
+        tot = bytes2human(self.total)
+        avail = bytes2human(self.available)
+        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nPercentage Used: {pct}%")
 
     def on_mount(self) -> None:
         self.update_available = self.set_interval(INTERVAL, self.update_available)
@@ -72,7 +76,7 @@ class CPU_Usage(Static):
         for i, pct in enumerate(percentages):
             pct = compute_percentage_color(pct)
 
-            string += f"Core {i + 1}: {pct}" if i == 0 else f" Core {i + 1}: {pct}"
+            string += f"Core {i + 1}: {pct} % |" if i == 0 else f" Core {i + 1}: {pct} % | "
 
         return string
 
@@ -86,12 +90,12 @@ class CPU_Usage(Static):
 
         percentage_string = self._display_percentages_CPU(percentages)
         pct = compute_percentage_color(self.percent_overall)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct}\n\nUsage (per Core): {percentage_string}")
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
 
     def watch_percents_overall(self, percentage: float) -> None:
         percentage_string = self._display_percentages_CPU(self.percents_indiv)
         pct = compute_percentage_color(percentage)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct}\n\nUsage (per Core): {percentage_string}")
+        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
 
     def on_mount(self) -> None:
         self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_indiv)
@@ -117,10 +121,10 @@ class DriveUsage(Static):
             for item in self.disks:
                 try:
                     usage = disk_usage(item.get('mountpoint'))
-                    pct = usage.percent
-                    used = usage.used
-                    free = usage.free
-                    total = usage.total
+                    pct = compute_percentage_color(usage.percent)
+                    used = bytes2human(usage.used)
+                    free = bytes2human(usage.free)
+                    total = bytes2human(usage.total)
                 except PermissionError:
                     pct = "N/A"
                     used = "N/A"
@@ -129,9 +133,14 @@ class DriveUsage(Static):
 
                 fs = "N/A" if item.get('fstype') == '' else item.get('fstype')
 
-                yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
-                             f" Filesystem: {fs} | Usage: {pct}% | Total: {total} | "
-                             f"Used: {used} | Free: {free}\n")
+                if item.get('opts') == "cdrom":
+                    yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
+                                 f" Filesystem: {fs} | Usage: {pct} | Total: {total} | "
+                                 f"Used: {used} | Free: {free}\n")
+                else:
+                    yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
+                                 f" Filesystem: {fs} | Usage: {pct} % | Total: {total} | "
+                                 f"Used: {used} | Free: {free}\n")
 
     # def on_mount(self) -> None:
     #
