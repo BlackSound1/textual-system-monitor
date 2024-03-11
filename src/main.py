@@ -4,7 +4,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static, ListView, ListItem
-from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage, process_iter
+from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage, process_iter, net_connections
 
 from utilities import compute_percentage_color, INTERVAL, bytes2human
 
@@ -20,11 +20,8 @@ class Processes(Static):
                 name = 'N/A' if process.info.get('name') == '' else process.info.get('name')
                 exe = 'N/A' if process.info.get('exe') == '' else process.info.get('exe')
 
-                yield Static(f"PID: {process.info.get('pid')}, Name: {name},"
-                             f" Username: {process.info.get('username')}, EXE: {exe}\n")
-
-    # def on_mount(self) -> None:
-    #     self.update("This will display current processes")
+                yield Static(f"PID: {process.info.get('pid')} | Name: {name} | "
+                             f"Username: {process.info.get('username')} | EXE: [green]{exe}[/green]\n")
 
 
 class MemUsage(Static):
@@ -32,6 +29,7 @@ class MemUsage(Static):
 
     total = virtual_memory().total
     available = reactive(0)
+    used = reactive(0)
     percent = reactive(0.0)
 
     def update_available(self) -> None:
@@ -41,7 +39,18 @@ class MemUsage(Static):
         pct = compute_percentage_color(self.percent)
         tot = bytes2human(self.total)
         avail = bytes2human(avail)
-        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nPercentage Used: {pct}%")
+        used = bytes2human(self.used)
+        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
+
+    def update_used(self) -> None:
+        self.used = virtual_memory().used
+
+    def watch_used(self, u: int) -> None:
+        pct = compute_percentage_color(self.percent)
+        tot = bytes2human(self.total)
+        avail = bytes2human(self.available)
+        used = bytes2human(u)
+        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
 
     def update_percent(self) -> None:
         self.percent = virtual_memory().percent
@@ -50,11 +59,13 @@ class MemUsage(Static):
         pct = compute_percentage_color(pct)
         tot = bytes2human(self.total)
         avail = bytes2human(self.available)
-        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nPercentage Used: {pct}%")
+        used = bytes2human(self.used)
+        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
 
     def on_mount(self) -> None:
         self.update_available = self.set_interval(INTERVAL, self.update_available)
         self.update_percent = self.set_interval(INTERVAL, self.update_percent)
+        self.update_used = self.set_interval(INTERVAL, self.update_used)
 
 
 class CPU_Usage(Static):
@@ -102,6 +113,36 @@ class CPU_Usage(Static):
         self.update_cpu_tot = self.set_interval(INTERVAL, self.update_cpu_tot)
 
 
+class NetInfo(Static):
+    BORDER_TITLE = "Network Info"
+
+    connections = net_connections(kind='all')
+
+    def compose(self) -> ComposeResult:
+        with VerticalScroll():
+            # Get each network connection discovered
+            for net in self.connections:
+
+                # Get the info for this connection
+                family = net.family.name
+                type = net.type.name
+                laddr_ip, laddr_port = net.laddr
+                status = net.status
+                pid = net.pid
+
+                # raddr info can be an empty tuple
+                try:
+                    raddr_ip, raddr_port = net.raddr
+                except ValueError:
+                    raddr_ip, raddr_port = None, None
+
+                # Display it
+                yield Static(f"PID: {pid} | Status: {status} | Family: {family} | Type: {type} | "
+                             f"Local Address: {laddr_ip}/{laddr_port} | "
+                             f"Remote Address: "
+                             f"{'N/A' if raddr_ip is None and raddr_port is None else f'{raddr_ip}/{raddr_port}'}\n")
+
+
 class GPU_Usage(Static):
     BORDER_TITLE = "GPU Usage"
 
@@ -132,21 +173,12 @@ class DriveUsage(Static):
                     total = "N/A"
 
                 fs = "N/A" if item.get('fstype') == '' else item.get('fstype')
+                device = str(item.get('device')).replace(":\\", '')
+                options = item.get('opts')
 
-                if item.get('opts') == "cdrom":
-                    yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
-                                 f" Filesystem: {fs} | Usage: {pct} | Total: {total} | "
-                                 f"Used: {used} | Free: {free}\n")
-                else:
-                    yield Static(f"Disk: {item.get('device')} | Options: {item.get('opts')} |"
-                                 f" Filesystem: {fs} | Usage: {pct} % | Total: {total} | "
-                                 f"Used: {used} | Free: {free}\n")
-
-    # def on_mount(self) -> None:
-    #
-    #     self.update(f"{self.stuff[0]}")
-    #     # for part in self.stuff:
-    #     #     self.update(f"{part}")
+                yield Static(f"Disk: {device} | Options: {options} |"
+                             f" Filesystem: {fs} | Usage: {pct} {'' if options == 'cdrom' else '%'} | Total: {total} | "
+                             f"Used: {used} | Free: {free}\n")
 
 
 class Stats(Static):
@@ -156,7 +188,8 @@ class Stats(Static):
         yield DriveUsage(id="drives")
         yield MemUsage(id="mem")
         yield CPU_Usage(id="cpu")
-        yield GPU_Usage(id="gpu")
+        yield NetInfo(id='network')
+        # yield GPU_Usage(id="gpu")
 
     def on_mount(self) -> None:
         self.update("This will display all current usage stats")
