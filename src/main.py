@@ -2,6 +2,7 @@ from typing import List
 
 from textual.app import App, ComposeResult
 from textual.containers import Container, VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Header, Footer, Static, ListView, ListItem
 from psutil import cpu_count, cpu_percent, virtual_memory, disk_partitions, disk_usage, process_iter, net_connections
@@ -50,7 +51,13 @@ class MemUsage(Static):
         tot = bytes2human(self.total)
         avail = bytes2human(self.available)
         used = bytes2human(u)
-        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
+
+        try:
+            (self.query_one("#mem_static", expect_type=Static)
+                .update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
+             )
+        except NoMatches:
+            pass
 
     def update_percent(self) -> None:
         self.percent = virtual_memory().percent
@@ -60,7 +67,17 @@ class MemUsage(Static):
         tot = bytes2human(self.total)
         avail = bytes2human(self.available)
         used = bytes2human(self.used)
-        self.update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
+
+        try:
+            (self.query_one("#mem_static", expect_type=Static)
+                .update(f"Total Memory: {tot}\nAvailable Memory: {avail}\nUsed: {used}\nPercentage Used: {pct}%")
+             )
+        except NoMatches:
+            pass
+
+    def compose(self) -> ComposeResult:
+        with VerticalScroll():
+            yield Static(id="mem_static")
 
     def on_mount(self) -> None:
         self.update_available = self.set_interval(INTERVAL, self.update_available)
@@ -101,12 +118,28 @@ class CPU_Usage(Static):
 
         percentage_string = self._display_percentages_CPU(percentages)
         pct = compute_percentage_color(self.percent_overall)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
+
+        try:
+            (self.query_one("#cpu_static", expect_type=Static)
+                .update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
+             )
+        except NoMatches:
+            pass
 
     def watch_percents_overall(self, percentage: float) -> None:
         percentage_string = self._display_percentages_CPU(self.percents_indiv)
         pct = compute_percentage_color(percentage)
-        self.update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
+
+        try:
+            (self.query_one("#cpu_static", expect_type=Static)
+                .update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
+             )
+        except NoMatches:
+            pass
+
+    def compose(self) -> ComposeResult:
+        with VerticalScroll():
+            yield Static(id="cpu_static")
 
     def on_mount(self) -> None:
         self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_indiv)

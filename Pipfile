@@ -10,6 +10,7 @@ psutil = "*"
 [dev-packages]
 flake8 = "*"
 pytest = "*"
+textual-dev = "*"
 
 [requires]
 python_version = "3.9"
