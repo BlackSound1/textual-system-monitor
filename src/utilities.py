@@ -10,6 +10,11 @@ def compute_percentage_color(pct: float) -> str:
     :return: The colored percentage value as a string
     """
 
+    if pct < 0:
+        pct = 0
+    elif pct > 100:
+        pct = 100
+
     if pct <= 75:
         pct = f"[green]{pct:.1f}[/green]"
     elif 75 < pct < 90:
