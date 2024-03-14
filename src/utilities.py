@@ -30,15 +30,18 @@ def bytes2human(n: int) -> str:
     Converts bytes to human-readable format.
 
     >>> bytes2human(10000)
-    '9.8K'
+    '9.8 KB'
     >>> bytes2human(100001221)
-    '95.4M'
+    '95.4 MB'
 
     https://code.activestate.com/recipes/578019
 
     :param n: The number of bytes
     :return: A string representing a human-readable format of those bytes
     """
+
+    if n < 0:
+        return "0.0 B"
 
     symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
     prefix = {}
@@ -51,4 +54,4 @@ def bytes2human(n: int) -> str:
             value = float(n) / prefix[s]
             return f'{value:.1f} {s}B'
 
-    return f"{n} B"
+    return f"{n:.1f} B"
