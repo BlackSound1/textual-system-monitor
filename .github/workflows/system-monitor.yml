@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python 3.9, pipenv and Pipfile dependencies
         uses: palewire/install-python-pipenv-pipfile@v3
         with:
@@ -29,5 +29,4 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           pipenv run python -m flake8 src/*.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Test with Pytest
-        run: |
-          pipenv run python -m pytest test
+        run: pipenv run python -m pytest test
