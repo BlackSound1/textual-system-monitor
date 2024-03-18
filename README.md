@@ -32,9 +32,8 @@ Processes section in this screenshot.
 
 ## Processes
 
-The left-hand side shows information about all current processes on the system. Future plans include
-ability for this to live-update, be sorted by CPU load, be searchable, etc. Currently, it's static and only counts
-processes that were running when this app was loaded.
+The left-hand side shows information about current processes on the system. Future plans include
+the ability for this to be searchable. Shows the top 10 heaviest processes, as sorted by CPU load. 
 
 ## Stats
 
