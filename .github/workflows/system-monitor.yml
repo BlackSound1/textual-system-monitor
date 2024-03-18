@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.9.13"
       - name: Enter Pipenv shell
-        uses: pipenv shell
+        run: pipenv shell
       - name: Lint with Flake8
         run: make lint
       - name: Test with Pytest
