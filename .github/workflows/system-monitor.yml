@@ -22,9 +22,7 @@ jobs:
         uses: palewire/install-python-pipenv-pipfile@v3
         with:
           python-version: "3.9.13"
-      - name: Enter Pipenv shell
-        run: pipenv shell
       - name: Lint with Flake8
-        run: make lint
+        run: pipenv run make lint
       - name: Test with Pytest
-        run: make test
+        run: pipenv run make test
