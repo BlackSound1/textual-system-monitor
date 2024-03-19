@@ -5,7 +5,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import compute_percentage_color, INTERVAL
+from utilities import compute_percentage_color, COMMON_INTERVAL
 
 
 class CPU_Usage(Static):
@@ -65,5 +65,5 @@ class CPU_Usage(Static):
             yield Static(id="cpu_static")
 
     def on_mount(self) -> None:
-        self.update_cpu = self.set_interval(INTERVAL, self.update_cpu_indiv)
-        self.update_cpu_tot = self.set_interval(INTERVAL, self.update_cpu_tot)
+        self.update_cpu = self.set_interval(COMMON_INTERVAL, self.update_cpu_indiv)
+        self.update_cpu_tot = self.set_interval(COMMON_INTERVAL, self.update_cpu_tot)

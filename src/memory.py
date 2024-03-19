@@ -5,7 +5,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import compute_percentage_color, bytes2human, INTERVAL
+from utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL
 
 
 class MemUsage(Static):
@@ -63,6 +63,6 @@ class MemUsage(Static):
             yield Static(id="mem_static")
 
     def on_mount(self) -> None:
-        self.update_available = self.set_interval(INTERVAL, self.update_available)
-        self.update_percent = self.set_interval(INTERVAL, self.update_percent)
-        self.update_used = self.set_interval(INTERVAL, self.update_used)
+        self.update_available = self.set_interval(COMMON_INTERVAL, self.update_available)
+        self.update_percent = self.set_interval(COMMON_INTERVAL, self.update_percent)
+        self.update_used = self.set_interval(COMMON_INTERVAL, self.update_used)

@@ -4,7 +4,7 @@ from textual.containers import VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import compute_percentage_color
+from utilities import compute_percentage_color, UNCOMMON_INTERVAL
 
 
 class Processes(Static):
@@ -24,7 +24,7 @@ class Processes(Static):
 
     def update_processes(self) -> None:
         """
-        Define how to update `self.processes`.
+        Define how to update `self.processes`
         """
 
         self.processes = sorted(
@@ -60,7 +60,7 @@ class Processes(Static):
             user_name = "N/A" if proc.info.get('username') is None else proc.info.get('username')
 
             new_static = Static(f"PID: {PID} | CPU Load: {cpu_percent} | Name: {name} | "
-                                f"Username: {user_name} | EXE: [blue]{exe}[/blue]\n", classes="hey")
+                                f"Username: {user_name} | EXE: [blue]{exe}[/blue]\n", classes="proc")
 
             scroll.mount(new_static)
 
@@ -68,7 +68,7 @@ class Processes(Static):
         """
         Hook up the `update_processes` function, set to a long interval
         """
-        self.update_processes = self.set_interval(3, self.update_processes)
+        self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
     def compose(self) -> ComposeResult:
         """

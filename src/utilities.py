@@ -1,4 +1,6 @@
-INTERVAL = 1 / 5
+COMMON_INTERVAL = 1 / 5
+UNCOMMON_INTERVAL = 3
+RARE_INTERVAL = 10
 
 
 def compute_percentage_color(pct: float) -> str:
