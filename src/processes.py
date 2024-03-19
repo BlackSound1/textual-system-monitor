@@ -11,6 +11,8 @@ class Processes(Static):
     BORDER_TITLE = "Processes"
     BORDER_SUBTITLE = "Top 10 by CPU Load"
 
+    initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
+
     # Set the default processes value to an initial call to the function
     processes = reactive(
         sorted(
@@ -39,6 +41,11 @@ class Processes(Static):
         :param procs: The list of new processes to render
         """
 
+        # Don't bother if this is the first tick of the update function
+        if self.initial:
+            self.initial = False
+            return
+
         # First, grab the VerticalScroll Widget and clear it
         scroll = self.query_one("VerticalScroll", expect_type=VerticalScroll)
         scroll.remove_children()
@@ -65,7 +72,8 @@ class Processes(Static):
 
     def compose(self) -> ComposeResult:
         """
-        Start off with a simple blank VerticalScroll Widget
+        Start off with a simple VerticalScroll Widget with some initial text
         :return: The ComposeResult featuring the VerticalScroll
         """
-        yield VerticalScroll()
+        with VerticalScroll():
+            yield Static("[blink]Populating...[/]")
