@@ -19,11 +19,11 @@ def compute_percentage_color(pct: float) -> str:
         pct = 100
 
     if pct <= 75:
-        pct = f"[green]{pct:.1f}[/green]"
+        pct = f"[#70f97E]{pct:.1f}[/]"
     elif 75 < pct < 90:
-        pct = f"[yellow]{pct:.1f}[/yellow]"
+        pct = f"[#F9F070]{pct:.1f}[/]"
     else:
-        pct = f"[red]{pct:.1f}[/red]"
+        pct = f"[#F76A5D]{pct:.1f}[/]"
 
     return pct
 

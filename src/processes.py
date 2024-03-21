@@ -60,7 +60,7 @@ class Processes(Static):
             user_name = "N/A" if proc.info.get('username') is None else proc.info.get('username')
 
             new_static = Static(f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
-                                f"Username: {user_name} | EXE: [yellow]{exe}[/yellow]\n", classes="proc")
+                                f"Username: {user_name} | EXE: [#F9F070]{exe}[/]\n", classes="proc")
 
             scroll.mount(new_static)
 
