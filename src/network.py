@@ -4,12 +4,11 @@ from textual.containers import VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import UNCOMMON_INTERVAL, bytes2human
+from utilities import NET_INTERVAL, bytes2human
 
 
 class NetInfo(Static):
     BORDER_TITLE = "Network Info"
-    BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
 
     io = reactive(net_io_counters(pernic=True))
 
@@ -29,25 +28,24 @@ class NetInfo(Static):
 
             upload_speed = bytes2human(
                 round(
-                    (io_new[interface].bytes_sent - interface_io.bytes_sent) / UNCOMMON_INTERVAL,
+                    (io_new[interface].bytes_sent - interface_io.bytes_sent) / NET_INTERVAL,
                     2
                 )
             )
             download_speed = bytes2human(
                 round(
-                    (io_new[interface].bytes_recv - interface_io.bytes_recv) / UNCOMMON_INTERVAL,
+                    (io_new[interface].bytes_recv - interface_io.bytes_recv) / NET_INTERVAL,
                     2
                 )
             )
 
-            new_static = Static(f"[yellow]{interface}[/yellow]: Download: {download} | Upload: {upload} | "
-                                f"Download Speed: {download_speed} /{UNCOMMON_INTERVAL}s | "
-                                f"Upload Speed: {upload_speed} /{UNCOMMON_INTERVAL}s\n")
+            new_static = Static(f"[yellow]{interface}[/yellow]: Download: {download} at "
+                                f"{download_speed} \\s | Upload: {upload} at {upload_speed} \\s\n")
 
             scroll.mount(new_static)
 
     def on_mount(self) -> None:
-        self.update_io = self.set_interval(UNCOMMON_INTERVAL, self.update_io)
+        self.update_io = self.set_interval(NET_INTERVAL, self.update_io)
 
     def compose(self) -> ComposeResult:
         yield VerticalScroll()
