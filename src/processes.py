@@ -9,7 +9,7 @@ from utilities import compute_percentage_color, UNCOMMON_INTERVAL
 
 class Processes(Static):
     BORDER_TITLE = "Processes"
-    BORDER_SUBTITLE = "Top 10 by CPU Load"
+    BORDER_SUBTITLE = f"Top 10 by CPU Load - Updated every {UNCOMMON_INTERVAL} seconds"
 
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
@@ -59,8 +59,8 @@ class Processes(Static):
             cpu_percent = compute_percentage_color(proc.info.get('cpu_percent'))
             user_name = "N/A" if proc.info.get('username') is None else proc.info.get('username')
 
-            new_static = Static(f"PID: {PID} | CPU Load: {cpu_percent} | Name: {name} | "
-                                f"Username: {user_name} | EXE: [blue]{exe}[/blue]\n", classes="proc")
+            new_static = Static(f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
+                                f"Username: {user_name} | EXE: [yellow]{exe}[/yellow]\n", classes="proc")
 
             scroll.mount(new_static)
 

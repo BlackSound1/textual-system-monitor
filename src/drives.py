@@ -11,6 +11,7 @@ from utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
 
 class DriveUsage(Static):
     BORDER_TITLE = "Drive Usage"
+    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
 
     # Set the default disks value to an initial call to the function
     disks: List[dict] = reactive(

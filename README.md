@@ -1,32 +1,27 @@
 # Textual System Monitor
 
-This is intended to be a simple system monitor app created in Python, using Textual.
+This is intended to be a system monitor app created in Python, using Textual.
 
 It is only guaranteed to work in Windows. There are currently no plans to offer support for other 
 operating systems, as different OSes have different low-level APIs for system information.
 
 This is a preliminary design, for now.
 
-![Somewhat Feature Complete Design](images/Mar14Screenshot.png)
+![Somewhat Feature Complete Design](images/Mar20Screenshot.png)
 
 **Note**: Personal info has been censored, the orange bars are not present in the real app.
 
 # Features
 
-- Some of the information shown in this app live-updates a few times a second. Eventually, I wish for all information
-to live-update.
-
+- All information live-updates. Some information, like the Processes, updates slowly to be easier on system resources.
+  Other information, like CPU load, updates multiple times a second.
 - Percentages (indicating load) are color-coordinated according to certain thresholds.
-High percentages are <span style="color: red;">red</span>, medium percentages are
-<span style="color: yellow;">yellow</span>, and low percentages are <span style="color: green;">green</span>.
-
-- Quantities of bytes are automatically shown in human-readable formats, such as KB and GB.
-
+  High percentages are <span style="color: red;">red</span>, medium percentages are
+  <span style="color: yellow;">yellow</span>, and low percentages are <span style="color: green;">green</span>.
+- Quantities of bytes are automatically shown in human-readable formats, such as KiB and GiB.
 - If the window is too small, all panes have vertical scroll bars, such as the one in the
-Processes section in this screenshot.
-
+  Processes section in this screenshot.
 - At any time, press `q` to exit the app. `Crtl-C` also works.
-
 - At any time, press `d` to toggle dark mode. The app is designed with dark mode in mind, and it's the default.
   Light mode is unfinished and is a low priority.
 
@@ -39,11 +34,10 @@ the ability for this to be searchable. Shows the top 10 heaviest processes, as s
 
 The right-hand side shows various system stats.
 
-- **Drive Usage**: Shows info on the current drives on your system. *This does not currently live-update*.
-- **Memory Usage**: Shows the current status of the system's memory. *This does live-update*.
-- **CPU Usage**: Shows the current load of each of the systems cores, as well as overall CPU load. 
-                 *This does live-update*.
-- **Network Info**: Shows various network information. *This does not currently live-update*. 
+- **Drive Usage**: Shows info on the current drives on your system.
+- **Memory Usage**: Shows the current status of the system's memory.
+- **CPU Usage**: Shows the current load of each of the systems cores, as well as overall CPU load.
+- **Network Info**: Shows the status of each connected network interface.
 
 It might be possible to get temperature and GPU information in the future.
 
@@ -54,7 +48,7 @@ It might be possible to get temperature and GPU information in the future.
 - I assume you have Make installed. It's possible to get Make on Windows.
   [Read here](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows).
   - If you don't have Make installed, then whenever I invoke a `make` command here, look for it in the `Makefile`, and
-    run those commands directly (make sure to not run the commands with the `@` I add).
+    run those commands directly (make sure to not run the commands with the '`@`' I add).
 - I assume you run `make` or `pipenv` commands from within the Pipenv shell.
   Not doing so may cause the commands to not work.
 
@@ -137,8 +131,8 @@ Have 2 terminals open. I use 2 instances of Bash in Windows Terminal.
 
 # Desired Features
 
-- [ ] Make all panels live-update
-- [ ] Add CPU load info to Processes and sort by highest load
+- [x] Make all panels live-update
+- [x] Add CPU load info to Processes and sort by highest load
 - [ ] Make certain panels searchable as necessary
 - [ ] Make panels clickable to open a new screen showing more info
 - [ ] Add GPU info

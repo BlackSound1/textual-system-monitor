@@ -45,7 +45,7 @@ def bytes2human(n: int) -> str:
     if n < 0:
         return "0.0 B"
 
-    symbols = ('K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y')
+    symbols = ('Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi')
     prefix = {}
 
     for i, s in enumerate(symbols):

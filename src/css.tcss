@@ -22,9 +22,9 @@
     layout: grid;
     grid-size: 1;
     background: $panel;
-    border: greenyellow;
-    border-title-color: $text;
-    border-title-align: center;
+    /*border: greenyellow;*/
+    /*border-title-color: $text;*/
+    /*border-title-align: center;*/
 }
 
 #stats > #drives {
@@ -34,6 +34,8 @@
     border: red;
     border-title-color: $text;
     border-title-align: center;
+    border-subtitle-color: $text;
+    border-subtitle-align: center;
 }
 
 #stats > #mem {
@@ -55,9 +57,11 @@
 #stats > #network {
     height: 100%;
     background: $panel;
-    border: purple;
+    border: lightgreen;
     border-title-color: $text;
     border-title-align: center;
+    border-subtitle-color: $text;
+    border-subtitle-align: center;
 }
 
 #stats > #gpu {
