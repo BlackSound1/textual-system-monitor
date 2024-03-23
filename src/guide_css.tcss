@@ -1,0 +1,19 @@
+#guide-container {
+    layout: grid;
+    grid-size: 2;
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+}
+
+#description {
+    height: 100%;
+    background: $panel;
+    content-align: center middle;
+}
+
+#monitoring-desc {
+    height: 100%;
+    padding: 0 10;
+    background: $panel;
+    content-align: center middle;
+}

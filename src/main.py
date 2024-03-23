@@ -7,6 +7,7 @@ from drives import DriveUsage
 from memory import MemUsage
 from network import NetInfo
 from processes import Processes
+from guide_screen import Guide
 
 
 class Stats(Static):
@@ -27,9 +28,11 @@ class Monitor(App[str]):
     CSS_PATH = "css.tcss"
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
+    SCREENS = {'guide': Guide()}
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
+        ('g', "push_screen('guide')", 'Guide')
     ]
 
     # TEST

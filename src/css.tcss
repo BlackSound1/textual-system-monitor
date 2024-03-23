@@ -72,4 +72,6 @@
     border-title-align: center;
 }
 
-.proc { margin: 0 0 1 0; }
+.proc {
+    margin: 0 0 1 0;
+}
