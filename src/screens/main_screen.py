@@ -8,7 +8,7 @@ from stats import Stats
 
 
 class MainScreen(Screen):
-    CSS_PATH = "styles/main_css.tcss"
+    CSS_PATH = "../styles/main_css.tcss"
 
     def compose(self) -> ComposeResult:
         """
