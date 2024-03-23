@@ -71,7 +71,7 @@ MONITORING_STRING = """
 
 
 class Guide(Screen):
-    CSS_PATH = "guide_css.tcss"
+    CSS_PATH = "styles/guide_css.tcss"
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
@@ -79,6 +79,11 @@ class Guide(Screen):
     ]
 
     def compose(self) -> ComposeResult:
+        """
+        Generate a ComposeResult by yielding a Header, a Container with statics for the description and monitoring guide,
+        and a Footer
+        """
+
         yield Header(show_clock=True)
         with Container(id="guide-container"):
             yield Static(DESCRIPTION_STRING, id="description")

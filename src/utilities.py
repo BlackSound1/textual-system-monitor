@@ -13,11 +13,13 @@ def compute_percentage_color(pct: float) -> str:
     :return: The colored percentage value as a string
     """
 
+    # Make sure the percentage is within 0 and 100
     if pct < 0:
         pct = 0
     elif pct > 100:
         pct = 100
 
+    # Set the color based on the percentage
     if pct <= 75:
         pct = f"[#70f97E]{pct:.1f}[/]"
     elif 75 < pct < 90:
@@ -43,18 +45,22 @@ def bytes2human(n: int) -> str:
     :return: A string representing a human-readable format of those bytes
     """
 
+    # If the number of bytes is negative, return '0.0 B'
     if n < 0:
         return "0.0 B"
 
     symbols = ('Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi')
     prefix = {}
 
+    # Set the prefix for each symbol
     for i, s in enumerate(symbols):
         prefix[s] = 1 << (i + 1) * 10
 
+    # Find the largest symbol that is smaller than n
     for s in reversed(symbols):
         if abs(n) >= prefix[s]:
             value = float(n) / prefix[s]
             return f'{value:.1f} {s}B'
 
+    # If no symbol was found, return '0.0 B'
     return f"{n:.1f} B"

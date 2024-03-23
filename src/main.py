@@ -1,31 +1,10 @@
-from textual.app import App, ComposeResult
-from textual.containers import Container
-from textual.widgets import Header, Footer, Static
+from textual.app import App
 
-from cpu import CPU_Usage
-from drives import DriveUsage
-from memory import MemUsage
-from network import NetInfo
-from processes import Processes
 from guide_screen import Guide
-
-
-class Stats(Static):
-    BORDER_TITLE = "Stats"
-
-    def compose(self) -> ComposeResult:
-        yield DriveUsage(id="drives")
-        yield MemUsage(id="mem")
-        yield CPU_Usage(id="cpu")
-        yield NetInfo(id='network')
-        # yield GPU_Usage(id="gpu")
-
-    def on_mount(self) -> None:
-        self.update("This will display all current usage stats")
+from main_screen import MainScreen
 
 
 class Monitor(App[str]):
-    CSS_PATH = "css.tcss"
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
     SCREENS = {'guide': Guide()}
@@ -35,18 +14,22 @@ class Monitor(App[str]):
         ('g', "push_screen('guide')", 'Guide')
     ]
 
-    # TEST
-    def compose(self) -> ComposeResult:
-        yield Header(show_clock=True)
+    def on_mount(self) -> None:
+        """
+        Set the initial MainScreen screen
 
-        with Container(id="app-grid"):
-            yield Processes(id="processes")
-            yield Stats(id="stats")
-
-        yield Footer()
+        :return: None
+        """
+        self.main = MainScreen()
+        self.push_screen(self.main)
 
 
 def run() -> None:
+    """
+    Run the Monitor.
+
+    :return: None
+    """
     Monitor().run()
 
 

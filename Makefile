@@ -1,7 +1,7 @@
 SHELL := bash
 .ONESHELL:
 CWD = .
-TEST_DIR := ./test
+TEST_DIR := ./tests
 SRC_DIR := ./src
 
 
@@ -18,7 +18,7 @@ run-dev:   ## Run app in dev mode
 .PHONY: test
 test:   ## Use Pytest to test the app
 	@echo ""
-	@pytest test
+	@pytest tests
 
 
 .PHONY: lint
@@ -37,7 +37,7 @@ console:  ## Show the Textual console. Used in debugging
 test_files := $(TEST_DIR)/*.py
 show-tests: $(test_files)   ## Show all tests
 	@echo -e ""
-	@echo $(subst test/, , $(filter-out test/__init__.py, $^))
+	@echo $(subst tests/, , $(filter-out tests/__init__.py, $^))
 
 
 .PHONY: show-src

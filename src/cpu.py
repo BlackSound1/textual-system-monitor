@@ -16,12 +16,26 @@ class CPU_Usage(Static):
     percent_overall = reactive(0.0)
 
     def update_cpu_tot(self) -> None:
+        """
+        Update the percent_overall variable
+        :return: None
+        """
         self.percent_overall: float = cpu_percent(percpu=False)
 
     def update_cpu_indiv(self) -> None:
+        """
+        Update the percents_indiv variable
+        :return: None
+        """
         self.percents_indiv: list = cpu_percent(percpu=True)
 
     def _display_percentages_CPU(self, percentages: list) -> str:
+        """
+        Display the percentages of each core in a string.
+        :param percentages:
+        :return:
+        """
+
         string = "\n"
 
         for i, pct in enumerate(percentages):
@@ -50,20 +64,39 @@ class CPU_Usage(Static):
             pass
 
     def watch_percents_overall(self, percentage: float) -> None:
+        """
+        Watch what happens when the percents_overall variable is changed and react accordingly.
+        :param percentage: The updated overall percentage
+        :return: None
+        """
+
+        # Compute the percentage string based one the individual percentages
         percentage_string = self._display_percentages_CPU(self.percents_indiv)
+
+        # Compute the percentage color
         pct = compute_percentage_color(percentage)
 
+        # Update the widget in the UI
         try:
-            (self.query_one("#cpu_static", expect_type=Static)
-             .update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
-             )
+            (
+                self.query_one("#cpu_static", expect_type=Static)
+                .update(f"Cores: {self.cores}\n\nUsage (Overall): {pct} %\n\nUsage (per Core): {percentage_string}")
+            )
         except NoMatches:
             pass
 
     def compose(self) -> ComposeResult:
+        """
+        Start off with a simple VerticalScroll Widget
+        :return: The ComposeResult featuring the VerticalScroll
+        """
         with VerticalScroll():
             yield Static(id="cpu_static")
 
     def on_mount(self) -> None:
+        """
+        Set intervals to update cpu usage
+        :return: None
+        """
         self.update_cpu = self.set_interval(COMMON_INTERVAL, self.update_cpu_indiv)
         self.update_cpu_tot = self.set_interval(COMMON_INTERVAL, self.update_cpu_tot)

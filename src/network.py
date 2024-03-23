@@ -87,6 +87,7 @@ class NetInfo(Static):
     def on_mount(self) -> None:
         """
         Hook up the `update_io` function, set to an interval of 1 second
+        :return: None
         """
         self.update_io = self.set_interval(NET_INTERVAL, self.update_io)
 
