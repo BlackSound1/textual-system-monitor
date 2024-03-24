@@ -6,7 +6,7 @@ from textual.containers import VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import NET_INTERVAL, bytes2human
+from ..utilities import NET_INTERVAL, bytes2human
 
 
 def get_network_stats() -> List[dict]:

@@ -3,8 +3,8 @@ from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Header, Footer
 
-from processes import Processes
-from stats import Stats
+from ..panes.processes import Processes
+from ..panes.stats import Stats
 
 
 class MainScreen(Screen):

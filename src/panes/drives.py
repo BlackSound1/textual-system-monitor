@@ -6,7 +6,7 @@ from textual.containers import VerticalScroll
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
+from ..utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
 
 
 class DriveUsage(Static):
