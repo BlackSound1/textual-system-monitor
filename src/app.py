@@ -1,7 +1,7 @@
 from textual.app import App
 
-from guide_screen import Guide
-from main_screen import MainScreen
+from .screens.guide_screen import Guide
+from .screens.main_screen import MainScreen
 
 
 class Monitor(App[str]):
@@ -22,16 +22,3 @@ class Monitor(App[str]):
         """
         self.main = MainScreen()
         self.push_screen(self.main)
-
-
-def run() -> None:
-    """
-    Run the Monitor.
-
-    :return: None
-    """
-    Monitor().run()
-
-
-if __name__ == '__main__':
-    run()

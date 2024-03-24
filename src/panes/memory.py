@@ -5,7 +5,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL
+from ..utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL
 
 
 class MemUsage(Static):

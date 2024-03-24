@@ -1,10 +1,10 @@
 from textual.app import ComposeResult
 from textual.widgets import Static
 
-from cpu import CPU_Usage
-from drives import DriveUsage
-from memory import MemUsage
-from network import NetInfo
+from .cpu import CPU_Usage
+from .drives import DriveUsage
+from .memory import MemUsage
+from .network import NetInfo
 
 
 class Stats(Static):

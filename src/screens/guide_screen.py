@@ -71,7 +71,7 @@ MONITORING_STRING = """
 
 
 class Guide(Screen):
-    CSS_PATH = "styles/guide_css.tcss"
+    CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
