@@ -14,9 +14,10 @@ class Processes(Static):
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
     # Set the default processes value to an initial call to the function
+    procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
     processes = reactive(
         sorted(
-            process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent']),
+            (p for p in procs),
             key=lambda x: x.info.get('cpu_percent'),
             reverse=True
         )[:10]
@@ -27,9 +28,11 @@ class Processes(Static):
         Define how to update `self.processes`
         """
 
+        procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+
         self.processes = sorted(
-            process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent']),
-            key=lambda x: x.info.get('cpu_percent'),
+            (p for p in procs),
+            key=lambda x: x.info['cpu_percent'],
             reverse=True
         )[:10]
 
@@ -46,23 +49,25 @@ class Processes(Static):
             self.initial = False
             return
 
-        # First, grab the VerticalScroll Widget and clear it
-        scroll = self.query_one("VerticalScroll", expect_type=VerticalScroll)
-        scroll.remove_children()
+        # First, grab the Static Widget
+        static = self.query_one("Static", expect_type=Static)
+        static_content = ""
 
-        # Next, go through each updated process, get its info, and populate the VerticalScroll
-        # Widget with a new Static for each processes
+        # Next, go through each updated process, get its info, and update the Static widget
+        # with the new info for each process
         for proc in procs:
-            PID = proc.info.get('pid')
-            name = 'N/A' if proc.info.get('name') == '' else proc.info.get('name')
-            exe = 'N/A' if proc.info.get('exe') == '' else proc.info.get('exe')
-            cpu_percent = compute_percentage_color(proc.info.get('cpu_percent'))
-            user_name = "N/A" if proc.info.get('username') is None else proc.info.get('username')
+            PID = proc.info['pid']
+            name = proc.info['name'] or 'N/A'
+            exe = proc.info['exe'] or 'N/A'
+            cpu_percent = compute_percentage_color(proc.info['cpu_percent'])
+            user_name = proc.info['username'] or 'N/A'
 
-            new_static = Static(f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
-                                f"Username: {user_name} | EXE: [#F9F070]{exe}[/]\n", classes="proc")
+            # Add the new info for this process to the content of the Static widget
+            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
+                               f"Username: {user_name} | EXE: [#F9F070]{exe}[/]\n\n")
 
-            scroll.mount(new_static)
+        # Update the content of the Static widget with the new info for all processes
+        static.update(static_content)
 
     def on_mount(self) -> None:
         """

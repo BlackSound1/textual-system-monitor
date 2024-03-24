@@ -1,5 +1,3 @@
-from typing import List
-
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
@@ -14,24 +12,24 @@ class DriveUsage(Static):
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
 
     # Set the default disks value to an initial call to the function
-    disks: List[dict] = reactive(
-        [
+    disks = reactive(
+        (
             {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
              "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
             for item in disk_partitions()
-        ]
+        )
     )
 
     def update_disks(self) -> None:
         """
-        Define how to update `self.disks`.
+        Define how to update `self.disks`
         """
 
-        self.disks = [
+        self.disks = (
             {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
              "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
             for item in disk_partitions()
-        ]
+        )
 
     def watch_disks(self, disks: list) -> None:
         """
@@ -41,31 +39,33 @@ class DriveUsage(Static):
         :param disks: The list of new disks to render
         """
 
-        # First, grab the VerticalScroll Widget and clear it
-        scroll = self.query_one("VerticalScroll", expect_type=VerticalScroll)
-        scroll.remove_children()
+        # First, grab the Static Widget
+        static = self.query_one("Static", expect_type=Static)
+        static_content = ""
 
-        # Next, go through each updated disk, get its info, and populate the VerticalScroll
-        # Widget with a new Static for each disk
+        # Next, go through each updated disk, get its info, and update the content of the Static with
+        # the updated info for each drive
         for disk in disks:
-            options = disk.get('opts')
-            device = str(disk.get('device')).replace(":\\", '')
-            fs = "N/A" if disk.get('fstype') == '' else disk.get('fstype')
+            options = disk['opts']
+            device = str(disk['device']).replace(":\\", '')
+            fs = disk['fstype'] or 'N/A'
 
             # If the drive is a CD drive, treat it differently
             if options == "cdrom":
-                new_static = Static(f"Disk: {device} | Options: {options}")
+                static_content += f"Disk: {device} | Options: {options}\n\n"
             else:
-                usage = disk_usage(disk.get('mountpoint'))
+                usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
                 used = bytes2human(usage.used)
                 free = bytes2human(usage.free)
                 total = bytes2human(usage.total)
 
-                new_static = Static(f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
-                                    f"Total: {total} | Used: {used} | Free: {free}\n")
+                # Add the new info for this drive to the content of the Static widget
+                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
+                                   f"Total: {total} | Used: {used} | Free: {free}\n\n")
 
-            scroll.mount(new_static)
+            # Update the content of the Static widget with the new info for all drives
+            static.update(static_content)
 
     def on_mount(self) -> None:
         """
@@ -75,7 +75,8 @@ class DriveUsage(Static):
 
     def compose(self) -> ComposeResult:
         """
-        Start off with a simple blank VerticalScroll Widget
-        :return: The ComposeResult featuring the VerticalScroll
+        Start off with a VerticalScroll Widget with a blank Static inside
+        :return: The ComposeResult featuring the VerticalScroll and Static
         """
-        yield VerticalScroll()
+        with VerticalScroll():
+            yield Static()
