@@ -1,6 +1,7 @@
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -40,7 +41,11 @@ class DriveUsage(Static):
         """
 
         # First, grab the Static Widget
-        static = self.query_one("Static", expect_type=Static)
+        try:
+            static = self.query_one("Static", expect_type=Static)
+        except NoMatches():
+            return
+
         static_content = ""
 
         # Next, go through each updated disk, get its info, and update the content of the Static with

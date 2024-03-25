@@ -1,19 +1,18 @@
 #guide-container {
     layout: grid;
     grid-size: 2;
-    grid-columns: 1fr;
-    grid-rows: 1fr;
+    grid-columns: 40% 60%;
+    background: $panel;
 }
 
 #description {
-    height: 100%;
     background: $panel;
     content-align: center middle;
+    padding: 0 2;
 }
 
 #monitoring-desc {
-    height: 100%;
-    padding: 0 10;
+    padding: 0 2;
     background: $panel;
     content-align: center middle;
 }

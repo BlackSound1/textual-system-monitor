@@ -1,6 +1,8 @@
 from psutil import process_iter
+from textual import events
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -50,7 +52,11 @@ class Processes(Static):
             return
 
         # First, grab the Static Widget
-        static = self.query_one("Static", expect_type=Static)
+        try:
+            static = self.query_one("Static", expect_type=Static)
+        except NoMatches():
+            return
+
         static_content = ""
 
         # Next, go through each updated process, get its info, and update the Static widget
@@ -74,6 +80,15 @@ class Processes(Static):
         Hook up the `update_processes` function, set to a long interval
         """
         self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+
+    def on_click(self, event: events.Click) -> None:
+        """
+        When this pane is clicked, push the Processes screen
+        """
+
+        app = self.app
+        procs = app.SCREENS["processes"]
+        app.push_screen(procs)
 
     def compose(self) -> ComposeResult:
         """

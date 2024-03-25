@@ -1,6 +1,7 @@
 from psutil import virtual_memory
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -43,7 +44,10 @@ class MemUsage(Static):
         :return: None
         """
 
-        static = self.query_one("Static", Static)
+        try:
+            static = self.query_one("Static", Static)
+        except NoMatches():
+            return
 
         static.update(f"Total Memory: {bytes2human(data['total'])}\n\n"
                       f"Available Memory: {bytes2human(data['available'])}\n\n"
