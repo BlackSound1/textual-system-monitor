@@ -1,0 +1,16 @@
+/*#process-screen {
+    height: 100%;
+}*/
+
+#process-scroll {
+    /*border: red;*/
+    /*height: 100%;*/
+}
+
+#process-screen-procs {
+    border: $secondary;
+    border-title-color: $text;
+    border-title-align: center;
+    background: $panel;
+    /*height: 100vh;*/
+}
