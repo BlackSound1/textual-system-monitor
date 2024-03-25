@@ -3,6 +3,7 @@ from typing import List
 from psutil import net_io_counters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -53,7 +54,11 @@ class NetInfo(Static):
         """
 
         # First, grab the Static Widget
-        static = self.query_one("Static", expect_type=Static)
+        try:
+            static = self.query_one("Static", expect_type=Static)
+        except NoMatches():
+            return
+
         static_content = ""
 
         # Next, go through each updated network interface, get its info, and update the Static widget

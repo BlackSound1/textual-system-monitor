@@ -1,6 +1,7 @@
 from psutil import cpu_count, cpu_percent
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
@@ -61,7 +62,10 @@ class CPU_Usage(Static):
         """
 
         # First, grab the Static Widget
-        static = self.query_one("Static", expect_type=Static)
+        try:
+            static = self.query_one("Static", expect_type=Static)
+        except NoMatches():
+            return
 
         # Then, get the updated data
         cores = cpu_data['cores']
