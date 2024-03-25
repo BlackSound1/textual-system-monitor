@@ -1,5 +1,5 @@
 from textual.app import ComposeResult
-from textual.containers import Container
+from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
@@ -88,6 +88,8 @@ class Guide(Screen):
 
         yield Header(show_clock=True)
         with Container(id="guide-container"):
-            yield Static(DESCRIPTION_STRING, id="description")
-            yield Static(MONITORING_STRING, id="monitoring-desc")
+            with VerticalScroll():
+                yield Static(DESCRIPTION_STRING, id="description")
+            with VerticalScroll():
+                yield Static(MONITORING_STRING, id="monitoring-desc")
         yield Footer()
