@@ -75,7 +75,7 @@ class Guide(Screen):
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
-        ('g', "app.pop_screen", 'Back'),
+        ('g', "app.switch_screen('main')", 'Back'),
     ]
 
     def compose(self) -> ComposeResult:

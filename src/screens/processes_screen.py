@@ -4,6 +4,11 @@ from textual.widgets import Static, Header, Footer
 
 
 class ProcessesScreen(Screen):
+
+    BINDINGS = [
+        ("b", "app.switch_screen('main')", "Back"),
+    ]
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
         yield Static("Processes Screen")
