@@ -33,34 +33,34 @@ Created in Python using Textual.
 MONITORING_STRING = """
 [bold underline]Monitoring Descriptions[/]
 
-[#FEA62B]Processes[/]: An updated list of currently-running processes, sorted by most CPU load. Each process has information on:
+[#FEA62B]Processes[/]: An updated list of running processes, sorted by CPU load. Each process has info on:
   - Process ID (PID)
   - CPU load (in %)
   - Application name
   - Username of the user running this process
   - The actual executable file running this process
 
-[#FF0000]Drive Usage[/]: An updated list of drives in use by the system. This includes both storage and media drives. 
-  - If a drive is a storage drive, it will have information on:
+[#FF0000]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives. 
+  - If a drive is a storage drive, it will have info on:
     - Disk letter name
     - Options associated with that drive
-    - What file system is associated with that drive
+    - Which file system is associated with that drive
     - Current usage (in %)
     - The capacity of the drive
     - How much of that capacity is used
     - How much of that capacity is free
-  - If a drive is a media drive, information will be displayed about:
+  - If it's a media drive, info will be displayed about:
     - Disk letter name
     - Options associated with that drive
 
-[#FFFF00]Memory Usage[/]: An updated set of information on system memory allocation:
+[#FFFF00]Memory Usage[/]: Updated info about system memory allocation:
   - Total Memory: How much memory is allocated to the system
-  - Available Memory: How much memory is able to be used by programs/ processes
-  - Used: How much memory is already being used
+  - Available Memory: How much is able to be used by programs/ processes
+  - Used: How much is already being used
   - Percentage Used (in %): How much memory is used as a percentage of the total 
 
-[#ADD8E6]CPU Usage[/]: An updated set of CPU information:
-  - Cores: The total number of cores present on the system CPU
+[#ADD8E6]CPU Usage[/]: Updated CPU info about:
+  - Cores: The total number of cores present on the system
   - Usage (Overall) (in %): A measure of overall CPU usage
   - Usage (per Core) (in %): A measure of each CPU Cores usage
 
@@ -82,6 +82,8 @@ class Guide(Screen):
         """
         Generate a ComposeResult by yielding a Header, a Container with statics for the description and monitoring guide,
         and a Footer
+
+        :return: The ComposeResult of the screen
         """
 
         yield Header(show_clock=True)
