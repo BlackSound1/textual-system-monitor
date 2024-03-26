@@ -1,6 +1,6 @@
 from psutil import process_iter
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
@@ -13,7 +13,7 @@ class ProcessesScreen(Screen):
     BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [
-        ("b", "app.switch_screen('main')", "Back"),
+        ("m", "switch_mode('main')", "Main Screen"),
     ]
 
     initial = True
@@ -60,8 +60,6 @@ class ProcessesScreen(Screen):
         except NoMatches():
             return
 
-        static.border_title = self.BORDER_TITLE
-
         static_content = ""
 
         # Next, go through each updated process, get its info, and update the Static widget
@@ -86,11 +84,17 @@ class ProcessesScreen(Screen):
         """
         self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
+        try:
+            container = self.query_one("#process-container", expect_type=Container)
+        except NoMatches():
+            return
+
+        container.border_title = self.BORDER_TITLE
+        container.border_subtitle = self.BORDER_SUBTITLE
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=True)
-        yield Static("Processes Screen")
-        with Static(id="process-screen"):
-            with VerticalScroll(id="process-scroll"):
+        # yield Screens()
         with Container(id="process-container"):
             with VerticalScroll():
                 yield Static("[blink]Populating...[/]", id="process-screen-procs")
