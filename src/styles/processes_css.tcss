@@ -1,0 +1,15 @@
+#process-container {
+    layout: grid;
+    background: $panel;
+    border: $secondary;
+    border-title-color: $text;
+    border-title-align: center;
+    border-subtitle-color: $text;
+    border-subtitle-align: center;
+}
+
+
+#process-screen-procs {
+    background: $panel;
+    padding: 1 2;
+}

@@ -1,5 +1,4 @@
 from psutil import process_iter
-from textual import events
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
@@ -81,14 +80,17 @@ class Processes(Static):
         """
         self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
-    def on_click(self, event: events.Click) -> None:
+    def on_click(self) -> None:
         """
-        When this pane is clicked, push the Processes screen
+        When this pane is clicked, switch to the Processes screen
+
+        :return: None
         """
 
-        app = self.app
-        procs = app.SCREENS["processes"]
-        app.push_screen(procs)
+        self.app.switch_mode("processes")
+        # app = self.app
+        # procs = app.SCREENS["processes"]
+        # app.push_screen(procs)
 
     def compose(self) -> ComposeResult:
         """

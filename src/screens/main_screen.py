@@ -9,6 +9,9 @@ from ..panes.stats import Stats
 
 class MainScreen(Screen):
     CSS_PATH = "../styles/main_css.tcss"
+    BINDINGS = [
+        ('g', "switch_mode('guide')", 'Guide')
+    ]
 
     def compose(self) -> ComposeResult:
         """
