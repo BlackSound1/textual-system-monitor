@@ -8,12 +8,16 @@ from .screens.processes_screen import ProcessesScreen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
+    # SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
-        ('g', "switch_screen('guide')", 'Guide')
     ]
+    MODES = {
+        "main": MainScreen,
+        "guide": Guide,
+        "processes": ProcessesScreen
+    }
 
     def on_mount(self) -> None:
         """
@@ -21,5 +25,6 @@ class Monitor(App[str]):
 
         :return: None
         """
-        self.main = self.SCREENS['main']
-        self.push_screen(self.main)
+        self.switch_mode("main")
+        # self.main = self.SCREENS['main']
+        # self.push_screen(self.main)

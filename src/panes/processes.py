@@ -87,9 +87,10 @@ class Processes(Static):
         :return: None
         """
 
-        app = self.app
-        procs = app.SCREENS["processes"]
-        app.push_screen(procs)
+        self.app.switch_mode("processes")
+        # app = self.app
+        # procs = app.SCREENS["processes"]
+        # app.push_screen(procs)
 
     def compose(self) -> ComposeResult:
         """

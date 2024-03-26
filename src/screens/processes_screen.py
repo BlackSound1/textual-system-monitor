@@ -91,5 +91,7 @@ class ProcessesScreen(Screen):
         yield Static("Processes Screen")
         with Static(id="process-screen"):
             with VerticalScroll(id="process-scroll"):
+        with Container(id="process-container"):
+            with VerticalScroll():
                 yield Static("[blink]Populating...[/]", id="process-screen-procs")
         yield Footer()

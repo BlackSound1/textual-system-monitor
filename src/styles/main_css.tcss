@@ -7,7 +7,6 @@
 
 #processes {
     width: 100%;
-    height: 100%;
     row-span: 2;
     background: $panel;
     border: $secondary;
@@ -18,7 +17,6 @@
 }
 
 #stats {
-    height: 100%;
     layout: grid;
     grid-size: 1;
     background: $panel;
@@ -28,7 +26,6 @@
 }
 
 #stats > #drives {
-    height: 100%;
     layout: grid;
     background: $panel;
     border: red;
@@ -39,7 +36,6 @@
 }
 
 #stats > #mem {
-    height: 100%;
     background: $panel;
     border: yellow;
     border-title-color: $text;
@@ -47,7 +43,6 @@
 }
 
 #stats > #cpu {
-    height: 100%;
     background: $panel;
     border: lightblue;
     border-title-color: $text;
@@ -55,7 +50,6 @@
 }
 
 #stats > #network {
-    height: 100%;
     background: $panel;
     border: lightgreen;
     border-title-color: $text;
@@ -65,7 +59,6 @@
 }
 
 #stats > #gpu {
-    height: 100%;
     background: $panel;
     border: pink;
     border-title-color: $text;
