@@ -1,7 +1,15 @@
+from typing import List
+
+from psutil import net_io_counters
+
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
 RARE_INTERVAL = 10
 NET_INTERVAL = 1
+
+"""
+GLOBAL UTILITIES
+"""
 
 
 def compute_percentage_color(pct: float) -> str:
@@ -64,3 +72,31 @@ def bytes2human(n: int) -> str:
 
     # If no symbol was found, return '0.0 B'
     return f"{n:.1f} B"
+
+
+"""
+NETWORK UTILITIES
+"""
+
+
+def get_network_stats() -> List[dict]:
+    """
+    Utility function to get network statistics, per interface.
+
+    :return: A list of dicts, each one containing the network statistics for a single interface. Sorted
+             by highest download amount
+    """
+
+    # Go through each interface and its accompanying stats. Get the interface name and upload/ download info.
+    # Append this as a dict to the stats list
+    stats = [
+        {
+            "interface": interface,
+            "bytes_sent": interface_io.bytes_sent,
+            "bytes_recv": interface_io.bytes_recv
+        }
+        for interface, interface_io in net_io_counters(pernic=True).items()
+    ]
+
+    # Sort by highest download amount
+    return sorted(stats, key=lambda x: x['bytes_recv'], reverse=True)

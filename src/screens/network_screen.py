@@ -8,30 +8,7 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
-from src.utilities import NET_INTERVAL, bytes2human
-
-
-def get_network_stats() -> List[dict]:
-    """
-    Utility function to get network statistics, per interface.
-
-    :return: A list of dicts, each one containing the network statistics for a single interface. Sorted
-             by highest download amount
-    """
-
-    # Go through each interface and its accompanying stats. Get the interface name and upload/ download info.
-    # Append this as a dict to the stats list
-    stats = [
-        {
-            "interface": interface,
-            "bytes_sent": interface_io.bytes_sent,
-            "bytes_recv": interface_io.bytes_recv
-        }
-        for interface, interface_io in net_io_counters(pernic=True).items()
-    ]
-
-    # Sort by highest download amount
-    return sorted(stats, key=lambda x: x['bytes_recv'], reverse=True)
+from src.utilities import NET_INTERVAL, bytes2human, get_network_stats
 
 
 class NetworkScreen(Screen):
