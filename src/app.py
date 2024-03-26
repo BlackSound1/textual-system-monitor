@@ -3,6 +3,7 @@ from textual.app import App
 from .screens.guide_screen import Guide
 from .screens.main_screen import MainScreen
 from .screens.processes_screen import ProcessesScreen
+from .screens.network_screen import NetworkScreen
 
 
 class Monitor(App[str]):
@@ -16,7 +17,8 @@ class Monitor(App[str]):
     MODES = {
         "main": MainScreen,
         "guide": Guide,
-        "processes": ProcessesScreen
+        "processes": ProcessesScreen,
+        "network": NetworkScreen
     }
 
     def on_mount(self) -> None:

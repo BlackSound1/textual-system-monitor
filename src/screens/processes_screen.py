@@ -8,6 +8,7 @@ from textual.widgets import Static, Header, Footer
 
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color
 
+
 class ProcessesScreen(Screen):
     BORDER_TITLE = "Processes"
     BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
@@ -80,8 +81,11 @@ class ProcessesScreen(Screen):
 
     def on_mount(self) -> None:
         """
-        Hook up the `update_processes` function, set to a long interval
+        Perform initial setup for the Processes Screen
+
+        :return: None
         """
+
         self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
         try:
@@ -93,8 +97,12 @@ class ProcessesScreen(Screen):
         container.border_subtitle = self.BORDER_SUBTITLE
 
     def compose(self) -> ComposeResult:
+        """
+        Display the structure of the Process Screen
+        :return: The ComposeResult featuring the structure of the Screen
+        """
+
         yield Header(show_clock=True)
-        # yield Screens()
         with Container(id="process-container"):
             with VerticalScroll():
                 yield Static("[blink]Populating...[/]", id="process-screen-procs")
