@@ -100,3 +100,40 @@ def get_network_stats() -> List[dict]:
 
     # Sort by highest download amount
     return sorted(stats, key=lambda x: x['bytes_recv'], reverse=True)
+
+
+def update_network_static(new: list, old: list) -> str:
+    """
+    Update the Network pane with new info for each network interface by generating a
+    string containing the new info for each interface
+
+    :param new: The updated network stats
+    :param old: The old network stats
+    :return: The string needed to update the Static widget with the new info
+    """
+
+    static_content = ""
+
+    # For each interface, calculate the new info and add it to the string to return
+    for i, item in enumerate(old):
+        interface = item["interface"]
+        download = bytes2human(new[i]["bytes_recv"])
+        upload = bytes2human(new[i]["bytes_sent"])
+        upload_speed = bytes2human(
+            round(
+                (new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL,
+                2
+            )
+        )
+        download_speed = bytes2human(
+            round(
+                (new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL,
+                2
+            )
+        )
+
+        # Add the new info for this interface to the content of the Static widget
+        static_content += (f"[#F9F070]{interface}[/]: [#508CFC]Download[/]: {download} at "
+                           f"{download_speed} /s | [#508CFC]Upload[/]: {upload} at {upload_speed} /s\n\n")
+
+    return static_content

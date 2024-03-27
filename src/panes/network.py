@@ -4,7 +4,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import NET_INTERVAL, bytes2human, get_network_stats
+from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
 
 
 class NetInfo(Static):
@@ -29,34 +29,13 @@ class NetInfo(Static):
 
         # First, grab the Static Widget
         try:
-            static = self.query_one("Static", expect_type=Static)
+            static = self.query_one("#network-pane-static", expect_type=Static)
         except NoMatches():
             return
 
-        static_content = ""
-
         # Next, go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
-        for i, item in enumerate(old):
-            interface = item["interface"]
-            download = bytes2human(new[i]["bytes_recv"])
-            upload = bytes2human(new[i]["bytes_sent"])
-            upload_speed = bytes2human(
-                round(
-                    (new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL,
-                    2
-                )
-            )
-            download_speed = bytes2human(
-                round(
-                    (new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL,
-                    2
-                )
-            )
-
-            # Add the new info for this interface to the content of the Static widget
-            static_content += (f"[#F9F070]{interface}[/]: [#508CFC]Download[/]: {download} at "
-                               f"{download_speed} /s | [#508CFC]Upload[/]: {upload} at {upload_speed} /s\n\n")
+        static_content = update_network_static(new, old)
 
         # Update the content of the Static widget with the new info for all interfaces
         static.update(static_content)
@@ -83,4 +62,4 @@ class NetInfo(Static):
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
         with VerticalScroll():
-            yield Static("")
+            yield Static("", id="network-pane-static")
