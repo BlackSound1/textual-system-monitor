@@ -1,14 +1,19 @@
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static
+from textual.screen import Screen
+from textual.widgets import Static, Header, Footer
 
-from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
+from src.utilities import NET_INTERVAL, get_network_stats, update_network_static
 
 
-class NetInfo(Static):
-    BORDER_TITLE = "Network Info"
+class NetworkScreen(Screen):
+    BORDER_TITLE = "Network"
+    CSS_PATH = "../styles/network_css.tcss"
+    BINDINGS = [
+        ("m", "switch_mode('main')", "Main Screen"),
+    ]
 
     io = reactive(get_network_stats())
 
@@ -29,7 +34,7 @@ class NetInfo(Static):
 
         # First, grab the Static Widget
         try:
-            static = self.query_one("#network-pane-static", expect_type=Static)
+            static = self.query_one("#network-screen-static", expect_type=Static)
         except NoMatches():
             return
 
@@ -42,24 +47,27 @@ class NetInfo(Static):
 
     def on_mount(self) -> None:
         """
-        Hook up the `update_io` function, set to an interval of 1 second
+        Perform initial setup for the Network Screen
         :return: None
         """
+
         self.update_io = self.set_interval(NET_INTERVAL, self.update_io)
 
-    def on_click(self) -> None:
-        """
-        When this pane is clicked, switch to the Network screen
+        try:
+            container = self.query_one("#network-container", expect_type=Container)
+        except NoMatches():
+            return
 
-        :return: None
-        """
-
-        self.app.switch_mode("network")
+        container.border_title = self.BORDER_TITLE
 
     def compose(self) -> ComposeResult:
         """
-        Start off with a simple VerticalScroll Widget with a Static attached
-        :return: The ComposeResult featuring the VerticalScroll and Static
+        Display the structure of the Network Screen
+        :return: The ComposeResult featuring the structure of the Screen
         """
-        with VerticalScroll():
-            yield Static("", id="network-pane-static")
+
+        yield Header(show_clock=True)
+        with Container(id="network-container"):
+            with VerticalScroll():
+                yield Static("", id="network-screen-static")
+        yield Footer()

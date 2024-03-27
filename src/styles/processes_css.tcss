@@ -1,5 +1,4 @@
 #process-container {
-    layout: grid;
     background: $panel;
     border: $secondary;
     border-title-color: $text;

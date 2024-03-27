@@ -1,7 +1,15 @@
+from typing import List
+
+from psutil import net_io_counters
+
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
 RARE_INTERVAL = 10
 NET_INTERVAL = 1
+
+"""
+GLOBAL UTILITIES
+"""
 
 
 def compute_percentage_color(pct: float) -> str:
@@ -64,3 +72,68 @@ def bytes2human(n: int) -> str:
 
     # If no symbol was found, return '0.0 B'
     return f"{n:.1f} B"
+
+
+"""
+NETWORK UTILITIES
+"""
+
+
+def get_network_stats() -> List[dict]:
+    """
+    Utility function to get network statistics, per interface.
+
+    :return: A list of dicts, each one containing the network statistics for a single interface. Sorted
+             by highest download amount
+    """
+
+    # Go through each interface and its accompanying stats. Get the interface name and upload/ download info.
+    # Append this as a dict to the stats list
+    stats = [
+        {
+            "interface": interface,
+            "bytes_sent": interface_io.bytes_sent,
+            "bytes_recv": interface_io.bytes_recv
+        }
+        for interface, interface_io in net_io_counters(pernic=True).items()
+    ]
+
+    # Sort by highest download amount
+    return sorted(stats, key=lambda x: x['bytes_recv'], reverse=True)
+
+
+def update_network_static(new: list, old: list) -> str:
+    """
+    Update the Network pane with new info for each network interface by generating a
+    string containing the new info for each interface
+
+    :param new: The updated network stats
+    :param old: The old network stats
+    :return: The string needed to update the Static widget with the new info
+    """
+
+    static_content = ""
+
+    # For each interface, calculate the new info and add it to the string to return
+    for i, item in enumerate(old):
+        interface = item["interface"]
+        download = bytes2human(new[i]["bytes_recv"])
+        upload = bytes2human(new[i]["bytes_sent"])
+        upload_speed = bytes2human(
+            round(
+                (new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL,
+                2
+            )
+        )
+        download_speed = bytes2human(
+            round(
+                (new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL,
+                2
+            )
+        )
+
+        # Add the new info for this interface to the content of the Static widget
+        static_content += (f"[#F9F070]{interface}[/]: [#508CFC]Download[/]: {download} at "
+                           f"{download_speed} /s | [#508CFC]Upload[/]: {upload} at {upload_speed} /s\n\n")
+
+    return static_content
