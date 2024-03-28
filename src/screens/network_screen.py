@@ -3,12 +3,13 @@ from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Static, Header, Footer
+from textual.widgets import Header, Footer, DataTable
 
-from src.utilities import NET_INTERVAL, get_network_stats, update_network_static
+from src.utilities import NET_INTERVAL, get_network_stats, bytes2human
 
 
 class NetworkScreen(Screen):
+
     BORDER_TITLE = "Network"
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS = [
@@ -34,16 +35,24 @@ class NetworkScreen(Screen):
 
         # First, grab the Static Widget
         try:
-            static = self.query_one("#network-screen-static", expect_type=Static)
+            table = self.query_one("#network-screen-table", expect_type=DataTable)
         except NoMatches():
             return
 
-        # Next, go through each updated network interface, get its info, and update the Static widget
-        # with the new info for each interface
-        static_content = update_network_static(new, old)
+        # Clear the table and add the columns
+        table.clear(columns=True)
+        table.add_columns("Interface", "Download", "Download Speed (/s)", "Upload", "Upload Speed (/s)")
 
-        # Update the content of the Static widget with the new info for all interfaces
-        static.update(static_content)
+        # Next, go through each updated network interface, get its info, and update the DataTable
+        # with the new info for each interface
+        for i, item in enumerate(old):
+            interface = item["interface"]
+            download = bytes2human(new[i]["bytes_recv"])
+            upload = bytes2human(new[i]["bytes_sent"])
+            upload_speed = bytes2human(round((new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL, 2))
+            download_speed = bytes2human(round((new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL, 2))
+
+            table.add_row(f"[#F9F070]{interface}[/]", download, download_speed, upload, upload_speed)
 
     def on_mount(self) -> None:
         """
@@ -69,5 +78,5 @@ class NetworkScreen(Screen):
         yield Header(show_clock=True)
         with Container(id="network-container"):
             with VerticalScroll():
-                yield Static("", id="network-screen-static")
+                yield DataTable(id="network-screen-table", show_cursor=False)
         yield Footer()
