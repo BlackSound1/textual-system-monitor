@@ -82,7 +82,6 @@ class ProcessesScreen(Screen):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Processes Screen
-
         :return: None
         """
 

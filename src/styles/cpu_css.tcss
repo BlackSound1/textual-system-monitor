@@ -1,0 +1,12 @@
+#cpu-screen-container {
+    background: $panel;
+    border: lightblue;
+    border-title-color: $text;
+    border-title-align: center;
+}
+
+#cpu-screen-static {
+    background: $panel;
+    content-align: center middle;
+    padding: 2 0;
+}

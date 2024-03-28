@@ -4,6 +4,7 @@ from .screens.guide_screen import Guide
 from .screens.main_screen import MainScreen
 from .screens.processes_screen import ProcessesScreen
 from .screens.network_screen import NetworkScreen
+from .screens.cpu_screen import CPU_Screen
 
 
 class Monitor(App[str]):
@@ -18,7 +19,8 @@ class Monitor(App[str]):
         "main": MainScreen,
         "guide": Guide,
         "processes": ProcessesScreen,
-        "network": NetworkScreen
+        "network": NetworkScreen,
+        "cpu": CPU_Screen
     }
 
     def on_mount(self) -> None:
