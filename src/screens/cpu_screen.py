@@ -74,7 +74,7 @@ class CPU_Screen(Screen):
             with VerticalScroll():
                 yield Static(id="cpu-screen-static")
             with VerticalScroll():
-                yield DataTable(id="cpu-screen-table")
+                yield DataTable(id="cpu-screen-table", show_cursor=False)
         yield Footer()
 
     def on_mount(self) -> None:

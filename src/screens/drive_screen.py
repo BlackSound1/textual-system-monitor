@@ -57,7 +57,7 @@ class DriveScreen(Screen):
         # Next, go through each updated disk, get its info, and add it to the table
         for disk in disks:
             options = disk['opts']
-            device = str(disk['device']).replace(":\\", '')
+            device = disk['device']
             fs = disk['fstype'] or 'N/A'
 
             # If the drive is a CD drive, treat it differently
@@ -97,5 +97,5 @@ class DriveScreen(Screen):
         yield Header(show_clock=True)
         with Container(id="drive-screen-container"):
             with VerticalScroll():
-                yield DataTable(id="drive-screen-table", cell_padding=2)
+                yield DataTable(id="drive-screen-table", cell_padding=2, show_cursor=False)
         yield Footer()
