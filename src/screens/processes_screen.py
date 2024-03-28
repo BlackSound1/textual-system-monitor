@@ -1,10 +1,10 @@
 from psutil import process_iter
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Static, Header, Footer
+from textual.widgets import Header, Footer, DataTable
 
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color
 
@@ -50,20 +50,17 @@ class ProcessesScreen(Screen):
         :param procs: The list of new processes to render
         """
 
-        # Don't bother if this is the first tick of the update function
-        if self.initial:
-            self.initial = False
-            return
-
-        # First, grab the Static Widget
+        # First, grab the DataTable Widget
         try:
-            static = self.query_one("#process-screen-procs", expect_type=Static)
+            table = self.query_one("#process-screen-table", expect_type=DataTable)
         except NoMatches():
             return
 
-        static_content = ""
+        # Then, clear the table and add columns
+        table.clear(columns=True)
+        table.add_columns("PID", "Name", "Username", "CPU Load (%)", "EXE")
 
-        # Next, go through each updated process, get its info, and update the Static widget
+        # Next, go through each updated process, get its info, and update the table widget
         # with the new info for each process
         for proc in procs:
             PID = proc.info['pid']
@@ -72,12 +69,11 @@ class ProcessesScreen(Screen):
             cpu_percent = compute_percentage_color(proc.info['cpu_percent'])
             user_name = proc.info['username'] or 'N/A'
 
-            # Add the new info for this process to the content of the Static widget
-            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
-                               f"Username: {user_name} | EXE: [#F9F070]{exe}[/]\n\n")
+            # Only colorize the exe if it's not "N/A"
+            if exe != "N/A":
+                exe = f"[#F9F070]{exe}[/]"
 
-        # Update the content of the Static widget with the new info for all processes
-        static.update(static_content)
+            table.add_row(PID, name, user_name, cpu_percent, exe)
 
     def on_mount(self) -> None:
         """
@@ -103,6 +99,5 @@ class ProcessesScreen(Screen):
 
         yield Header(show_clock=True)
         with Container(id="process-container"):
-            with VerticalScroll():
-                yield Static("[blink]Populating...[/]", id="process-screen-procs")
+            yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
         yield Footer()

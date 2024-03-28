@@ -6,9 +6,3 @@
     border-subtitle-color: $text;
     border-subtitle-align: center;
 }
-
-
-#process-screen-procs {
-    background: $panel;
-    padding: 1 2;
-}
