@@ -25,6 +25,8 @@ Created in Python using Textual.
 
 - Color-coded percentages
 
+- Click any pane on the main screen to get a dedicated page for that information
+
 - Clock
 
 - Resizable
@@ -79,6 +81,7 @@ class Guide(Screen):
         ('p', "", ''),
         ('c', "", ''),
         ('n', "", ''),
+        ('m', "", ''),
     ]
 
     def compose(self) -> ComposeResult:

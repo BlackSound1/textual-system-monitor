@@ -57,7 +57,6 @@ class MemUsage(Static):
     def on_mount(self) -> None:
         """
         Set intervals to update the memory information.
-
         :return: None
         """
         self.update_mem_data = self.set_interval(COMMON_INTERVAL, self.update_mem_data)

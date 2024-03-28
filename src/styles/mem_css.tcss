@@ -1,3 +1,13 @@
 #mem-container {
+    layout: grid;
+    grid-size: 2;
     background: $panel;
+    border-title-color: $text;
+    border-title-align: center;
+    border: yellow;
+}
+
+.mem-static {
+    height: 1fr;
+    content-align: center middle;
 }

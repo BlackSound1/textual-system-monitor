@@ -20,6 +20,7 @@ class Monitor(App[str]):
         ("c", "switch_mode('cpu')", "CPU"),
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
     ]
     MODES = {
         "main": MainScreen,

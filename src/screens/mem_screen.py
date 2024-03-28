@@ -1,5 +1,5 @@
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
@@ -32,14 +32,17 @@ class MemoryScreen(Screen):
         """
 
         try:
-            static = self.query_one("Static", Static)
+            total = self.query_one("#total-static", Static)
+            avail = self.query_one("#avail-static", Static)
+            used = self.query_one("#used-static", Static)
+            perc = self.query_one("#perc-static", Static)
         except NoMatches():
             return
 
-        static.update(f"Total Memory: {bytes2human(data['total'])}\n\n"
-                      f"Available Memory: {bytes2human(data['available'])}\n\n"
-                      f"Used: {bytes2human(data['used'])}\n\n"
-                      f"Percentage Used: {compute_percentage_color(data['percent'])}%")
+        total.update(f"Total Memory: {bytes2human(data['total'])}")
+        avail.update(f"Available Memory: {bytes2human(data['available'])}")
+        used.update(f"Used: {bytes2human(data['used'])}")
+        perc.update(f"Percentage Used: {compute_percentage_color(data['percent'])} %")
 
     def compose(self) -> ComposeResult:
         """
@@ -50,8 +53,10 @@ class MemoryScreen(Screen):
 
         yield Header(show_clock=True)
         with Container(id="mem-container"):
-            with VerticalScroll():
-                yield Static(id="mem-static")
+            yield Static(id="total-static", classes="mem-static")
+            yield Static(id="avail-static", classes="mem-static")
+            yield Static(id="used-static", classes="mem-static")
+            yield Static(id="perc-static", classes="mem-static")
         yield Footer()
 
     def on_mount(self) -> None:
