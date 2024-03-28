@@ -1,16 +1,21 @@
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static
+from textual.screen import Screen
+from textual.widgets import Footer, Header, DataTable
 
-from ..utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
+from src.utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
 
 
-class DriveUsage(Static):
+class DriveScreen(Screen):
     BORDER_TITLE = "Drive Usage"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
+    CSS_PATH = "../styles/drive_css.tcss"
+    BINDINGS = [
+        ("d", "switch_mode('main')", "Main Screen"),
+    ]
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
@@ -40,16 +45,16 @@ class DriveUsage(Static):
         :param disks: The list of new disks to render
         """
 
-        # First, grab the Static Widget
+        # First, grab the DataTable Widget
         try:
-            static = self.query_one("Static", expect_type=Static)
+            table = self.query_one("#drive-screen-table", expect_type=DataTable)
         except NoMatches():
             return
 
-        static_content = ""
+        table.clear(columns=True)
+        table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
 
-        # Next, go through each updated disk, get its info, and update the content of the Static with
-        # the updated info for each drive
+        # Next, go through each updated disk, get its info, and add it to the table
         for disk in disks:
             options = disk['opts']
             device = str(disk['device']).replace(":\\", '')
@@ -57,7 +62,7 @@ class DriveUsage(Static):
 
             # If the drive is a CD drive, treat it differently
             if options == "cdrom":
-                static_content += f"Disk: {device} | Options: {options}\n\n"
+                table.add_row(device, options, "N/A", "N/A", "N/A", "N/A", "N/A")
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
@@ -65,30 +70,32 @@ class DriveUsage(Static):
                 free = bytes2human(usage.free)
                 total = bytes2human(usage.total)
 
-                # Add the new info for this drive to the content of the Static widget
-                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
-                                   f"Total: {total} | Used: {used} | Free: {free}\n\n")
-
-            # Update the content of the Static widget with the new info for all drives
-            static.update(static_content)
+                table.add_row(device, options, fs, pct, total, used, free)
 
     def on_mount(self) -> None:
         """
-        Hook up the `update_disks` function, set to a long interval
-        """
-        self.update_disks = self.set_interval(RARE_INTERVAL, self.update_disks)
-
-    def on_click(self) -> None:
-        """
-        When this pane is clicked, switch to the Network screen
+        Perform initial setup for the Drive Screen
         :return: None
         """
-        self.app.switch_mode("drive")
+
+        self.update_disks = self.set_interval(RARE_INTERVAL, self.update_disks)
+
+        try:
+            container = self.query_one("#drive-screen-container", expect_type=Container)
+        except NoMatches():
+            return
+
+        container.border_title = self.BORDER_TITLE
+        container.border_subtitle = self.BORDER_SUBTITLE
 
     def compose(self) -> ComposeResult:
         """
         Start off with a VerticalScroll Widget with a blank Static inside
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
-        with VerticalScroll():
-            yield Static()
+
+        yield Header(show_clock=True)
+        with Container(id="drive-screen-container"):
+            with VerticalScroll():
+                yield DataTable(id="drive-screen-table", cell_padding=2)
+        yield Footer()

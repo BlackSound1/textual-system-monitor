@@ -5,6 +5,7 @@ from .screens.main_screen import MainScreen
 from .screens.processes_screen import ProcessesScreen
 from .screens.network_screen import NetworkScreen
 from .screens.cpu_screen import CPU_Screen
+from .screens.drive_screen import DriveScreen
 
 
 class Monitor(App[str]):
@@ -13,17 +14,19 @@ class Monitor(App[str]):
     # SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
     BINDINGS = [
         ("q", "quit", "Quit"),
-        ("d", "toggle_dark", "Toggle dark mode"),
+        ("t", "toggle_dark", "Toggle dark mode"),
         ("p", "switch_mode('processes')", "Processes"),
         ("c", "switch_mode('cpu')", "CPU"),
         ("n", "switch_mode('network')", "Network"),
+        ("d", "switch_mode('drive')", "Drives"),
     ]
     MODES = {
         "main": MainScreen,
         "guide": Guide,
         "processes": ProcessesScreen,
         "network": NetworkScreen,
-        "cpu": CPU_Screen
+        "cpu": CPU_Screen,
+        "drive": DriveScreen,
     }
 
     def on_mount(self) -> None:
