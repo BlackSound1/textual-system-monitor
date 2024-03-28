@@ -1,4 +1,6 @@
 #cpu-screen-container {
+    layout: grid;
+    grid-size: 2;
     background: $panel;
     border: lightblue;
     border-title-color: $text;
@@ -6,7 +8,6 @@
 }
 
 #cpu-screen-static {
-    background: $panel;
     content-align: center middle;
-    padding: 2 2;
+    padding: 5 2;
 }

@@ -3,9 +3,9 @@ from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Static, Header, Footer
+from textual.widgets import Static, Header, Footer, DataTable
 
-from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
+from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
 
 
 class CPU_Screen(Screen):
@@ -27,7 +27,7 @@ class CPU_Screen(Screen):
 
     def watch_cpu_data(self, cpu_data: dict) -> None:
         """
-        Watch CPU data and update the Static Widget with the new information
+        Watch CPU data and update the CPU Screen with the new information
 
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
         :return: None
@@ -39,11 +39,29 @@ class CPU_Screen(Screen):
         except NoMatches():
             return
 
-        # Then, get the updated data
-        static_content = update_CPU_static(cpu_data)
+        # Then, get the updated overall data
+        cores = cpu_data['cores']
+        overall = cpu_data['overall']
+        individual = [compute_percentage_color(core) for core in cpu_data['individual']]
+
+        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
 
         # Update the Static Widget
         static.update(static_content)
+
+        # Then, get the DataTable
+        try:
+            table = self.query_one("#cpu-screen-table", expect_type=DataTable)
+        except NoMatches():
+            return
+
+        # Clear the table and add the columns
+        table.clear(columns=True)
+        table.add_columns("Core", "Percentage (%)")
+
+        # Update the table
+        for core_num, core_pct in enumerate(individual):
+            table.add_row(core_num + 1, core_pct)
 
     def compose(self) -> ComposeResult:
         """
@@ -55,6 +73,8 @@ class CPU_Screen(Screen):
         with Container(id="cpu-screen-container"):
             with VerticalScroll():
                 yield Static(id="cpu-screen-static")
+            with VerticalScroll():
+                yield DataTable(id="cpu-screen-table")
         yield Footer()
 
     def on_mount(self) -> None:
