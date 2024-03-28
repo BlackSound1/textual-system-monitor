@@ -50,10 +50,8 @@ class NetInfo(Static):
     def on_click(self) -> None:
         """
         When this pane is clicked, switch to the Network screen
-
         :return: None
         """
-
         self.app.switch_mode("network")
 
     def compose(self) -> ComposeResult:
