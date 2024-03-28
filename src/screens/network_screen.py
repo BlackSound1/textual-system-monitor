@@ -28,12 +28,12 @@ class NetworkScreen(Screen):
         """
         Define what happens when `self.io` changes.
 
-        Update the Network pane with new info for each network interface
+        Update the Network Screen with new info for each network interface
         :param old: The list of old interface info to use
         :param new: The list of new interface info to use
         """
 
-        # First, grab the Static Widget
+        # First, grab the DataTable Widget
         try:
             table = self.query_one("#network-screen-table", expect_type=DataTable)
         except NoMatches():
