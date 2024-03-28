@@ -6,6 +6,7 @@ from .screens.processes_screen import ProcessesScreen
 from .screens.network_screen import NetworkScreen
 from .screens.cpu_screen import CPU_Screen
 from .screens.drive_screen import DriveScreen
+from .screens.mem_screen import MemoryScreen
 
 
 class Monitor(App[str]):
@@ -19,6 +20,7 @@ class Monitor(App[str]):
         ("c", "switch_mode('cpu')", "CPU"),
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
     ]
     MODES = {
         "main": MainScreen,
@@ -27,6 +29,7 @@ class Monitor(App[str]):
         "network": NetworkScreen,
         "cpu": CPU_Screen,
         "drive": DriveScreen,
+        "mem": MemoryScreen,
     }
 
     def on_mount(self) -> None:

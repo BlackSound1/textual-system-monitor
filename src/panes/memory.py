@@ -1,32 +1,16 @@
-from psutil import virtual_memory
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL
-
-
-def _get_mem_data() -> dict:
-    """
-    Return a dictionary containing information about the memory usage.
-
-    :return: A dictionary with keys 'total', 'available', 'used', and 'percent'
-              representing total memory, available memory, used memory, and percentage used.
-    """
-    return {
-        "total": virtual_memory().total,
-        "available": virtual_memory().available,
-        "used": virtual_memory().used,
-        "percent": virtual_memory().percent
-    }
+from ..utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL, get_mem_data
 
 
 class MemUsage(Static):
     BORDER_TITLE = "Memory Usage"
 
-    mem_data = reactive(_get_mem_data())
+    mem_data = reactive(get_mem_data())
 
     def update_mem_data(self) -> None:
         """
@@ -34,7 +18,7 @@ class MemUsage(Static):
 
         :return: None
         """
-        self.mem_data = _get_mem_data()
+        self.mem_data = get_mem_data()
 
     def watch_mem_data(self, data: dict) -> None:
         """
@@ -54,6 +38,13 @@ class MemUsage(Static):
                       f"Used: {bytes2human(data['used'])}\n\n"
                       f"Percentage Used: {compute_percentage_color(data['percent'])}%")
 
+    def on_click(self) -> None:
+        """
+        Switch to the Memory screen when clicked
+        :return: None
+        """
+        self.app.switch_mode("mem")
+
     def compose(self) -> ComposeResult:
         """
         Generate a ComposeResult by yielding a vertically-scrolling Static widget with the memory information.
@@ -66,7 +57,6 @@ class MemUsage(Static):
     def on_mount(self) -> None:
         """
         Set intervals to update the memory information.
-
         :return: None
         """
         self.update_mem_data = self.set_interval(COMMON_INTERVAL, self.update_mem_data)

@@ -1,6 +1,6 @@
 from typing import List
 
-from psutil import net_io_counters, cpu_count, cpu_percent
+from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
 
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
@@ -193,3 +193,23 @@ def update_CPU_static(cpu_data: dict) -> str:
 
     # Return the string to update the relevant Static with
     return f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\nPer Core: {individual}\n\n"
+
+
+"""
+MEMORY UTILITIES
+"""
+
+
+def get_mem_data() -> dict:
+    """
+    Return a dictionary containing information about the memory usage.
+
+    :return: A dictionary with keys 'total', 'available', 'used', and 'percent'
+              representing total memory, available memory, used memory, and percentage used.
+    """
+    return {
+        "total": virtual_memory().total,
+        "available": virtual_memory().available,
+        "used": virtual_memory().used,
+        "percent": virtual_memory().percent
+    }
