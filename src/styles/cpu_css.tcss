@@ -8,5 +8,5 @@
 #cpu-screen-static {
     background: $panel;
     content-align: center middle;
-    padding: 2 0;
+    padding: 2 2;
 }

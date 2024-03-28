@@ -1,6 +1,6 @@
 from typing import List
 
-from psutil import net_io_counters
+from psutil import net_io_counters, cpu_count, cpu_percent
 
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
@@ -137,3 +137,59 @@ def update_network_static(new: list, old: list) -> str:
                            f"{download_speed} /s | [#508CFC]Upload[/]: {upload} at {upload_speed} /s\n\n")
 
     return static_content
+
+
+"""
+CPU UTILITIES
+"""
+
+
+def get_cpu_data() -> dict:
+    """
+    Return a dictionary containing CPU data with keys 'cores', 'overall', and 'individual'
+
+    :return: The dictionary containing CPU data
+    """
+    return {
+        "cores": cpu_count(),
+        "overall": cpu_percent(percpu=False),
+        "individual": cpu_percent(percpu=True)
+    }
+
+
+def display_percentages_CPU(percentages: list) -> str:
+    """
+    Display the percentages of each core in a string
+
+    :param percentages: The list of CPU load percentages for each core
+    :return: The string containing the formatted percentages
+    """
+
+    string = "\n"
+
+    # For each core, colorize the percentage and add it to the string
+    for i, pct in enumerate(percentages):
+        pct = compute_percentage_color(pct)
+
+        separator = " | " if i < len(percentages) - 1 else ""
+
+        string += f"Core {i + 1}: {pct} % {separator}"
+
+    return string
+
+
+def update_CPU_static(cpu_data: dict) -> str:
+    """
+    Generates a string of updated CPU data to update the CPU Screen Static with
+
+    :param cpu_data: The updated CPU data
+    :return: The string of updated CPU data
+    """
+
+    # Get updated CPU data
+    cores = cpu_data['cores']
+    overall = cpu_data['overall']
+    individual = display_percentages_CPU(cpu_data['individual'])  # Colorize the percentages
+
+    # Return the string to update the relevant Static with
+    return f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\nPer Core: {individual}\n\n"

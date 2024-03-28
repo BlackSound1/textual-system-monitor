@@ -1,57 +1,23 @@
-from psutil import cpu_count, cpu_percent
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, COMMON_INTERVAL
-
-
-def _get_cpu_data() -> dict:
-    """
-    Return a dictionary containing CPU data with keys 'cores', 'overall', and 'individual'
-
-    :return: The dictionary containing CPU data
-    """
-    return {
-        "cores": cpu_count(),
-        "overall": cpu_percent(percpu=False),
-        "individual": cpu_percent(percpu=True)
-    }
-
-
-def _display_percentages_CPU(percentages: list) -> str:
-    """
-    Display the percentages of each core in a string
-
-    :param percentages:
-    :return: The string containing the formatted percentages
-    """
-
-    string = "\n"
-
-    for i, pct in enumerate(percentages):
-        pct = compute_percentage_color(pct)
-
-        separator = " | " if i < len(percentages) - 1 else ""
-
-        string += f"Core {i + 1}: {pct} % {separator}"
-
-    return string
+from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
 
 
 class CPU_Usage(Static):
     BORDER_TITLE = "CPU Usage"
 
-    cpu_data = reactive(_get_cpu_data())
+    cpu_data = reactive(get_cpu_data())
 
     def update_cpu_data(self) -> None:
         """
         Update CPU data
         :return: None
         """
-        self.cpu_data = _get_cpu_data()
+        self.cpu_data = get_cpu_data()
 
     def watch_cpu_data(self, cpu_data: dict) -> None:
         """
@@ -68,14 +34,9 @@ class CPU_Usage(Static):
             return
 
         # Then, get the updated data
-        cores = cpu_data['cores']
-        overall = cpu_data['overall']
-        individual = _display_percentages_CPU(cpu_data['individual'])  # Colorize the percentages
+        static_content = update_CPU_static(cpu_data)
 
         # Update the Static Widget
-        static_content = (f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
-                          f"Per Core: {individual}\n\n")
-
         static.update(static_content)
 
     def on_click(self) -> None:
