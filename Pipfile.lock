@@ -92,12 +92,12 @@
         },
         "textual": {
             "hashes": [
-                "sha256:23ba673be7974819ded35ea88d28df7117987e53d58f15b2cc890ac2ecf56401",
-                "sha256:32201aa9d334ed064d5e670f15fe3d7f19c736ca54cecb054a5b995691104434"
+                "sha256:0cfd134dde5ae49d64dd73bb32a2fb5a86d878d9caeacecaa1d640082f31124e",
+                "sha256:94aacf28dece20a44f0b94b087e17ff4ac961acd92e12e648f060fe2555b3adc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8' and python_version < '4.0'",
-            "version": "==0.53.1"
+            "version": "==0.54.0"
         },
         "typing-extensions": {
             "hashes": [

@@ -1,14 +1,18 @@
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static
+from textual.screen import Screen
+from textual.widgets import Static, Header, Footer
 
 from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
 
 
-class CPU_Usage(Static):
+class CPU_Screen(Screen):
+
     BORDER_TITLE = "CPU Usage"
+    CSS_PATH = "../styles/cpu_css.tcss"
+    BINDINGS = [("m", "switch_mode('main')", "Main Screen")]
 
     cpu_data = reactive(get_cpu_data())
 
@@ -29,7 +33,7 @@ class CPU_Usage(Static):
 
         # First, grab the Static Widget
         try:
-            static = self.query_one("Static", expect_type=Static)
+            static = self.query_one("#cpu-screen-static", expect_type=Static)
         except NoMatches():
             return
 
@@ -39,24 +43,29 @@ class CPU_Usage(Static):
         # Update the Static Widget
         static.update(static_content)
 
-    def on_click(self) -> None:
-        """
-        When this pane is clicked, switch to the CPU screen
-        :return: None
-        """
-        self.app.switch_mode("cpu")
-
     def compose(self) -> ComposeResult:
         """
         Start off with a VerticalScroll Widget with a Static Widget insider
         :return: The ComposeResult featuring the VerticalScroll and Static Widgets
         """
-        with VerticalScroll():
-            yield Static()
+
+        yield Header(show_clock=True)
+        with Container(id="cpu-screen-container"):
+            with VerticalScroll():
+                yield Static(id="cpu-screen-static")
+        yield Footer()
 
     def on_mount(self) -> None:
         """
-        Set intervals to update cpu usage
+        Perform initial setup for the CPU Screen
         :return: None
         """
+
         self.update_cpu_data = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+
+        try:
+            container = self.query_one("#cpu-screen-container", expect_type=Container)
+        except NoMatches():
+            return
+
+        container.border_title = self.BORDER_TITLE
