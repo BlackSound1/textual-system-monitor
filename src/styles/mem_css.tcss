@@ -1,0 +1,3 @@
+#mem-container {
+    background: $panel;
+}

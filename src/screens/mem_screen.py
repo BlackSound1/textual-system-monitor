@@ -1,14 +1,17 @@
 from textual.app import ComposeResult
-from textual.containers import VerticalScroll
+from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
-from textual.widgets import Static
+from textual.screen import Screen
+from textual.widgets import Static, Header, Footer
 
-from ..utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL, get_mem_data
+from src.utilities import get_mem_data, bytes2human, compute_percentage_color, COMMON_INTERVAL
 
 
-class MemUsage(Static):
-    BORDER_TITLE = "Memory Usage"
+class MemoryScreen(Screen):
+    BORDER_TITLE = "Memory"
+    CSS_PATH = "../styles/mem_css.tcss"
+    BINDINGS = [("m", "switch_mode('main')", "Main Screen")]
 
     mem_data = reactive(get_mem_data())
 
@@ -38,26 +41,30 @@ class MemUsage(Static):
                       f"Used: {bytes2human(data['used'])}\n\n"
                       f"Percentage Used: {compute_percentage_color(data['percent'])}%")
 
-    def on_click(self) -> None:
-        """
-        Switch to the Memory screen when clicked
-        :return: None
-        """
-        self.app.switch_mode("mem")
-
     def compose(self) -> ComposeResult:
         """
-        Generate a ComposeResult by yielding a vertically-scrolling Static widget with the memory information.
+        Display the structure of the Memory Screen
 
         :return: The ComposeResult
         """
-        with VerticalScroll():
-            yield Static(id="mem-static")
+
+        yield Header(show_clock=True)
+        with Container(id="mem-container"):
+            with VerticalScroll():
+                yield Static(id="mem-static")
+        yield Footer()
 
     def on_mount(self) -> None:
         """
-        Set intervals to update the memory information.
-
+        Perform initial setup for the Memory Screen
         :return: None
         """
+
         self.update_mem_data = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+
+        try:
+            container = self.query_one("#mem-container", expect_type=Container)
+        except NoMatches():
+            return
+
+        container.border_title = self.BORDER_TITLE
