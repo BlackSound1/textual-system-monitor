@@ -12,7 +12,7 @@ class NetworkScreen(Screen):
     BORDER_TITLE = "Network"
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS = [
-        ("m", "switch_mode('main')", "Main Screen"),
+        ("n", "switch_mode('main')", "Main Screen"),
     ]
 
     io = reactive(get_network_stats())

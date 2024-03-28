@@ -76,6 +76,9 @@ class Guide(Screen):
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
         ('g', "switch_mode('main')", 'Main Screen'),
+        ('p', "", ''),
+        ('c', "", ''),
+        ('n', "", ''),
     ]
 
     def compose(self) -> ComposeResult:

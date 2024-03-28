@@ -14,6 +14,9 @@ class Monitor(App[str]):
     BINDINGS = [
         ("q", "quit", "Quit"),
         ("d", "toggle_dark", "Toggle dark mode"),
+        ("p", "switch_mode('processes')", "Processes"),
+        ("c", "switch_mode('cpu')", "CPU"),
+        ("n", "switch_mode('network')", "Network"),
     ]
     MODES = {
         "main": MainScreen,
@@ -30,5 +33,3 @@ class Monitor(App[str]):
         :return: None
         """
         self.switch_mode("main")
-        # self.main = self.SCREENS['main']
-        # self.push_screen(self.main)
