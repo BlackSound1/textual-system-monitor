@@ -5,15 +5,16 @@ This is intended to be a system monitor app created in Python, using Textual.
 It is only guaranteed to work in Windows. There are currently no plans to offer support for other 
 operating systems, as different OSes have different low-level APIs for system information.
 
-This is a preliminary design, for now.
 
-![Somewhat Feature Complete Design](images/Mar20Screenshot.png)
+This is the main page, where you can see live-updating readouts for all system stats:
+
+![Somewhat Feature Complete Design](images/Mar29Screenshot.png)
 
 **Note**: Personal info has been censored, the orange bars are not present in the real app.
 
 # Features
 
-- All information live-updates. Some information, like the Processes, updates slowly to be easier on system resources.
+- All information live-updates. Some information, like the Processes, updates slowly to be more performant.
   Other information, like CPU load, updates multiple times a second.
 - Percentages (indicating load) are color-coordinated according to certain thresholds.
   High percentages are <span style="color: red;">red</span>, medium percentages are
@@ -22,96 +23,120 @@ This is a preliminary design, for now.
 - If the window is too small, all panes have vertical scroll bars, such as the one in the
   Processes section in this screenshot.
 - At any time, press `q` to exit the app. `Crtl-C` also works.
-- At any time, press `d` to toggle dark mode. The app is designed with dark mode in mind, and it's the default.
+- At any time, press `t` to toggle dark mode. The app is designed with dark mode in mind, and it's the default.
   Light mode is unfinished and is a low priority.
+- In-app Guide screen.
+- Each system stat has its own dedicated page that can be seen with by hitting the corresponding key, or by clicking
+  the corresponding pane in the main screen.
+- Footer, which always show what keys can be pressed and what they do.
+- Header, which shows a clock.
+
+Check out [Exmaples.md](Examples.md) for a guide on each screen.
+
+# Main Page Overview
+
+The main page is the page that is shown when the app first starts, and is the one in the above screenshot. It has
+simple views for all system stats.
 
 ## Processes
 
-The left-hand side shows information about current processes on the system. Future plans include
-the ability for this to be searchable. Shows the top 10 heaviest processes, as sorted by CPU load. 
+The left-hand side shows information about current processes on the system. Shows the top 10 heaviest processes,
+as sorted by CPU load. 
 
 ## Stats
 
 The right-hand side shows various system stats.
 
-- **Drive Usage**: Shows info on the current drives on your system.
+- **Drive Usage**: Shows info on the current drives on your system. Includes both storage and media drives.
 - **Memory Usage**: Shows the current status of the system's memory.
 - **CPU Usage**: Shows the current load of each of the systems cores, as well as overall CPU load.
 - **Network Info**: Shows the status of each connected network interface.
 
-It might be possible to get temperature and GPU information in the future.
-
 # Assumptions
 
-- To use this app, I assume you have Python >= 3.9.
-- I assume your distribution of Python has Pip installed.
-- I assume you have Make installed. It's possible to get Make on Windows.
+- To use this app, I assume you're on Windows.
+- You have Python >= 3.9.
+- Your distribution of Python has Pip installed.
+- You have Make installed. It's possible to get Make on Windows.
   [Read here](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows).
   - If you don't have Make installed, then whenever I invoke a `make` command here, look for it in the `Makefile`, and
     run those commands directly (make sure to not run the commands with the '`@`' I add).
-- I assume you run `make` or `pipenv` commands from within the Pipenv shell.
-  Not doing so may cause the commands to not work.
+- You run `make` or `pipenv` commands from within the Pipenv shell. Not doing so may cause the commands to not work.
 
 # Pipenv
 
-This system uses Pipenv. Install with
+This app uses Pipenv as its virtual environment and package manager. Install with:
 
 ```shell
-$ pip install --user pipenv
+pip install --user pipenv
 ```
+
+*Note*: If you don't want to use Pipenv, a `requirements.txt` file has been provided. It should be possible to install 
+all dependencies with that.
 
 # Getting Started
 
 Clone with:
 
 ```shell
-$ git clone https://github.com/BlackSound1/textual-system-monitor.git &&
+git clone https://github.com/BlackSound1/textual-system-monitor.git &&
   cd textual-system-monitor
 ```
 
 Install dependencies with:
 
-```shell
-$ pipenv install
-```
+- ```shell
+  pipenv install
+  ```
+  or
+- ```shell
+  pip install -r requirements.txt
+  ```
 
 Enter the shell with:
 
-```shell
-$ pipenv shell
-```
+- ```shell
+  pipenv shell
+  ```
+  or
+- ```shell
+  venv\Scripts\activate.bat
+  ```
+  or
+- ```shell
+  source venv/bin/activate
+  ```
 
 Run the app with:
 
 ```shell
-$ make run
+make run
 ```
 
-# make
+# Make
 
-In the future, more functionality will be added to the `Makefile`. To see a list of available `make` commands
-and their uses, type `$ make help`.
+To see a list of available `make` commands and their uses, use: `make help`.
 
-# Developing the App
+# Contributing
 
-As of right now, there is no Code of Conduct, per se.
+To develop the app, please fork it, not just clone it.
 
-To develop the app, install the dev dependencies, as well, with:
+Install the dependencies (including dev dependencies), with:
 
 ```shell
-$ pipenv install --dev
+pipenv install --dev
 ```
 
 Check that all tests pass with:
 
 ```shell
-$ make test
+make test
 ```
 
 Lint the Python files with:
 
 ```shell
-$ make lint
+make lint
 ```
 
 **Note**: The output should be:
@@ -129,15 +154,20 @@ Have 2 terminals open. I use 2 instances of Bash in Windows Terminal.
 - In the other instance, from the repo directory, run the dev version of the app with `$ make run-dev` to run the
   app in development mode. The console in the first instance should come to life, with logs from the running app.
 
+More info on `textual console` [here](https://textual.textualize.io/guide/devtools/#console).
+
+When contributing, **always** work from a branch other than `main`. Name your branch something meaningful. Push to your 
+own remote branch (because you forked it). Create a pull request from your forked branch into my `main` branch.
+
 # Desired Features
 
 - [x] Make all panels live-update
 - [x] Add CPU load info to Processes and sort by highest load
 - [ ] Make certain panels searchable as necessary
-- [ ] Make panels clickable to open a new screen showing more info
+- [x] Make panels clickable to open a new screen showing more info
 - [ ] Add GPU info
 - [ ] Add temperature info
 - [ ] Improve colors, so dark mode toggling looks better
-- [ ] Lay out information in a nicer, less cluttered way
+- [x] Lay out information in a nicer, less cluttered way
 - [ ] Add support for Linux and MacOS
 - [ ] Make all command-line duties possible in `make`
