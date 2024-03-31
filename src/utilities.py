@@ -29,11 +29,11 @@ def compute_percentage_color(pct: float) -> str:
 
     # Set the color based on the percentage
     if pct <= 75:
-        pct = f"[#70f97E]{pct:.1f}[/]"
+        pct = f"[green]{pct:.1f}[/]"
     elif 75 < pct < 90:
-        pct = f"[#F9F070]{pct:.1f}[/]"
+        pct = f"[yellow]{pct:.1f}[/]"
     else:
-        pct = f"[#F76A5D]{pct:.1f}[/]"
+        pct = f"[red]{pct:.1f}[/]"
 
     return pct
 
@@ -133,8 +133,8 @@ def update_network_static(new: list, old: list) -> str:
         )
 
         # Add the new info for this interface to the content of the Static widget
-        static_content += (f"[#F9F070]{interface}[/]: [#508CFC]Download[/]: {download} at "
-                           f"{download_speed} /s | [#508CFC]Upload[/]: {upload} at {upload_speed} /s\n\n")
+        static_content += (f"[green]{interface}[/]: [blue]Download[/]: {download} at "
+                           f"{download_speed} /s | [blue]Upload[/]: {upload} at {upload_speed} /s\n\n")
 
     return static_content
 
