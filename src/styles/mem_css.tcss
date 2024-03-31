@@ -7,6 +7,10 @@
     border: yellow;
 }
 
+#mem-container:light {
+    border: #F3CD00;
+}
+
 .mem-static {
     height: 1fr;
     content-align: center middle;
