@@ -7,6 +7,10 @@
     border-title-align: center;
 }
 
+#cpu-screen-container:light {
+    border: blue 90%;
+}
+
 #cpu-screen-static {
     content-align: center middle;
     padding: 5 2;
