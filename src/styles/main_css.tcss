@@ -16,6 +16,10 @@
     border-subtitle-align: center;
 }
 
+#processes:light {
+    border: darkorange;
+}
+
 #stats {
     layout: grid;
     grid-size: 1;
@@ -42,11 +46,19 @@
     border-title-align: center;
 }
 
+#stats > #mem:light {
+    border: #F3CD00;
+}
+
 #stats > #cpu {
     background: $panel;
     border: lightblue;
     border-title-color: $text;
     border-title-align: center;
+}
+
+#stats > #cpu:light {
+    border: blue 90%;
 }
 
 #stats > #network {
@@ -56,6 +68,10 @@
     border-title-align: center;
     border-subtitle-color: $text;
     border-subtitle-align: center;
+}
+
+#stats > #network:light {
+    border: green;
 }
 
 #stats > #gpu {

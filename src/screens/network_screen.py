@@ -52,7 +52,7 @@ class NetworkScreen(Screen):
             upload_speed = bytes2human(round((new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL, 2))
             download_speed = bytes2human(round((new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL, 2))
 
-            table.add_row(f"[#F9F070]{interface}[/]", download, download_speed, upload, upload_speed)
+            table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)
 
     def on_mount(self) -> None:
         """

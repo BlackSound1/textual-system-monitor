@@ -68,8 +68,8 @@ class Processes(Static):
             user_name = proc.info['username'] or 'N/A'
 
             # Add the new info for this process to the content of the Static widget
-            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: {name} | "
-                               f"Username: {user_name} | EXE: [#F9F070]{exe}[/]\n\n")
+            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [blue]{name}[/] | "
+                               f"Username: {user_name} | EXE: {exe}\n\n")
 
         # Update the content of the Static widget with the new info for all processes
         static.update(static_content)
@@ -88,9 +88,6 @@ class Processes(Static):
         """
 
         self.app.switch_mode("processes")
-        # app = self.app
-        # procs = app.SCREENS["processes"]
-        # app.push_screen(procs)
 
     def compose(self) -> ComposeResult:
         """

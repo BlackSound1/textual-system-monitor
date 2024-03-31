@@ -69,9 +69,9 @@ class ProcessesScreen(Screen):
             cpu_percent = compute_percentage_color(proc.info['cpu_percent'])
             user_name = proc.info['username'] or 'N/A'
 
-            # Only colorize the exe if it's not "N/A"
-            if exe != "N/A":
-                exe = f"[#F9F070]{exe}[/]"
+            # Only colorize the name if it's not "N/A"
+            if name != "N/A":
+                name = f"[blue]{name}[/]"
 
             table.add_row(PID, name, user_name, cpu_percent, exe)
 

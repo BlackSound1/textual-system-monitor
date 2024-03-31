@@ -6,3 +6,7 @@
     border-subtitle-color: $text;
     border-subtitle-align: center;
 }
+
+#process-container:light {
+    border: darkorange;
+}
