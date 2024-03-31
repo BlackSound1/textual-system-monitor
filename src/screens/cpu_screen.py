@@ -65,8 +65,8 @@ class CPU_Screen(Screen):
 
     def compose(self) -> ComposeResult:
         """
-        Start off with a VerticalScroll Widget with a Static Widget insider
-        :return: The ComposeResult featuring the VerticalScroll and Static Widgets
+        Create the structure of the CPU Screen
+        :return: The ComposeResult featuring the CPU Screen structure
         """
 
         yield Header(show_clock=True)
@@ -74,7 +74,7 @@ class CPU_Screen(Screen):
             with VerticalScroll():
                 yield Static(id="cpu-screen-static")
             with VerticalScroll():
-                yield DataTable(id="cpu-screen-table", show_cursor=False)
+                yield DataTable(id="cpu-screen-table", show_cursor=False, zebra_stripes=True)
         yield Footer()
 
     def on_mount(self) -> None:

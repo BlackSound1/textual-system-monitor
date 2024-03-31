@@ -90,12 +90,12 @@ class DriveScreen(Screen):
 
     def compose(self) -> ComposeResult:
         """
-        Start off with a VerticalScroll Widget with a blank Static inside
-        :return: The ComposeResult featuring the VerticalScroll and Static
+        Create the structure of the Drive Screen
+        :return: The ComposeResult featuring the Drive Screen structure
         """
 
         yield Header(show_clock=True)
         with Container(id="drive-screen-container"):
             with VerticalScroll():
-                yield DataTable(id="drive-screen-table", cell_padding=2, show_cursor=False)
+                yield DataTable(id="drive-screen-table", cell_padding=2, show_cursor=False, zebra_stripes=True)
         yield Footer()

@@ -167,7 +167,7 @@ own remote branch (because you forked it). Create a pull request from your forke
 - [x] Make panels clickable to open a new screen showing more info
 - [ ] Add GPU info
 - [ ] Add temperature info
-- [ ] Improve colors, so dark mode toggling looks better
+- [x] Improve colors, so dark mode toggling looks better
 - [x] Lay out information in a nicer, less cluttered way
 - [ ] Add support for Linux and MacOS
 - [ ] Make all command-line duties possible in `make`

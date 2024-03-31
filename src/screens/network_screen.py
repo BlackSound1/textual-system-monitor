@@ -72,11 +72,11 @@ class NetworkScreen(Screen):
     def compose(self) -> ComposeResult:
         """
         Display the structure of the Network Screen
-        :return: The ComposeResult featuring the structure of the Screen
+        :return: The ComposeResult featuring the structure of the Network Screen
         """
 
         yield Header(show_clock=True)
         with Container(id="network-container"):
             with VerticalScroll():
-                yield DataTable(id="network-screen-table", show_cursor=False)
+                yield DataTable(id="network-screen-table", show_cursor=False, zebra_stripes=True)
         yield Footer()
