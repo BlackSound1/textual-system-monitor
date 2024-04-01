@@ -4,7 +4,7 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Header, Footer, DataTable
+from textual.widgets import Header, Footer, DataTable, Button
 
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color
 
@@ -18,6 +18,8 @@ class ProcessesScreen(Screen):
     ]
 
     initial = True
+    paused = False
+    sort = True
 
     # Set the default processes value to an initial call to the function
     procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
@@ -34,6 +36,9 @@ class ProcessesScreen(Screen):
         Define how to update `self.processes`
         """
 
+        if self.paused:
+            return
+
         procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
 
         self.processes = sorted(
@@ -41,6 +46,18 @@ class ProcessesScreen(Screen):
             key=lambda x: x.info['cpu_percent'],
             reverse=True
         )
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        button_id = event.button.id
+
+        if button_id == "process-pause-button":
+            self.paused = not self.paused
+
+            pause_button = self.query_one("#process-pause-button", expect_type=Button)
+            pause_button.label = "Resume" if self.paused else "Pause"
+            # pause_button.styles.background = Color.parse("error") if self.paused else Color.parse("success")
+        elif button_id == "process-sort-button":
+            self.sort = not self.sort
 
     def watch_processes(self, procs: list) -> None:
         """
@@ -98,6 +115,10 @@ class ProcessesScreen(Screen):
         """
 
         yield Header(show_clock=True)
-        with Container(id="process-container"):
-            yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
+        with Container(id="process-screen-container"):
+            with Container(id="process-options-container"):
+                yield Button("Sort?", variant="primary", id="process-sort-button")
+                yield Button("Pause", variant="primary", id="process-pause-button")
+            with Container(id="process-container"):
+                yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
         yield Footer()
