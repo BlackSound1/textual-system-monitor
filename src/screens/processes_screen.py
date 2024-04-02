@@ -69,7 +69,7 @@ class ProcessesScreen(Screen):
 
             pause_button = self.query_one("#process-pause-button", expect_type=Button)
             pause_button.label = "Resume" if self.paused else "Pause"
-            # pause_button.styles.background = Color.parse("error") if self.paused else Color.parse("success")
+            pause_button.variant = "error" if self.paused else "success"
 
         # If the sort button is pressed, toggle the sort state and update the button
         elif button_id == "process-sort-button":
@@ -138,7 +138,7 @@ class ProcessesScreen(Screen):
         with Container(id="process-screen-container"):
             with Container(id="process-options-container"):
                 yield Button("Sort?", variant="primary", id="process-sort-button")
-                yield Button("Pause", variant="primary", id="process-pause-button")
+                yield Button("Pause", variant="success", id="process-pause-button")
 
             with Container(id="process-container"):
                 yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
