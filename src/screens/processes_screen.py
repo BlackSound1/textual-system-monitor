@@ -77,6 +77,7 @@ class ProcessesScreen(Screen):
 
             sort_button = self.query_one("#process-sort-button", expect_type=Button)
             sort_button.label = "Sorted" if self.sort else "Unsorted"
+            sort_button.variant = "success" if self.sort else "error"
 
     def watch_processes(self, procs: list) -> None:
         """
@@ -137,7 +138,7 @@ class ProcessesScreen(Screen):
 
         with Container(id="process-screen-container"):
             with Container(id="process-options-container"):
-                yield Button("Sort?", variant="primary", id="process-sort-button")
+                yield Button("Sorted", variant="success", id="process-sort-button")
                 yield Button("Pause", variant="success", id="process-pause-button")
 
             with Container(id="process-container"):
