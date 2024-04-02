@@ -4,9 +4,28 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Header, Footer, DataTable
+from textual.widgets import Header, Footer, DataTable, Button
 
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color
+
+
+def get_procs(sort: bool) -> list:
+    """
+    Get the list of processes, depending on the value of `sort`
+    :param sort: Whether to sort the processes by CPU load
+    :return: The list of processes (possibly sorted)
+    """
+
+    procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+
+    if sort:
+        procs = sorted(
+            (p for p in procs),
+            key=lambda x: x.info.get('cpu_percent'),
+            reverse=True
+        )
+
+    return procs
 
 
 class ProcessesScreen(Screen):
@@ -18,29 +37,47 @@ class ProcessesScreen(Screen):
     ]
 
     initial = True
+    paused = False
+    sort = True
 
     # Set the default processes value to an initial call to the function
-    procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
-    processes = reactive(
-        sorted(
-            (p for p in procs),
-            key=lambda x: x.info.get('cpu_percent'),
-            reverse=True
-        )
-    )
+    processes = reactive(get_procs(sort=sort))
 
     def update_processes(self) -> None:
         """
         Define how to update `self.processes`
         """
 
-        procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+        if self.paused:
+            return
 
-        self.processes = sorted(
-            (p for p in procs),
-            key=lambda x: x.info['cpu_percent'],
-            reverse=True
-        )
+        self.processes = get_procs(sort=self.sort)
+
+    def on_button_pressed(self, event: Button.Pressed) -> None:
+        """
+        Define what to do when either the pause or sort Button is pressed
+        :param event: The Button Pressed event
+        :return: None
+        """
+
+        # Get which button was pressed
+        button_id = event.button.id
+
+        # If the pause button is pressed, toggle the paused state and update the button
+        if button_id == "process-pause-button":
+            self.paused = not self.paused
+
+            pause_button = self.query_one("#process-pause-button", expect_type=Button)
+            pause_button.label = "Resume" if self.paused else "Pause"
+            pause_button.variant = "error" if self.paused else "success"
+
+        # If the sort button is pressed, toggle the sort state and update the button
+        elif button_id == "process-sort-button":
+            self.sort = not self.sort
+
+            sort_button = self.query_one("#process-sort-button", expect_type=Button)
+            sort_button.label = "Sorted" if self.sort else "Unsorted"
+            sort_button.variant = "success" if self.sort else "error"
 
     def watch_processes(self, procs: list) -> None:
         """
@@ -98,6 +135,13 @@ class ProcessesScreen(Screen):
         """
 
         yield Header(show_clock=True)
-        with Container(id="process-container"):
-            yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
+
+        with Container(id="process-screen-container"):
+            with Container(id="process-options-container"):
+                yield Button("Sorted", variant="success", id="process-sort-button")
+                yield Button("Pause", variant="success", id="process-pause-button")
+
+            with Container(id="process-container"):
+                yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
+
         yield Footer()
