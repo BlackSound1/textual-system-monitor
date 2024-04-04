@@ -36,7 +36,7 @@ class NetworkScreen(Screen):
         # First, grab the DataTable Widget
         try:
             table = self.query_one("#network-screen-table", expect_type=DataTable)
-        except NoMatches():
+        except NoMatches:
             return
 
         # Clear the table and add the columns
@@ -64,7 +64,7 @@ class NetworkScreen(Screen):
 
         try:
             container = self.query_one("#network-container", expect_type=Container)
-        except NoMatches():
+        except NoMatches:
             return
 
         container.border_title = self.BORDER_TITLE

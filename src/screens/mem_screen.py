@@ -36,7 +36,7 @@ class MemoryScreen(Screen):
             avail = self.query_one("#avail-static", Static)
             used = self.query_one("#used-static", Static)
             perc = self.query_one("#perc-static", Static)
-        except NoMatches():
+        except NoMatches:
             return
 
         total.update(f"Total Memory: {bytes2human(data['total'])}")
@@ -69,7 +69,7 @@ class MemoryScreen(Screen):
 
         try:
             container = self.query_one("#mem-container", expect_type=Container)
-        except NoMatches():
+        except NoMatches:
             return
 
         container.border_title = self.BORDER_TITLE

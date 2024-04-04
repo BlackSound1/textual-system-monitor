@@ -36,7 +36,7 @@ class CPU_Screen(Screen):
         # First, grab the Static Widget
         try:
             static = self.query_one("#cpu-screen-static", expect_type=Static)
-        except NoMatches():
+        except NoMatches:
             return
 
         # Then, get the updated overall data
@@ -52,7 +52,7 @@ class CPU_Screen(Screen):
         # Then, get the DataTable
         try:
             table = self.query_one("#cpu-screen-table", expect_type=DataTable)
-        except NoMatches():
+        except NoMatches:
             return
 
         # Clear the table and add the columns
@@ -87,7 +87,7 @@ class CPU_Screen(Screen):
 
         try:
             container = self.query_one("#cpu-screen-container", expect_type=Container)
-        except NoMatches():
+        except NoMatches:
             return
 
         container.border_title = self.BORDER_TITLE
