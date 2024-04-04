@@ -5,6 +5,7 @@ import pytest
 from src.app import Monitor
 from src.screens.cpu_screen import CPU_Screen
 from src.screens.drive_screen import DriveScreen
+from src.screens.guide_screen import Guide
 from src.screens.main_screen import MainScreen
 from src.screens.mem_screen import MemoryScreen
 from src.screens.network_screen import NetworkScreen
@@ -93,10 +94,22 @@ class TestKeys(IsolatedAsyncioTestCase):
 
             await pilot.press("n")
 
-            assert type(monitor_app.screen) is MainScreen
             assert type(self.monitor_app.screen) is MainScreen
 
             assert self.monitor_app.screen.BORDER_TITLE == ""
 
+    @pytest.mark.asyncio
+    async def test_guide_screen(self):
 
-            assert monitor_app.screen.BORDER_TITLE == ""
+        async with self.monitor_app.run_test() as pilot:
+            await pilot.press("g")
+
+            assert type(self.monitor_app.screen) is Guide
+
+            assert self.monitor_app.screen.BORDER_TITLE == ""
+
+            await pilot.press("g")
+
+            assert type(self.monitor_app.screen) is MainScreen
+
+            assert self.monitor_app.screen.BORDER_TITLE == ""
