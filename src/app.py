@@ -1,6 +1,6 @@
 from textual.app import App
 
-from .screens.guide_screen import Guide
+from .screens.guide_screen import GuideScreen
 from .screens.main_screen import MainScreen
 from .screens.processes_screen import ProcessesScreen
 from .screens.network_screen import NetworkScreen
@@ -24,7 +24,7 @@ class Monitor(App[str]):
     ]
     MODES = {
         "main": MainScreen,
-        "guide": Guide,
+        "guide": GuideScreen,
         "processes": ProcessesScreen,
         "network": NetworkScreen,
         "cpu": CPU_Screen,

@@ -72,7 +72,7 @@ MONITORING_STRING = """
 """
 
 
-class Guide(Screen):
+class GuideScreen(Screen):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
         ("q", "quit", "Quit"),
