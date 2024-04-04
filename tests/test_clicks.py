@@ -22,51 +22,33 @@ class TestClicks(IsolatedAsyncioTestCase):
         async with self.monitor_app.run_test() as pilot:
             # Test clicking the processes pane
             await pilot.click("#processes")
-
             assert type(self.monitor_app.screen) is ProcessesScreen
-
             assert self.monitor_app.screen.BORDER_TITLE == "Processes"
-
             await pilot.press("p")
-
             assert type(self.monitor_app.screen) is MainScreen
 
             # Test clicking the drives pane
             await pilot.click("#drives")
-
             assert type(self.monitor_app.screen) is DriveScreen
-
             assert self.monitor_app.screen.BORDER_TITLE == "Drive Usage"
-
             await pilot.press("d")
-
             assert type(self.monitor_app.screen) is MainScreen
 
             # Test clicking the memory pane
             await pilot.click("#mem")
-
             assert type(self.monitor_app.screen) is MemoryScreen
-
             assert self.monitor_app.screen.BORDER_TITLE == "Memory"
-
             await pilot.press("m")
-
             assert type(self.monitor_app.screen) is MainScreen
 
             # Test clicking the CPU pane
             await pilot.click("#cpu")
-
             assert type(self.monitor_app.screen) is CPU_Screen
-
             assert self.monitor_app.screen.BORDER_TITLE == "CPU Usage"
-
             await pilot.press("c")
-
             assert type(self.monitor_app.screen) is MainScreen
 
             # Test clicking the network pane
             await pilot.click("#network")
-
             assert type(self.monitor_app.screen) is NetworkScreen
-
             assert self.monitor_app.screen.BORDER_TITLE == "Network"
