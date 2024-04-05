@@ -30,7 +30,7 @@ class NetInfo(Static):
         # First, grab the Static Widget
         try:
             static = self.query_one("#network-pane-static", expect_type=Static)
-        except NoMatches():
+        except NoMatches:
             return
 
         # Next, go through each updated network interface, get its info, and update the Static widget

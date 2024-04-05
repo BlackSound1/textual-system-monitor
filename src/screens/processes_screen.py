@@ -90,7 +90,7 @@ class ProcessesScreen(Screen):
         # First, grab the DataTable Widget
         try:
             table = self.query_one("#process-screen-table", expect_type=DataTable)
-        except NoMatches():
+        except NoMatches:
             return
 
         # Then, clear the table and add columns
@@ -122,7 +122,7 @@ class ProcessesScreen(Screen):
 
         try:
             container = self.query_one("#process-container", expect_type=Container)
-        except NoMatches():
+        except NoMatches:
             return
 
         container.border_title = self.BORDER_TITLE

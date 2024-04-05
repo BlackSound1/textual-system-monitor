@@ -53,7 +53,7 @@ class Processes(Static):
         # First, grab the Static Widget
         try:
             static = self.query_one("Static", expect_type=Static)
-        except NoMatches():
+        except NoMatches:
             return
 
         static_content = ""

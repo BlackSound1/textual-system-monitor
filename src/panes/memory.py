@@ -30,7 +30,7 @@ class MemUsage(Static):
 
         try:
             static = self.query_one("Static", Static)
-        except NoMatches():
+        except NoMatches:
             return
 
         static.update(f"Total Memory: {bytes2human(data['total'])}\n\n"

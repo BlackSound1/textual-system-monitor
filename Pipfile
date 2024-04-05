@@ -11,6 +11,7 @@ psutil = "*"
 flake8 = "*"
 pytest = "*"
 textual-dev = "*"
+pytest-asyncio = "*"
 
 [requires]
 python_version = "3.9"

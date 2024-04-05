@@ -48,7 +48,7 @@ class DriveScreen(Screen):
         # First, grab the DataTable Widget
         try:
             table = self.query_one("#drive-screen-table", expect_type=DataTable)
-        except NoMatches():
+        except NoMatches:
             return
 
         table.clear(columns=True)
@@ -82,7 +82,7 @@ class DriveScreen(Screen):
 
         try:
             container = self.query_one("#drive-screen-container", expect_type=Container)
-        except NoMatches():
+        except NoMatches:
             return
 
         container.border_title = self.BORDER_TITLE
