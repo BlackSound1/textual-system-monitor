@@ -27,67 +27,67 @@ class TestKeys(IsolatedAsyncioTestCase):
 
         async with self.monitor_app.run_test() as pilot:
             # Make sure we are on the main screen to begin
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Go to the processes screen
             await pilot.press("p")
-            assert type(self.monitor_app.screen) is ProcessesScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Processes"
+            self.assertIs(type(self.monitor_app.screen), ProcessesScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Processes")
 
             # Go back to the main screen
             await pilot.press("p")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go to the drives screen
             await pilot.press("d")
-            assert type(self.monitor_app.screen) is DriveScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Drive Usage"
+            self.assertIs(type(self.monitor_app.screen), DriveScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Drive Usage")
 
             # Go back to the main screen
             await pilot.press("d")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go to the memory screen
             await pilot.press("m")
-            assert type(self.monitor_app.screen) is MemoryScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Memory"
+            self.assertIs(type(self.monitor_app.screen), MemoryScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Memory")
 
             # Go back to the main screen
             await pilot.press("m")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go to the CPU screen
             await pilot.press("c")
-            assert type(self.monitor_app.screen) is CPU_Screen
-            assert self.monitor_app.screen.BORDER_TITLE == "CPU Usage"
+            self.assertIs(type(self.monitor_app.screen), CPU_Screen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "CPU Usage")
 
             # Go back to the main screen
             await pilot.press("c")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go to the network screen
             await pilot.press("n")
-            assert type(self.monitor_app.screen) is NetworkScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Network"
+            self.assertIs(type(self.monitor_app.screen), NetworkScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Network")
 
             # Go back to the main screen
             await pilot.press("n")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go to the guide screen
             await pilot.press("g")
-            assert type(self.monitor_app.screen) is GuideScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), GuideScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
             # Go back to the main screen
             await pilot.press("g")
-            assert type(self.monitor_app.screen) is MainScreen
-            assert self.monitor_app.screen.BORDER_TITLE == ""
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
     @pytest.mark.asyncio
     async def test_keys_relative(self):
@@ -99,23 +99,23 @@ class TestKeys(IsolatedAsyncioTestCase):
         async with self.monitor_app.run_test() as pilot:
 
             # Make sure we are on the main screen to begin
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Starting from the Main Screen, test going to each Screen and back
             await pilot.press("p")
-            assert type(self.monitor_app.screen) is ProcessesScreen
+            self.assertIs(type(self.monitor_app.screen), ProcessesScreen)
             await pilot.press("d")
-            assert type(self.monitor_app.screen) is DriveScreen
+            self.assertIs(type(self.monitor_app.screen), DriveScreen)
             await pilot.press("m")
-            assert type(self.monitor_app.screen) is MemoryScreen
+            self.assertIs(type(self.monitor_app.screen), MemoryScreen)
             await pilot.press("c")
-            assert type(self.monitor_app.screen) is CPU_Screen
+            self.assertIs(type(self.monitor_app.screen), CPU_Screen)
             await pilot.press("n")
-            assert type(self.monitor_app.screen) is NetworkScreen
+            self.assertIs(type(self.monitor_app.screen), NetworkScreen)
             await pilot.press("n")
 
             # Make sure we made it back to the Main Screen
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
     @pytest.mark.asyncio
     async def test_keys_relative_reverse(self):
@@ -127,19 +127,19 @@ class TestKeys(IsolatedAsyncioTestCase):
         async with self.monitor_app.run_test() as pilot:
 
             # Make sure we are on the main screen to begin
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             await pilot.press("n")
-            assert type(self.monitor_app.screen) is NetworkScreen
+            self.assertIs(type(self.monitor_app.screen), NetworkScreen)
             await pilot.press("c")
-            assert type(self.monitor_app.screen) is CPU_Screen
+            self.assertIs(type(self.monitor_app.screen), CPU_Screen)
             await pilot.press("m")
-            assert type(self.monitor_app.screen) is MemoryScreen
+            self.assertIs(type(self.monitor_app.screen), MemoryScreen)
             await pilot.press("d")
-            assert type(self.monitor_app.screen) is DriveScreen
+            self.assertIs(type(self.monitor_app.screen), DriveScreen)
             await pilot.press("p")
-            assert type(self.monitor_app.screen) is ProcessesScreen
+            self.assertIs(type(self.monitor_app.screen), ProcessesScreen)
             await pilot.press("p")
 
             # Make sure we made it back to the Main Screen
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
