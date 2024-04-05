@@ -18,37 +18,41 @@ class TestClicks(IsolatedAsyncioTestCase):
 
     @pytest.mark.asyncio
     async def test_clicks(self):
+        """
+        Test clicking the different panes in the Main Screen
+        :return: None
+        """
 
         async with self.monitor_app.run_test() as pilot:
             # Test clicking the processes pane
             await pilot.click("#processes")
-            assert type(self.monitor_app.screen) is ProcessesScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Processes"
+            self.assertIs(type(self.monitor_app.screen), ProcessesScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Processes")
             await pilot.press("p")
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Test clicking the drives pane
             await pilot.click("#drives")
-            assert type(self.monitor_app.screen) is DriveScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Drive Usage"
+            self.assertIs(type(self.monitor_app.screen), DriveScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Drive Usage")
             await pilot.press("d")
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Test clicking the memory pane
             await pilot.click("#mem")
-            assert type(self.monitor_app.screen) is MemoryScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Memory"
+            self.assertIs(type(self.monitor_app.screen), MemoryScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Memory")
             await pilot.press("m")
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Test clicking the CPU pane
             await pilot.click("#cpu")
-            assert type(self.monitor_app.screen) is CPU_Screen
-            assert self.monitor_app.screen.BORDER_TITLE == "CPU Usage"
+            self.assertIs(type(self.monitor_app.screen), CPU_Screen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "CPU Usage")
             await pilot.press("c")
-            assert type(self.monitor_app.screen) is MainScreen
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Test clicking the network pane
             await pilot.click("#network")
-            assert type(self.monitor_app.screen) is NetworkScreen
-            assert self.monitor_app.screen.BORDER_TITLE == "Network"
+            self.assertIs(type(self.monitor_app.screen), NetworkScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Network")
