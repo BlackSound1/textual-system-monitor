@@ -1,4 +1,5 @@
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -11,7 +12,9 @@ from src.utilities import get_mem_data, bytes2human, compute_percentage_color, C
 class MemoryScreen(Screen):
     BORDER_TITLE = "Memory"
     CSS_PATH = "../styles/mem_css.tcss"
-    BINDINGS = [("m", "switch_mode('main')", "Main Screen")]
+    BINDINGS = [
+        Binding("m", "switch_mode('main')", "Main Screen", priority=True),
+    ]
 
     mem_data = reactive(get_mem_data())
 

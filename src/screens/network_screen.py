@@ -1,4 +1,5 @@
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -13,7 +14,7 @@ class NetworkScreen(Screen):
     BORDER_TITLE = "Network"
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS = [
-        ("n", "switch_mode('main')", "Main Screen"),
+        Binding("n", "switch_mode('main')", "Main Screen", priority=True),
     ]
 
     io = reactive(get_network_stats())
