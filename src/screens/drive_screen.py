@@ -1,5 +1,6 @@
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -14,7 +15,7 @@ class DriveScreen(Screen):
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"
     BINDINGS = [
-        ("d", "switch_mode('main')", "Main Screen"),
+        Binding("d", "switch_mode('main')", "Main Screen", priority=True),
     ]
 
     # Set the default disks value to an initial call to the function

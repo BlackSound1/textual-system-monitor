@@ -1,4 +1,5 @@
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
@@ -75,13 +76,12 @@ MONITORING_STRING = """
 class GuideScreen(Screen):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("d", "toggle_dark", "Toggle dark mode"),
-        ('g', "switch_mode('main')", 'Main Screen'),
-        ('p', "", ''),
-        ('c', "", ''),
-        ('n', "", ''),
-        ('m', "", ''),
+        Binding('g', "switch_mode('main')", 'Main Screen', priority=True),
+        Binding('p', "", '', priority=True),
+        Binding('c', "", '', priority=True),
+        Binding('n', "", '', priority=True),
+        Binding('m', "", '', priority=True),
+        Binding('d', "", '', priority=True),
     ]
 
     def compose(self) -> ComposeResult:
