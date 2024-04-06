@@ -17,6 +17,24 @@ test:   ## Use Pytest to test the app
 	@pytest tests
 
 
+.PHONY: test-clicks
+test-clicks:   ## Use Pytest to test the clicks only
+	@echo ""
+	@pytest tests/test_clicks.py
+
+
+.PHONY: test-keys
+test-keys:   ## Use Pytest to test the key presses only
+	@echo ""
+	@pytest tests/test_keys.py
+
+
+.PHONY: test-buttons
+test-buttons:   ## Use Pytest to test the buttons only
+	@echo ""
+	@pytest tests/test_buttons.py
+
+
 .PHONY: lint
 lint:    ## Use Flake8 to lint the Python files
 	@echo ""
@@ -49,5 +67,5 @@ hello:  ## Show "Hello World"
 .PHONY: help
 help:   ## Show this help
 	@echo -e "\nCommands:\n"
-	@egrep '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort |
+	@egrep '^[a-zA-Z_-]+:.*?## .*' Makefile | sort |
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
