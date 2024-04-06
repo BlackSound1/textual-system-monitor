@@ -35,33 +35,43 @@ class TestButtons(IsolatedAsyncioTestCase):
             # Ensure initial state is correct
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
+            self.assertEqual(str(pause_button.label), "Pause")
             self.assertIs(process_screen.sort, True)
             self.assertEqual(sort_button.variant, "success")
+            self.assertEqual(str(sort_button.label), "Sorted")
 
             # Press the pause button and make sure state is correct
             await pilot.click("#process-pause-button")
             self.assertIs(process_screen.paused, True)
             self.assertEqual(pause_button.variant, "error")
+            self.assertEqual(str(pause_button.label), "Resume")
             self.assertIs(process_screen.sort, True)
             self.assertEqual(sort_button.variant, "success")
+            self.assertEqual(str(sort_button.label), "Sorted")
 
             # Press the pause button again and make sure state is correct
             await pilot.click("#process-pause-button")
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
+            self.assertEqual(str(pause_button.label), "Pause")
             self.assertIs(process_screen.sort, True)
             self.assertEqual(sort_button.variant, "success")
+            self.assertEqual(str(sort_button.label), "Sorted")
 
             # Press the sort button and make sure state is correct
             await pilot.click("#process-sort-button")
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
+            self.assertEqual(str(pause_button.label), "Pause")
             self.assertIs(process_screen.sort, False)
             self.assertEqual(sort_button.variant, "error")
+            self.assertEqual(str(sort_button.label), "Unsorted")
 
             # Press the sort button again and make sure state is correct
             await pilot.click("#process-sort-button")
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
+            self.assertEqual(str(pause_button.label), "Pause")
             self.assertIs(process_screen.sort, True)
             self.assertEqual(sort_button.variant, "success")
+            self.assertEqual(str(sort_button.label), "Sorted")
