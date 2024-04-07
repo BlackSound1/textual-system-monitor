@@ -1,7 +1,7 @@
 #process-screen-container {
     layout: grid;
     grid-size: 1;
-    grid-rows: 7% 93%;
+    grid-rows: auto 94%;
 }
 
 #process-container {
