@@ -18,18 +18,22 @@
 
 #processes:light {
     border: darkorange;
+    background: $boost-darken-1;
 }
 
 #stats {
     layout: grid;
     grid-size: 1;
-    background: $panel;
     /*border: greenyellow;*/
     /*border-title-color: $text;*/
     /*border-title-align: center;*/
 }
 
-#stats > #drives {
+#stats > Widget:light {
+    background: $boost-darken-1;
+}
+
+#drives {
     layout: grid;
     background: $panel;
     border: red;
@@ -39,29 +43,29 @@
     border-subtitle-align: center;
 }
 
-#stats > #mem {
+#mem {
     background: $panel;
     border: yellow;
     border-title-color: $text;
     border-title-align: center;
 }
 
-#stats > #mem:light {
+#mem:light {
     border: #F3CD00;
 }
 
-#stats > #cpu {
+#cpu {
     background: $panel;
     border: lightblue;
     border-title-color: $text;
     border-title-align: center;
 }
 
-#stats > #cpu:light {
+#cpu:light {
     border: blue 90%;
 }
 
-#stats > #network {
+#network {
     background: $panel;
     border: lightgreen;
     border-title-color: $text;
@@ -70,15 +74,8 @@
     border-subtitle-align: center;
 }
 
-#stats > #network:light {
+#network:light {
     border: green;
-}
-
-#stats > #gpu {
-    background: $panel;
-    border: pink;
-    border-title-color: $text;
-    border-title-align: center;
 }
 
 .proc {

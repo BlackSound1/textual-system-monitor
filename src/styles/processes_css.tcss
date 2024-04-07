@@ -15,10 +15,15 @@
 
 #process-container:light {
     border: darkorange;
+    background: $boost-darken-1;
 }
 
 #process-options-container {
     layout: grid;
     grid-size: 10;
     background: $panel;
+}
+
+#process-options-container:light {
+    background: $boost-darken-1;
 }

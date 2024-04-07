@@ -6,3 +6,7 @@
     border-subtitle-color: $text;
     border-subtitle-align: center;
 }
+
+#drive-screen-container:light {
+    background: $boost-darken-1;
+}
