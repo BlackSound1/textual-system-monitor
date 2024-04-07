@@ -5,14 +5,16 @@
     background: $panel;
 }
 
+#guide-container:light {
+    background: $boost-darken-1;
+}
+
 #description {
-    background: $panel;
     content-align: center middle;
     padding: 0 2;
 }
 
 #monitoring-desc {
     padding: 0 2;
-    background: $panel;
     content-align: center middle;
 }

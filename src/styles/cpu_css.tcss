@@ -9,6 +9,7 @@
 
 #cpu-screen-container:light {
     border: blue 90%;
+    background: $boost-darken-1;
 }
 
 #cpu-screen-static {

@@ -7,4 +7,5 @@
 
 #network-container:light {
     border: green;
+    background: $boost-darken-1;
 }

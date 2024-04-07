@@ -1,7 +1,7 @@
 #process-screen-container {
     layout: grid;
     grid-size: 1;
-    grid-rows: 7% 93%;
+    grid-rows: auto 94%;
 }
 
 #process-container {
@@ -15,10 +15,15 @@
 
 #process-container:light {
     border: darkorange;
+    background: $boost-darken-1;
 }
 
 #process-options-container {
     layout: grid;
     grid-size: 10;
     background: $panel;
+}
+
+#process-options-container:light {
+    background: $boost-darken-1;
 }

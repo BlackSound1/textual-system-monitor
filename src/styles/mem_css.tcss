@@ -9,6 +9,7 @@
 
 #mem-container:light {
     border: #F3CD00;
+    background: $boost-darken-1;
 }
 
 .mem-static {
