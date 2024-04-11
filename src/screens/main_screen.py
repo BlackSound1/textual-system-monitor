@@ -9,7 +9,7 @@ from textual.logging import TextualHandler
 from ..panes.processes import Processes
 from ..panes.stats import Stats
 
-logging.basicConfig(handlers=[TextualHandler()], level="NOTSET")
+logging.basicConfig(handlers=[TextualHandler()], level=logging.WARNING)
 
 
 class MainScreen(Screen):
@@ -20,9 +20,7 @@ class MainScreen(Screen):
 
     def compose(self) -> ComposeResult:
         """
-        Composes and returns a ComposeResult object.
-
-        This function generates the layout for the main screen. It starts by yielding a Header widget with the show_clock parameter set to True. Then, it creates a Container with the id "app-grid" and yields two child widgets: Processes with the id "processes" and Stats with the id "stats". Finally, it yields a Footer widget.
+        Generates the layout for the main screen.
 
         :return: ComposeResult: The composed result of the application screen.
         """
