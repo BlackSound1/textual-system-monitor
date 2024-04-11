@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
 
@@ -12,12 +12,13 @@ GLOBAL UTILITIES
 """
 
 
-def compute_percentage_color(pct: float) -> str:
+def compute_percentage_color(pct: float, combine_output: bool = True) -> Union[str, tuple[int, str]]:
     """
     Takes a given percentage and returns that percentage, colored according to
     whether usage is high, medium, or low.
 
     :param pct: The uncolored percentage value
+    :param combine_output: Whether to combine the output into a single string
     :return: The colored percentage value as a string
     """
 
@@ -27,15 +28,24 @@ def compute_percentage_color(pct: float) -> str:
     elif pct > 100:
         pct = 100
 
+    # Round the percentage to 1 decimal place
+    pct = round(pct, 1)
+
     # Set the color based on the percentage
     if pct <= 75:
-        pct = f"[green]{pct:.1f}[/]"
-    elif 75 < pct < 90:
-        pct = f"[yellow]{pct:.1f}[/]"
-    else:
-        pct = f"[red]{pct:.1f}[/]"
+        if combine_output:
+            return f"[green]{pct:.1f}[/]"
+        return pct, "green"
 
-    return pct
+    elif 75 < pct < 90:
+        if combine_output:
+            return f"[yellow]{pct:.1f}[/]"
+        return pct, "yellow"
+
+    else:
+        if combine_output:
+            return f"[red]{pct:.1f}[/]"
+        return pct, "red"
 
 
 def bytes2human(n: int) -> str:

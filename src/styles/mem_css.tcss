@@ -14,5 +14,29 @@
 
 .mem-static {
     height: 1fr;
+    layout: grid;
+    grid-size: 2;
     content-align: center middle;
+}
+
+.label {
+    content-align: right middle;
+    height: 1fr;
+}
+
+.digits {
+    height: 100%;
+    content-align: center middle;
+}
+
+.green {
+    color: green;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.red {
+    color: red;
 }
