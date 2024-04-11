@@ -54,6 +54,9 @@ When clicking the Processes pane or pressing the corresponding `p` key, the foll
 This shows a nice table view of running processes. While the Processes pane on the Main screen showed only the top 10
 heaviest processes, this dedicated Processes screen shows all running processes (again, in order of CPU load).
 
+This screen also has a `Sorted` button, which toggles whether the processes are sorted by CPU load.
+The `Pause` button toggles whether to pause updating the list or not.
+
 # Drives
 
 When clicking the Drives pane on the Main screen, or clicking the `d` key, the Drives screen appears:
