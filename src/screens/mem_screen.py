@@ -4,7 +4,7 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Static, Header, Footer
+from textual.widgets import Static, Header, Footer, Digits
 
 from src.utilities import get_mem_data, bytes2human, compute_percentage_color, COMMON_INTERVAL
 
@@ -38,14 +38,17 @@ class MemoryScreen(Screen):
             total = self.query_one("#total-static", Static)
             avail = self.query_one("#avail-static", Static)
             used = self.query_one("#used-static", Static)
-            perc = self.query_one("#perc-static", Static)
+            perc = self.query_one("#perc-digits", Digits)
         except NoMatches:
             return
+
+        pct, color = compute_percentage_color(data['percent'], combine_output=False)
 
         total.update(f"Total Memory: {bytes2human(data['total'])}")
         avail.update(f"Available Memory: {bytes2human(data['available'])}")
         used.update(f"Used: {bytes2human(data['used'])}")
-        perc.update(f"Percentage Used: {compute_percentage_color(data['percent'])} %")
+        perc.set_classes(color)
+        perc.update(f"{pct}")
 
     def compose(self) -> ComposeResult:
         """
@@ -59,7 +62,10 @@ class MemoryScreen(Screen):
             yield Static(id="total-static", classes="mem-static")
             yield Static(id="avail-static", classes="mem-static")
             yield Static(id="used-static", classes="mem-static")
-            yield Static(id="perc-static", classes="mem-static")
+            with Container(classes="mem-static"):
+                yield Static("Percentage Used:", id="used-static-label")
+                yield Digits(id="perc-digits")
+                yield Static("%", id="used-static-percent")
         yield Footer()
 
     def on_mount(self) -> None:
