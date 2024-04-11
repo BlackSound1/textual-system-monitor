@@ -63,9 +63,8 @@ class MemoryScreen(Screen):
             yield Static(id="avail-static", classes="mem-static")
             yield Static(id="used-static", classes="mem-static")
             with Container(classes="mem-static"):
-                yield Static("Percentage Used:", id="used-static-label")
+                yield Static("Percentage Used (%):\t", id="used-static-label")
                 yield Digits(id="perc-digits")
-                yield Static("%", id="used-static-percent")
         yield Footer()
 
     def on_mount(self) -> None:

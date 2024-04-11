@@ -15,13 +15,13 @@
 .mem-static {
     height: 1fr;
     layout: grid;
-    grid-size: 3;
+    grid-size: 2;
     content-align: center middle;
     border: red;
 }
 
 #used-static-label {
-    content-align: center middle;
+    content-align: right middle;
     /*border: yellow;*/
     height: 1fr;
 }
@@ -31,12 +31,6 @@
     /*row-span: 2;*/
     height: 100%;
     content-align: center middle;
-}
-
-#used-static-percent {
-    /*border: pink;*/
-    height: 100%;
-    content-align: left middle;
 }
 
 .green {
