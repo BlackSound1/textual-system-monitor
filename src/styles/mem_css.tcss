@@ -20,13 +20,13 @@
     border: red;
 }
 
-#used-static-label {
+.label {
     content-align: right middle;
     /*border: yellow;*/
     height: 1fr;
 }
 
-#perc-digits {
+.digits {
     /*border: green;*/
     /*row-span: 2;*/
     height: 100%;
