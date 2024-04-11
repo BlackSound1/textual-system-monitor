@@ -17,18 +17,14 @@
     layout: grid;
     grid-size: 2;
     content-align: center middle;
-    border: red;
 }
 
 .label {
     content-align: right middle;
-    /*border: yellow;*/
     height: 1fr;
 }
 
 .digits {
-    /*border: green;*/
-    /*row-span: 2;*/
     height: 100%;
     content-align: center middle;
 }

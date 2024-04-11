@@ -43,39 +43,43 @@ class MemoryScreen(Screen):
 
     def watch_mem_data(self, data: dict) -> None:
         """
-        Watch for changes in the memory data and update the Static widget accordingly
+        Watch for changes in the memory data and update the Widgets accordingly
 
         :param data: The new memory data
         :return: None
         """
 
         try:
-            total = self.query_one("#total-static", Static)
-            avail = self.query_one("#avail-digits", Digits)
+            total_digits = self.query_one("#total-digits", Digits)
+            total_label = self.query_one("#total-static-label", Static)
+            avail_digits = self.query_one("#avail-digits", Digits)
             avail_label = self.query_one("#avail-static-label", Static)
-            used = self.query_one("#used-digits", Digits)
+            used_digits = self.query_one("#used-digits", Digits)
             used_label = self.query_one("#used-static-label", Static)
-            perc = self.query_one("#perc-digits", Digits)
+            perc_digits = self.query_one("#perc-digits", Digits)
         except NoMatches:
             return
 
-        total.update(f"Total Memory: {bytes2human(data['total'])}")
+        # Update total information
+        value, denom = bytes2human(data['total']).split(' ')
+        total_label.update(f"Total Memory ({denom}):\t")
+        total_digits.update(f"{value}")
 
-        # Updated available information
+        # Update available information
         value, denom = bytes2human(data['available']).split(' ')
         avail_label.update(f"Available Memory ({denom}):\t")
-        avail.update(f"{value}")
+        avail_digits.update(f"{value}")
 
         # Update used information
         value, denom = bytes2human(data['used']).split(' ')
         used_label.update(f"Used Memory ({denom}):\t")
-        used.update(f"{value}")
+        used_digits.update(f"{value}")
 
         # Update percentage information
         pct, color = compute_percentage_color(data['percent'], combine_output=False)
-        perc = reset_percentage_color(perc)
-        perc.add_class(color)
-        perc.update(f"{pct}")
+        perc_digits = reset_percentage_color(perc_digits)
+        perc_digits.add_class(color)
+        perc_digits.update(f"{pct}")
 
     def compose(self) -> ComposeResult:
         """
@@ -85,17 +89,24 @@ class MemoryScreen(Screen):
         """
 
         yield Header(show_clock=True)
+
         with Container(id="mem-container"):
-            yield Static(id="total-static", classes="mem-static")
+            with Container(classes="mem-static"):
+                yield Static("", id="total-static-label", classes="label")
+                yield Digits(id="total-digits", classes="digits")
+
             with Container(classes="mem-static"):
                 yield Static("", id="avail-static-label", classes="label")
                 yield Digits(id="avail-digits", classes="digits")
+
             with Container(classes="mem-static"):
                 yield Static("", id="used-static-label", classes="label")
                 yield Digits(id="used-digits", classes="digits")
+
             with Container(classes="mem-static"):
                 yield Static("Percentage Used (%):\t", classes="label")
                 yield Digits(id="perc-digits", classes="digits")
+
         yield Footer()
 
     def on_mount(self) -> None:
