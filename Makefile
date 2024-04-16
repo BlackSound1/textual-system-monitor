@@ -3,48 +3,48 @@ SHELL := bash
 
 .PHONY: run
 run:   ## Run app
-	@textual run main.py
+	@pipenv run textual run main.py
 
 
 .PHONY: run-dev
 run-dev:   ## Run app in dev mode
-	@textual run --dev main.py
+	@pipenv run textual run --dev main.py
 
 
 .PHONY: test
 test:   ## Use Pytest to test the app
 	@echo ""
-	@pytest tests
+	@pipenv run pytest tests
 
 
 .PHONY: test-clicks
 test-clicks:   ## Use Pytest to test the clicks only
 	@echo ""
-	@pytest tests/test_clicks.py
+	@pipenv run pytest tests/test_clicks.py
 
 
 .PHONY: test-keys
 test-keys:   ## Use Pytest to test the key presses only
 	@echo ""
-	@pytest tests/test_keys.py
+	@pipenv run pytest tests/test_keys.py
 
 
 .PHONY: test-buttons
 test-buttons:   ## Use Pytest to test the buttons only
 	@echo ""
-	@pytest tests/test_buttons.py
+	@pipenv run pytest tests/test_buttons.py
 
 
 .PHONY: lint
 lint:    ## Use Flake8 to lint the Python files
 	@echo ""
-	@flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
-	@flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	@pipenv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
+	@pipenv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 
 .PHONY: console
 console:  ## Show the Textual console. Used in debugging
-	@textual console -x EVENT -x SYSTEM -x DEBUG
+	@pipenv run textual console -x EVENT -x SYSTEM -x DEBUG
 
 
 .PHONY: show-tests
