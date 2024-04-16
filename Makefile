@@ -1,6 +1,17 @@
 SHELL := bash
 .ONESHELL:
 
+.PHONY: install
+install:   ## Install dependencies
+	@if command -v pipenv &> /dev/null; then \
+	 echo "Pipenv found, installing dependencies with Pipenv..." && \
+	 pipenv install; \
+	else \
+	 @echo "Pipenv not found, installing dependencies with pip..." && \
+	 @pip install -r requirements.txt;
+	fi
+
+
 .PHONY: run
 run:   ## Run app
 	@pipenv run textual run main.py
