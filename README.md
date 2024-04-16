@@ -71,8 +71,7 @@ This app uses Pipenv as its virtual environment and package manager. Install wit
 pip install --user pipenv
 ```
 
-*Note*: If you don't want to use Pipenv, a `requirements.txt` file has been provided. It should be possible to install 
-all dependencies with that.
+*Note*: If you don't want to use Pipenv, a `requirements.txt` file has been provided.
 
 # Getting Started
 
@@ -86,12 +85,10 @@ git clone https://github.com/BlackSound1/textual-system-monitor.git &&
 Install dependencies with:
 
 - ```shell
-  pipenv install
+  make  install
   ```
-  or
-- ```shell
-  pip install -r requirements.txt
-  ```
+
+  This will attempt to install dependencies with Pipenv, if available. If not, it will use pip.
 
 Run the app with:
 
