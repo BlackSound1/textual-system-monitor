@@ -93,20 +93,6 @@ Install dependencies with:
   pip install -r requirements.txt
   ```
 
-Enter the shell with:
-
-- ```shell
-  pipenv shell
-  ```
-  or
-- ```shell
-  venv\Scripts\activate.bat
-  ```
-  or
-- ```shell
-  source venv/bin/activate
-  ```
-
 Run the app with:
 
 ```shell
@@ -170,4 +156,4 @@ own remote branch (because you forked it). Create a pull request from your forke
 - [x] Improve colors, so dark mode toggling looks better
 - [x] Lay out information in a nicer, less cluttered way
 - [ ] Add support for Linux and MacOS
-- [ ] Make all command-line duties possible in `make`
+- [x] Make all command-line duties possible in `make`
