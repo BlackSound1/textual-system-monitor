@@ -1,6 +1,5 @@
 from psutil import process_iter
 from textual.app import ComposeResult
-from textual.binding import Binding
 from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -34,7 +33,7 @@ class ProcessesScreen(Screen):
     BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [
-        Binding("p", "switch_mode('main')", "Main Screen", priority=True),
+        ("p", "switch_mode('main')", "Main Screen"),
     ]
 
     initial = True

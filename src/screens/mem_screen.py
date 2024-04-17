@@ -1,5 +1,4 @@
 from textual.app import ComposeResult
-from textual.binding import Binding
 from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -28,7 +27,7 @@ class MemoryScreen(Screen):
     BORDER_TITLE = "Memory"
     CSS_PATH = "../styles/mem_css.tcss"
     BINDINGS = [
-        Binding("m", "switch_mode('main')", "Main Screen", priority=True),
+        ("m", "switch_mode('main')", "Main Screen"),
     ]
 
     mem_data = reactive(get_mem_data())
