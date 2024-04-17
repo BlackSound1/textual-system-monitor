@@ -33,7 +33,13 @@ class ProcessesScreen(Screen):
     BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("t", "toggle_dark", "Toggle dark mode"),
         ("p", "switch_mode('main')", "Main Screen"),
+        ("c", "switch_mode('cpu')", "CPU"),
+        ("n", "switch_mode('network')", "Network"),
+        ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
     ]
 
     initial = True

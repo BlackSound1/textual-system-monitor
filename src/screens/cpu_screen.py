@@ -13,7 +13,13 @@ class CPU_Screen(Screen):
     BORDER_TITLE = "CPU Usage"
     CSS_PATH = "../styles/cpu_css.tcss"
     BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("t", "toggle_dark", "Toggle dark mode"),
+        ("p", "switch_mode('processes')", "Processes"),
         ("c", "switch_mode('main')", "Main Screen"),
+        ("n", "switch_mode('network')", "Network"),
+        ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
     ]
 
     cpu_data = reactive(get_cpu_data())

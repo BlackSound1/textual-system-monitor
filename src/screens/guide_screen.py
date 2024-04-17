@@ -96,13 +96,14 @@ def get_formatted_monitoring_string(mode: str = "dark") -> str:
 class GuideScreen(Screen):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
-        ('g', "switch_mode('main')", 'Main Screen'),
+        ("q", "quit", "Quit"),
+        ('t', "toggle_dark", 'Toggle dark mode'),
         ('p', "", ''),
         ('c', "", ''),
         ('n', "", ''),
-        ('m', "", ''),
         ('d', "", ''),
-        ('t', "toggle_dark", 'Toggle dark mode'),
+        ('m', "", ''),
+        ('g', "switch_mode('main')", 'Main Screen'),
     ]
 
     def action_toggle_dark(self) -> None:

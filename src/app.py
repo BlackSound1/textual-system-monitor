@@ -13,15 +13,6 @@ class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
     # SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
-    BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("t", "toggle_dark", "Toggle dark mode"),
-        ("p", "switch_mode('processes')", "Processes"),
-        ("c", "switch_mode('cpu')", "CPU"),
-        ("n", "switch_mode('network')", "Network"),
-        ("d", "switch_mode('drive')", "Drives"),
-        ("m", "switch_mode('mem')", "Memory"),
-    ]
     MODES = {
         "main": MainScreen,
         "guide": GuideScreen,
