@@ -1,6 +1,7 @@
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
+from textual.css.query import NoMatches
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
@@ -33,17 +34,25 @@ Created in Python using Textual.
 - Resizable
 """
 
+COLOR_MAP = {
+    "proc_color": {"dark": "#FEA62B", "light": "#FF8C00"},
+    "drive_color": {"dark": "#FF0000", "light": "#FF0000"},
+    "mem_color": {"dark": "#FFFF00", "light": "#F3CD00"},
+    "cpu_color": {"dark": "#ADD8E6", "light": "#7272f6"},
+    "net_color": {"dark": "#90EE90", "light": "#008000"},
+}
+
 MONITORING_STRING = """
 [bold underline]Monitoring Descriptions[/]
 
-[#FEA62B]Processes[/]: An updated list of running processes, sorted by CPU load. Each process has info on:
+[{proc_color}]Processes[/]: An updated list of running processes, sorted by CPU load. Each process has info on:
   - Process ID (PID)
   - CPU load (in %)
   - Application name
   - Username of the user running this process
   - The actual executable file running this process
 
-[#FF0000]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives. 
+[{drive_color}]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives. 
   - If a drive is a storage drive, it will have info on:
     - Disk letter name
     - Options associated with that drive
@@ -56,21 +65,33 @@ MONITORING_STRING = """
     - Disk letter name
     - Options associated with that drive
 
-[#FFFF00]Memory Usage[/]: Updated info about system memory allocation:
+[{mem_color}]Memory Usage[/]: Updated info about system memory allocation:
   - Total Memory: How much memory is allocated to the system
   - Available Memory: How much is able to be used by programs/ processes
   - Used: How much is already being used
   - Percentage Used (in %): How much memory is used as a percentage of the total 
 
-[#ADD8E6]CPU Usage[/]: Updated CPU info about:
+[{cpu_color}]CPU Usage[/]: Updated CPU info about:
   - Cores: The total number of cores present on the system
   - Usage (Overall) (in %): A measure of overall CPU usage
   - Usage (per Core) (in %): A measure of each CPU Cores usage
 
-[#90EE90]Network Info[/]: An updated list of network interfaces. Each interface has info on:
+[{net_color}]Network Info[/]: An updated list of network interfaces. Each interface has info on:
   - Download amount and speed
   - Upload amount and speed
 """
+
+
+def get_formatted_monitoring_string(mode: str = "dark") -> str:
+    """
+    Returns a formatted string for the monitoring description based on whether light mode or dark mode is being used.
+    The colors for the headings need to be selected accordingly.
+
+    :param mode: "dark" or "light"
+    :return: The formatted string with proper Rich color tags based on dark/ light mode
+    """
+
+    return MONITORING_STRING.format(**{label: color_dict[mode] for label, color_dict in COLOR_MAP.items()})
 
 
 class GuideScreen(Screen):
@@ -82,7 +103,24 @@ class GuideScreen(Screen):
         Binding('n', "", '', priority=True),
         Binding('m', "", '', priority=True),
         Binding('d', "", '', priority=True),
+        Binding('t', "toggle_dark", 'Toggle dark mode', priority=True),
     ]
+
+    def action_toggle_dark(self) -> None:
+        """
+        Need to override this method to allow for toggling the colors appropriately
+
+        :return: None
+        """
+
+        self.app.dark = not self.app.dark
+
+        try:
+            monitoring_static = self.query_one("#monitoring-desc", Static)
+        except NoMatches:
+            return
+
+        monitoring_static.update(get_formatted_monitoring_string("dark" if self.app.dark else "light"))
 
     def compose(self) -> ComposeResult:
         """
@@ -97,5 +135,5 @@ class GuideScreen(Screen):
             with VerticalScroll():
                 yield Static(DESCRIPTION_STRING, id="description")
             with VerticalScroll():
-                yield Static(MONITORING_STRING, id="monitoring-desc")
+                yield Static(get_formatted_monitoring_string("dark"), id="monitoring-desc")
         yield Footer()
