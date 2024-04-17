@@ -1,5 +1,4 @@
 from textual.app import ComposeResult
-from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
 from textual.css.query import NoMatches
 from textual.screen import Screen
@@ -97,13 +96,14 @@ def get_formatted_monitoring_string(mode: str = "dark") -> str:
 class GuideScreen(Screen):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
-        Binding('g', "switch_mode('main')", 'Main Screen', priority=True),
-        Binding('p', "", '', priority=True),
-        Binding('c', "", '', priority=True),
-        Binding('n', "", '', priority=True),
-        Binding('m', "", '', priority=True),
-        Binding('d', "", '', priority=True),
-        Binding('t', "toggle_dark", 'Toggle dark mode', priority=True),
+        ("q", "quit", "Quit"),
+        ('t', "toggle_dark", 'Toggle dark mode'),
+        ('p', "", ''),
+        ('c', "", ''),
+        ('n', "", ''),
+        ('d', "", ''),
+        ('m', "", ''),
+        ('g', "switch_mode('main')", 'Main Screen'),
     ]
 
     def action_toggle_dark(self) -> None:

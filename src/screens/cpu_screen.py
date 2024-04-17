@@ -1,5 +1,4 @@
 from textual.app import ComposeResult
-from textual.binding import Binding
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -14,7 +13,13 @@ class CPU_Screen(Screen):
     BORDER_TITLE = "CPU Usage"
     CSS_PATH = "../styles/cpu_css.tcss"
     BINDINGS = [
-        Binding("c", "switch_mode('main')", "Main Screen", priority=True),
+        ("q", "quit", "Quit"),
+        ("t", "toggle_dark", "Toggle dark mode"),
+        ("p", "switch_mode('processes')", "Processes"),
+        ("c", "switch_mode('main')", "Main Screen"),
+        ("n", "switch_mode('network')", "Network"),
+        ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
     ]
 
     cpu_data = reactive(get_cpu_data())

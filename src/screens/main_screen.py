@@ -15,6 +15,13 @@ logging.basicConfig(handlers=[TextualHandler()], level=logging.WARNING)
 class MainScreen(Screen):
     CSS_PATH = "../styles/main_css.tcss"
     BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("t", "toggle_dark", "Toggle dark mode"),
+        ("p", "switch_mode('processes')", "Processes"),
+        ("c", "switch_mode('cpu')", "CPU"),
+        ("n", "switch_mode('network')", "Network"),
+        ("d", "switch_mode('drive')", "Drives"),
+        ("m", "switch_mode('mem')", "Memory"),
         ('g', "switch_mode('guide')", 'Guide')
     ]
 
