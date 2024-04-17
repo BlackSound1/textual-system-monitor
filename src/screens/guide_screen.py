@@ -91,11 +91,7 @@ def get_formatted_monitoring_string(mode: str = "dark") -> str:
     :return: The formatted string with proper Rich color tags based on dark/ light mode
     """
 
-    return MONITORING_STRING.format(proc_color=COLOR_MAP["proc_color"][mode],
-                                    drive_color=COLOR_MAP["drive_color"][mode],
-                                    mem_color=COLOR_MAP["mem_color"][mode],
-                                    cpu_color=COLOR_MAP["cpu_color"][mode],
-                                    net_color=COLOR_MAP["net_color"][mode])
+    return MONITORING_STRING.format(**{label: color_dict[mode] for label, color_dict in COLOR_MAP.items()})
 
 
 class GuideScreen(Screen):
