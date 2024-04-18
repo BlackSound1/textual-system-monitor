@@ -170,17 +170,15 @@ def display_percentages_CPU(percentages: list) -> str:
     :return: The string containing the formatted percentages
     """
 
-    string = "\n"
+    formatted_percentages = "\n"
 
     # For each core, colorize the percentage and add it to the string
-    for i, pct in enumerate(percentages):
-        pct = compute_percentage_color(pct)
+    for core_index, core_percentage in enumerate(percentages):
+        formatted_percentage = compute_percentage_color(core_percentage)
+        separator = " | " if core_index < len(percentages) - 1 else ""
+        formatted_percentages += f"Core {core_index + 1}: {formatted_percentage} % {separator}"
 
-        separator = " | " if i < len(percentages) - 1 else ""
-
-        string += f"Core {i + 1}: {pct} % {separator}"
-
-    return string
+    return formatted_percentages
 
 
 def update_CPU_static(cpu_data: dict) -> str:
