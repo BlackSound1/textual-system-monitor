@@ -30,13 +30,13 @@ class NetworkScreen(Screen):
         """
         self.io = get_network_stats()
 
-    def watch_io(self, old: list, new: list) -> None:
+    def watch_io(self, old_stats: list, new_stats: list) -> None:
         """
         Define what happens when `self.io` changes.
 
         Update the Network Screen with new info for each network interface
-        :param old: The list of old interface info to use
-        :param new: The list of new interface info to use
+        :param old_stats: The list of old interface info to use
+        :param new_stats: The list of new interface info to use
         """
 
         # First, grab the DataTable Widget
@@ -51,12 +51,16 @@ class NetworkScreen(Screen):
 
         # Next, go through each updated network interface, get its info, and update the DataTable
         # with the new info for each interface
-        for i, item in enumerate(old):
-            interface = item["interface"]
-            download = bytes2human(new[i]["bytes_recv"])
-            upload = bytes2human(new[i]["bytes_sent"])
-            upload_speed = bytes2human(round((new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL, 2))
-            download_speed = bytes2human(round((new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL, 2))
+        for old_stat, new_stat in zip(old_stats, new_stats):
+            interface = old_stat["interface"]
+            download = bytes2human(new_stat["bytes_recv"])
+            upload = bytes2human(new_stat["bytes_sent"])
+            upload_speed = bytes2human(
+                round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2)
+            )
+            download_speed = bytes2human(
+                round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2)
+            )
 
             table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)
 

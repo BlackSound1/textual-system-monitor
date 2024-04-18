@@ -26,7 +26,7 @@ class Processes(Static):
 
     def update_processes(self) -> None:
         """
-        Define how to update `self.processes`
+        Update the list of processes with the top 10 by CPU load.
         """
 
         procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])

@@ -33,10 +33,12 @@ class MemUsage(Static):
         except NoMatches:
             return
 
-        static.update(f"Total Memory: {bytes2human(data['total'])}\n\n"
-                      f"Available Memory: {bytes2human(data['available'])}\n\n"
-                      f"Used: {bytes2human(data['used'])}\n\n"
-                      f"Percentage Used: {compute_percentage_color(data['percent'])}%")
+        static.update(
+            f"Total Memory: {bytes2human(data['total'])}\n\n"
+            f"Available Memory: {bytes2human(data['available'])}\n\n"
+            f"Used: {bytes2human(data['used'])}\n\n"
+            f"Percentage Used: {compute_percentage_color(data['percent'])} %"
+        )
 
     def on_click(self) -> None:
         """

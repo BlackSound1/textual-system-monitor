@@ -10,10 +10,10 @@ from src.utilities import get_mem_data, bytes2human, compute_percentage_color, C
 
 def reset_percentage_color(digits: Digits) -> Digits:
     """
-    Reset the percentage color
+    Reset the color classes of the Digits widget
 
-    :param digits: The Digits widget
-    :return: None
+    :param digits: The Digits widget to reset color classes for
+    :return: The updated Digits widget
     """
 
     digits.remove_class("green")

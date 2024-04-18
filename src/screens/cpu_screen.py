@@ -39,9 +39,10 @@ class CPU_Screen(Screen):
         :return: None
         """
 
-        # First, grab the Static Widget
+        # First, grab the Static and DataTable Widgets
         try:
             static = self.query_one("#cpu-screen-static", expect_type=Static)
+            table = self.query_one("#cpu-screen-table", expect_type=DataTable)
         except NoMatches:
             return
 
@@ -50,24 +51,16 @@ class CPU_Screen(Screen):
         overall = cpu_data['overall']
         individual = [compute_percentage_color(core) for core in cpu_data['individual']]
 
-        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
-
         # Update the Static Widget
+        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
         static.update(static_content)
-
-        # Then, get the DataTable
-        try:
-            table = self.query_one("#cpu-screen-table", expect_type=DataTable)
-        except NoMatches:
-            return
 
         # Clear the table and add the columns
         table.clear(columns=True)
         table.add_columns("Core", "Percentage (%)")
 
         # Update the table
-        for core_num, core_pct in enumerate(individual):
-            table.add_row(core_num + 1, core_pct)
+        table.add_rows([(core_num + 1, core_pct) for core_num, core_pct in enumerate(individual)])
 
     def compose(self) -> ComposeResult:
         """

@@ -25,11 +25,15 @@ class DriveScreen(Screen):
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
-        (
-            {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
-             "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
-            for item in disk_partitions()
-        )
+        {
+            "device": item.device,
+            "mountpoint": item.mountpoint,
+            "fstype": item.fstype,
+            "opts": item.opts,
+            "maxfile": item.maxfile,
+            "maxpath": item.maxpath
+        }
+        for item in disk_partitions()
     )
 
     def update_disks(self) -> None:
@@ -38,8 +42,14 @@ class DriveScreen(Screen):
         """
 
         self.disks = (
-            {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
-             "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
+            {
+                "device": item.device,
+                "mountpoint": item.mountpoint,
+                "fstype": item.fstype,
+                "opts": item.opts,
+                "maxfile": item.maxfile,
+                "maxpath": item.maxpath
+            }
             for item in disk_partitions()
         )
 
