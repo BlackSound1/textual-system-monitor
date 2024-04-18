@@ -46,7 +46,7 @@ def compute_percentage_color(
         return percentage, color
 
 
-def bytes2human(n: int) -> str:
+def bytes2human(num_bytes: int) -> str:
     """
     Converts bytes to human-readable format.
 
@@ -55,31 +55,36 @@ def bytes2human(n: int) -> str:
     >>> bytes2human(100001221)
     '95.4 MB'
 
-    https://code.activestate.com/recipes/578019
+    Originally inspired by: https://code.activestate.com/recipes/578019
 
-    :param n: The number of bytes
+    :param num_bytes: The number of bytes
     :return: A string representing a human-readable format of those bytes
     """
 
     # If the number of bytes is negative, return '0.0 B'
-    if n < 0:
+    if num_bytes < 0:
         return "0.0 B"
 
-    symbols = ('Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi')
-    prefix = {}
+    # Create a map of symbols and their corresponding thresholds. Note: 1 << 10 == 1 * 2 ** 10
+    symbol_map = {
+        'Ki': 1 << 10,
+        'Mi': 1 << 20,
+        'Gi': 1 << 30,
+        'Ti': 1 << 40,
+        'Pi': 1 << 50,
+        'Ei': 1 << 60,
+        'Zi': 1 << 70,
+        'Yi': 1 << 80
+    }
 
-    # Set the prefix for each symbol
-    for i, s in enumerate(symbols):
-        prefix[s] = 1 << (i + 1) * 10
+    # For each symbol, check if the number of bytes is greater than the corresponding threshold
+    for symbol, threshold in reversed(list(symbol_map.items())):
+        if abs(num_bytes) >= threshold:
+            value = float(num_bytes) / threshold
+            return f'{value:.1f} {symbol}B'
 
-    # Find the largest symbol that is smaller than n
-    for s in reversed(symbols):
-        if abs(n) >= prefix[s]:
-            value = float(n) / prefix[s]
-            return f'{value:.1f} {s}B'
-
-    # If no symbol was found, return '0.0 B'
-    return f"{n:.1f} B"
+    # If the number of bytes is less than any threshold, return the number of bytes as-is
+    return f'{num_bytes:.1f} B'
 
 
 """
