@@ -113,39 +113,33 @@ def get_network_stats() -> List[Dict[str, int]]:
     return sorted(interface_stats, key=lambda stats: stats['bytes_recv'], reverse=True)
 
 
-def update_network_static(new: list, old: list) -> str:
+def update_network_static(new_stats: list, old_stats: list) -> str:
     """
-    Update the Network pane with new info for each network interface by generating a
-    string containing the new info for each interface
+    Generate a string containing the updated network info for each interface
 
-    :param new: The updated network stats
-    :param old: The old network stats
+    :param new_stats: The updated network stats
+    :param old_stats: The old network stats
     :return: The string needed to update the Static widget with the new info
     """
 
     static_content = ""
 
     # For each interface, calculate the new info and add it to the string to return
-    for i, item in enumerate(old):
-        interface = item["interface"]
-        download = bytes2human(new[i]["bytes_recv"])
-        upload = bytes2human(new[i]["bytes_sent"])
+    for old_stat, new_stat in zip(old_stats, new_stats):
+        interface = old_stat["interface"]
+        download = bytes2human(new_stat["bytes_recv"])
+        upload = bytes2human(new_stat["bytes_sent"])
         upload_speed = bytes2human(
-            round(
-                (new[i]["bytes_sent"] - item["bytes_sent"]) / NET_INTERVAL,
-                2
-            )
+            round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2)
         )
         download_speed = bytes2human(
-            round(
-                (new[i]["bytes_recv"] - item["bytes_recv"]) / NET_INTERVAL,
-                2
-            )
+            round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2)
         )
 
-        # Add the new info for this interface to the content of the Static widget
-        static_content += (f"[green]{interface}[/]: [blue]Download[/]: {download} at "
-                           f"{download_speed} /s | [blue]Upload[/]: {upload} at {upload_speed} /s\n\n")
+        static_content += (
+            f"[green]{interface}[/]: [blue]Download[/]: {download} at "
+            f"{download_speed} /s | [blue]Upload[/]: {upload} at {upload_speed} /s\n\n"
+        )
 
     return static_content
 
