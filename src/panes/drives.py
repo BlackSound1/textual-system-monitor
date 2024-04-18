@@ -14,11 +14,15 @@ class DriveUsage(Static):
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
-        (
-            {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
-             "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
-            for item in disk_partitions()
-        )
+        {
+            "device": item.device,
+            "mountpoint": item.mountpoint,
+            "fstype": item.fstype,
+            "opts": item.opts,
+            "maxfile": item.maxfile,
+            "maxpath": item.maxpath,
+        }
+        for item in disk_partitions()
     )
 
     def update_disks(self) -> None:
@@ -27,8 +31,14 @@ class DriveUsage(Static):
         """
 
         self.disks = (
-            {"device": item.device, "mountpoint": item.mountpoint, "fstype": item.fstype,
-             "opts": item.opts, "maxfile": item.maxfile, "maxpath": item.maxpath}
+            {
+                "device": item.device,
+                "mountpoint": item.mountpoint,
+                "fstype": item.fstype,
+                "opts": item.opts,
+                "maxfile": item.maxfile,
+                "maxpath": item.maxpath,
+            }
             for item in disk_partitions()
         )
 
@@ -69,8 +79,8 @@ class DriveUsage(Static):
                 static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
                                    f"Total: {total} | Used: {used} | Free: {free}\n\n")
 
-            # Update the content of the Static widget with the new info for all drives
-            static.update(static_content)
+        # Update the content of the Static widget with the new info for all drives
+        static.update(static_content)
 
     def on_mount(self) -> None:
         """
