@@ -50,9 +50,8 @@ class CPU_Screen(Screen):
         overall = cpu_data['overall']
         individual = [compute_percentage_color(core) for core in cpu_data['individual']]
 
-        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
-
         # Update the Static Widget
+        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
         static.update(static_content)
 
         # Then, get the DataTable

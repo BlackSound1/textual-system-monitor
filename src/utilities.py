@@ -12,40 +12,38 @@ GLOBAL UTILITIES
 """
 
 
-def compute_percentage_color(pct: float, combine_output: bool = True) -> Union[str, tuple[int, str]]:
+def compute_percentage_color(
+        percentage: Union[int, float],
+        combine_output: bool = True
+) -> Union[str, tuple[int, str]]:
     """
     Takes a given percentage and returns that percentage, colored according to
     whether usage is high, medium, or low.
 
-    :param pct: The uncolored percentage value
+    :param percentage: The uncolored percentage value
     :param combine_output: Whether to combine the output into a single string
     :return: The colored percentage value as a string
     """
 
-    # Make sure the percentage is within 0 and 100
-    if pct < 0:
-        pct = 0
-    elif pct > 100:
-        pct = 100
+    # Clamp the percentage between 0 and 100
+    percentage = max(0, min(100, percentage))
 
     # Round the percentage to 1 decimal place
-    pct = round(pct, 1)
+    percentage = round(percentage, 1)
 
     # Set the color based on the percentage
-    if pct <= 75:
-        if combine_output:
-            return f"[green]{pct:.1f}[/]"
-        return pct, "green"
-
-    elif 75 < pct < 90:
-        if combine_output:
-            return f"[yellow]{pct:.1f}[/]"
-        return pct, "yellow"
-
+    if percentage <= 75:
+        color = "green"
+    elif 75 < percentage < 90:
+        color = "yellow"
     else:
-        if combine_output:
-            return f"[red]{pct:.1f}[/]"
-        return pct, "red"
+        color = "red"
+
+    # Decide whether we should combine the output into a single string
+    if combine_output:
+        return f"[{color}]{percentage:.1f}[/]"
+    else:
+        return percentage, color
 
 
 def bytes2human(n: int) -> str:
