@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Dict
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
 
@@ -92,27 +92,25 @@ NETWORK UTILITIES
 """
 
 
-def get_network_stats() -> List[dict]:
+def get_network_stats() -> List[Dict[str, int]]:
     """
-    Utility function to get network statistics, per interface.
+    Get network statistics per interface, sorted by highest download amount.
 
-    :return: A list of dicts, each one containing the network statistics for a single interface. Sorted
-             by highest download amount
+    :return: A sorted list of dictionaries, each containing the network stats for a single interface.
     """
 
-    # Go through each interface and its accompanying stats. Get the interface name and upload/ download info.
-    # Append this as a dict to the stats list
-    stats = [
+    # Get network stats for each interface
+    interface_stats = [
         {
             "interface": interface,
-            "bytes_sent": interface_io.bytes_sent,
-            "bytes_recv": interface_io.bytes_recv
+            "bytes_sent": stats.bytes_sent,
+            "bytes_recv": stats.bytes_recv
         }
-        for interface, interface_io in net_io_counters(pernic=True).items()
+        for interface, stats in net_io_counters(pernic=True).items()
     ]
 
-    # Sort by highest download amount
-    return sorted(stats, key=lambda x: x['bytes_recv'], reverse=True)
+    # Sort interface stats by highest download amount
+    return sorted(interface_stats, key=lambda stats: stats['bytes_recv'], reverse=True)
 
 
 def update_network_static(new: list, old: list) -> str:
