@@ -106,11 +106,12 @@ class ProcessesScreen(Screen):
         # Next, go through each updated process, get its info, and update the table widget
         # with the new info for each process
         for proc in procs:
-            PID = proc.info['pid']
-            name = proc.info['name'] or 'N/A'
-            exe = proc.info['exe'] or 'N/A'
-            cpu_percent = compute_percentage_color(proc.info['cpu_percent'])
-            user_name = proc.info['username'] or 'N/A'
+            info = proc.info
+            PID = info['pid']
+            name = info['name'] or 'N/A'
+            exe = info['exe'] or 'N/A'
+            cpu_percent = compute_percentage_color(info['cpu_percent'])
+            user_name = info['username'] or 'N/A'
 
             # Only colorize the name if it's not "N/A"
             if name != "N/A":
