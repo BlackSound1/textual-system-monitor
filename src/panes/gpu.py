@@ -1,3 +1,5 @@
+import platform
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
@@ -7,11 +9,17 @@ from textual.widgets import Static
 from src.utilities import get_gpu_data, RARE_INTERVAL
 
 
+WINDOWS = platform.system() == "Windows"
+
+
 class GPU_Usage(Static):
     BORDER_TITLE = "GPU Info"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
 
-    gpu_data = reactive(get_gpu_data())
+    if WINDOWS:
+        gpu_data = reactive(get_gpu_data())
+    else:
+        gpu_data = None
 
     def update_gpu_data(self) -> None:
         """
@@ -19,7 +27,9 @@ class GPU_Usage(Static):
 
         :return: None
         """
-        self.gpu_data = get_gpu_data()
+
+        if WINDOWS:
+            self.gpu_data = get_gpu_data()
 
     def watch_gpu_data(self, gpu_data: list) -> None:
         """
@@ -72,4 +82,7 @@ class GPU_Usage(Static):
         """
 
         with VerticalScroll():
-            yield Static(id="gpu-static")
+            if WINDOWS:
+                yield Static(id="gpu-static")
+            else:
+                yield Static("GPU information not currently supported on non-Windows systems...")
