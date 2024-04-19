@@ -1,7 +1,15 @@
 from typing import List, Union, Dict
+import platform
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
-from wmi import WMI
+
+if platform.system() == "Windows":
+    WINDOWS = True
+else:
+    WINDOWS = False
+
+if WINDOWS:
+    from wmi import WMI
 
 """
 CONSTANTS
@@ -91,7 +99,7 @@ def bytes2human(num_bytes: int) -> str:
     """
 
     # If the number of bytes is negative, return '0.0 B'
-    if num_bytes is None or num_bytes < 0:
+    if num_bytes < 0:
         return "0.0 B"
 
     # Create a map of symbols and their corresponding thresholds. Note: 1 << 10 == 1 * 2 ** 10
