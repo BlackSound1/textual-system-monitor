@@ -69,13 +69,13 @@ class GPU_Usage(Static):
         # Then, for each video controller, update the Static Widget with its new information
         for gpu in gpu_data:
             static_content += (
-                f"GPU: {gpu['gpu']}\n"
-                f"Driver Version: {gpu['driver_version']}\n"
-                f"Resolution: {gpu['resolution']}\n"
-                f"Adapter RAM: {gpu['adapter_ram']}\n"
-                f"Availability: {gpu['availability']}\n"
-                f"Refresh: {gpu['refresh']} Hz\n"
-                f"Status: {gpu['status']}\n"
+                f"[green]GPU[/]: {gpu['gpu']}\n"
+                f"[green]Driver Version[/]: {gpu['driver_version']}\n"
+                f"[green]Resolution[/]: {gpu['resolution']}\n"
+                f"[green]Adapter RAM[/]: {gpu['adapter_ram']}\n"
+                f"[green]Availability[/]: {gpu['availability']}\n"
+                f"[green]Refresh[/]: {gpu['refresh']} Hz\n"
+                f"[green]Status[/]: {gpu['status']}\n"
             )
 
         static.update(static_content)
