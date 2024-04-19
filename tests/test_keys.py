@@ -10,6 +10,7 @@ from src.screens.main_screen import MainScreen
 from src.screens.mem_screen import MemoryScreen
 from src.screens.network_screen import NetworkScreen
 from src.screens.processes_screen import ProcessesScreen
+from src.screens.gpu_screen import GPU_Screen
 
 
 class TestKeys(IsolatedAsyncioTestCase):
@@ -79,6 +80,16 @@ class TestKeys(IsolatedAsyncioTestCase):
             self.assertIs(type(self.monitor_app.screen), MainScreen)
             self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
+            # Go to the GPU screen
+            await pilot.press("v")
+            self.assertIs(type(self.monitor_app.screen), GPU_Screen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "GPU Info")
+
+            # Go back to the main screen
+            await pilot.press("v")
+            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
+
             # Go to the guide screen
             await pilot.press("g")
             self.assertIs(type(self.monitor_app.screen), GuideScreen)
@@ -112,7 +123,9 @@ class TestKeys(IsolatedAsyncioTestCase):
             self.assertIs(type(self.monitor_app.screen), CPU_Screen)
             await pilot.press("n")
             self.assertIs(type(self.monitor_app.screen), NetworkScreen)
-            await pilot.press("n")
+            await pilot.press("v")
+            self.assertIs(type(self.monitor_app.screen), GPU_Screen)
+            await pilot.press("v")
 
             # Make sure we made it back to the Main Screen
             self.assertIs(type(self.monitor_app.screen), MainScreen)
@@ -129,6 +142,8 @@ class TestKeys(IsolatedAsyncioTestCase):
             # Make sure we are on the main screen to begin
             self.assertIs(type(self.monitor_app.screen), MainScreen)
 
+            await pilot.press("v")
+            self.assertIs(type(self.monitor_app.screen), GPU_Screen)
             await pilot.press("n")
             self.assertIs(type(self.monitor_app.screen), NetworkScreen)
             await pilot.press("c")
