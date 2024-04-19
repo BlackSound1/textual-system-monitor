@@ -8,7 +8,6 @@ from textual.widgets import Static
 
 from src.utilities import get_gpu_data, RARE_INTERVAL
 
-
 WINDOWS = platform.system() == "Windows"
 
 
@@ -16,10 +15,7 @@ class GPU_Usage(Static):
     BORDER_TITLE = "GPU Info"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
 
-    if WINDOWS:
-        gpu_data = reactive(get_gpu_data())
-    else:
-        gpu_data = None
+    gpu_data = reactive(get_gpu_data()) if WINDOWS else None
 
     def update_gpu_data(self) -> None:
         """

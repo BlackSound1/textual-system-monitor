@@ -1,11 +1,15 @@
+import platform
+
 from textual.app import ComposeResult
 from textual.containers import Container, VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
-from textual.widgets import Header, Footer, DataTable
+from textual.widgets import Header, Footer, DataTable, Static
 
 from src.utilities import RARE_INTERVAL, get_gpu_data
+
+WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Screen(Screen):
@@ -23,7 +27,7 @@ class GPU_Screen(Screen):
         ("v", "switch_mode('main')", "Main Screen"),
     ]
 
-    gpu_data = reactive(get_gpu_data())
+    gpu_data = reactive(get_gpu_data()) if WINDOWS else None
 
     def update_gpu_data(self) -> None:
         """
@@ -31,7 +35,8 @@ class GPU_Screen(Screen):
 
         :return: None
         """
-        self.gpu_data = get_gpu_data()
+        if WINDOWS:
+            self.gpu_data = get_gpu_data()
 
     def watch_gpu_data(self, gpu_data: list) -> None:
         """
@@ -89,5 +94,8 @@ class GPU_Screen(Screen):
         yield Header(show_clock=True)
         with Container(id="gpu-container"):
             with VerticalScroll():
-                yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
+                if WINDOWS:
+                    yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
+                else:
+                    yield Static("GPU information not currently supported on non-Windows systems...")
         yield Footer()
