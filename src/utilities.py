@@ -91,7 +91,7 @@ def bytes2human(num_bytes: int) -> str:
     """
 
     # If the number of bytes is negative, return '0.0 B'
-    if num_bytes < 0 or num_bytes is None:
+    if num_bytes is None or num_bytes < 0:
         return "0.0 B"
 
     # Create a map of symbols and their corresponding thresholds. Note: 1 << 10 == 1 * 2 ** 10
