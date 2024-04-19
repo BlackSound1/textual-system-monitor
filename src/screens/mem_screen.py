@@ -34,6 +34,7 @@ class MemoryScreen(Screen):
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('drive')", "Drives"),
         ("m", "switch_mode('main')", "Main Screen"),
+        ("v", "switch_mode('gpu')", "GPU"),
     ]
 
     mem_data = reactive(get_mem_data())

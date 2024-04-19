@@ -20,6 +20,7 @@ class CPU_Screen(Screen):
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('drive')", "Drives"),
         ("m", "switch_mode('mem')", "Memory"),
+        ("v", "switch_mode('gpu')", "GPU"),
     ]
 
     cpu_data = reactive(get_cpu_data())

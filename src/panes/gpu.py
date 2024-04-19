@@ -1,39 +1,10 @@
-from typing import List, Dict, Union
-
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
-from wmi import WMI
 
-from src.utilities import AVAILABILITY_MAP, bytes2human, RARE_INTERVAL
-
-
-def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
-    """
-    Get GPU data from WMI
-
-    :return: The list of GPU data, per video controller.
-    """
-
-    wmi_object = WMI()
-    video_controllers = wmi_object.Win32_VideoController()
-
-    gpu_data_list = []
-
-    for controller in video_controllers:
-        gpu_data_list.append({
-            "gpu": controller.Name,
-            "driver_version": controller.DriverVersion,
-            "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
-            "adapter_ram": bytes2human(controller.AdapterRAM),
-            "availability": AVAILABILITY_MAP.get(controller.Availability),
-            "refresh": controller.CurrentRefreshRate,
-            "status": controller.Status,
-        })
-
-    return gpu_data_list
+from src.utilities import get_gpu_data, RARE_INTERVAL
 
 
 class GPU_Usage(Static):
@@ -86,6 +57,13 @@ class GPU_Usage(Static):
         :return: None
         """
         self.update_gpu_data = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+
+    def on_click(self) -> None:
+        """
+        When this pane is clicked, switch to the GPU screen
+        :return: None
+        """
+        self.app.switch_mode("gpu")
 
     def compose(self) -> ComposeResult:
         """

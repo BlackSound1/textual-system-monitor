@@ -20,6 +20,7 @@ class NetworkScreen(Screen):
         ("n", "switch_mode('main')", "Main Screen"),
         ("d", "switch_mode('drive')", "Drives"),
         ("m", "switch_mode('mem')", "Memory"),
+        ("v", "switch_mode('gpu')", "GPU"),
     ]
 
     io = reactive(get_network_stats())

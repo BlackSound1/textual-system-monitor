@@ -114,6 +114,7 @@ class GuideScreen(Screen):
         ('n', "", ''),
         ('d', "", ''),
         ('m', "", ''),
+        ('v', "", ''),
         ('g', "switch_mode('main')", 'Main Screen'),
     ]
 

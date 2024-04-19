@@ -40,6 +40,7 @@ class ProcessesScreen(Screen):
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('drive')", "Drives"),
         ("m", "switch_mode('mem')", "Memory"),
+        ("v", "switch_mode('gpu')", "GPU"),
     ]
 
     initial = True

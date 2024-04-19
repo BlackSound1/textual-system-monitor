@@ -7,6 +7,7 @@ from .screens.network_screen import NetworkScreen
 from .screens.cpu_screen import CPU_Screen
 from .screens.drive_screen import DriveScreen
 from .screens.mem_screen import MemoryScreen
+from .screens.gpu_screen import GPU_Screen
 
 
 class Monitor(App[str]):
@@ -21,6 +22,7 @@ class Monitor(App[str]):
         "cpu": CPU_Screen,
         "drive": DriveScreen,
         "mem": MemoryScreen,
+        "gpu": GPU_Screen,
     }
 
     def on_mount(self) -> None:
