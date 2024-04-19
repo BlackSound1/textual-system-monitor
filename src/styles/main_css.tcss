@@ -87,6 +87,10 @@
     border-subtitle-align: center;
 }
 
+#gpu:light {
+    border: deeppink;
+}
+
 .proc {
     margin: 0 0 1 0;
 }
