@@ -9,6 +9,7 @@ from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
 
 class NetInfo(Static):
     BORDER_TITLE = "Network Info"
+    BORDER_SUBTITLE = f"Updated every {NET_INTERVAL} seconds"
 
     io = reactive(get_network_stats())
 
