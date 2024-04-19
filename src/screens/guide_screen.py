@@ -16,6 +16,7 @@ Created in Python using Textual.
 \t- Memory Usage
 \t- CPU Usage
 \t- Network Information
+\t- GPU Information
 \t- More coming soon?
 
 - Dark and Light modes
@@ -39,6 +40,7 @@ COLOR_MAP = {
     "mem_color": {"dark": "#FFFF00", "light": "#F3CD00"},
     "cpu_color": {"dark": "#ADD8E6", "light": "#7272f6"},
     "net_color": {"dark": "#90EE90", "light": "#008000"},
+    "gpu_color": {"dark": "#FFC0CB", "light": "#FF1493"},
 }
 
 MONITORING_STRING = """
@@ -78,6 +80,15 @@ MONITORING_STRING = """
 [{net_color}]Network Info[/]: An updated list of network interfaces. Each interface has info on:
   - Download amount and speed
   - Upload amount and speed
+  
+[{gpu_color}]GPU Info[/]: Updated GPU info about:
+  - GPU name: The name of the GPU
+  - Driver version: The version of the GPU driver
+  - Resolution: The resolution of the GPU
+  - Adapter RAM: How much RAM is allocated to the GPU
+  - Availability: The availability of the GPU. Can have one of several different statuses
+  - Refresh: The refresh rate of the GPU
+  - Status: The current status of the GPU
 """
 
 
