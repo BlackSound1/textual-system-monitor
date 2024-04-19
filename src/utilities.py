@@ -1,7 +1,15 @@
 from typing import List, Union, Dict
+import platform
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
-from wmi import WMI
+
+if platform.system() == "Windows":
+    WINDOWS = True
+else:
+    WINDOWS = False
+
+if WINDOWS:
+    from wmi import WMI
 
 """
 CONSTANTS
