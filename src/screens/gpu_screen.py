@@ -65,6 +65,10 @@ class GPU_Screen(Screen):
             table.add_row(name, version, resolution, ram, availability, refresh, status)
 
     def on_mount(self) -> None:
+        """
+        Perform initial setup for the GPU Screen
+        :return: None
+        """
 
         self.update_gpu_data = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
