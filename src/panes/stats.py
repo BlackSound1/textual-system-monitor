@@ -3,6 +3,7 @@ from textual.widgets import Static
 
 from .cpu import CPU_Usage
 from .drives import DriveUsage
+from .gpu import GPU_Usage
 from .memory import MemUsage
 from .network import NetInfo
 
@@ -20,4 +21,4 @@ class Stats(Static):
         yield MemUsage(id="mem")
         yield CPU_Usage(id="cpu")
         yield NetInfo(id='network')
-        # yield GPU_Usage(id="gpu")
+        yield GPU_Usage(id="gpu")

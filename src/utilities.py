@@ -2,10 +2,38 @@ from typing import List, Union, Dict
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
 
+"""
+CONSTANTS
+"""
+
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
 RARE_INTERVAL = 10
 NET_INTERVAL = 1
+
+AVAILABILITY_MAP = {
+        1: "Other",
+        2: "Unknown",
+        3: "Running or Full Power",
+        4: "Warning",
+        5: "In Test",
+        6: "Not Applicable",
+        7: "Power Off",
+        8: "Off Line",
+        9: "Off Duty",
+        10: "Degraded",
+        11: "Not Installed",
+        12: "Install Error",
+        13: "Power Save - Unknown",
+        14: "Power Save - Low Power Mode",
+        15: "Power Save - Standby",
+        16: "Power Cycle",
+        17: "Power Save - Warning",
+        18: "Paused",
+        19: "Not Ready",
+        20: "Not Configured",
+        21: "Quiesced",
+    }
 
 """
 GLOBAL UTILITIES

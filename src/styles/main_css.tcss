@@ -78,6 +78,15 @@
     border: green;
 }
 
+#gpu {
+    background: $panel;
+    border: pink;
+    border-title-color: $text;
+    border-title-align: center;
+    border-subtitle-color: $text;
+    border-subtitle-align: center;
+}
+
 .proc {
     margin: 0 0 1 0;
 }
