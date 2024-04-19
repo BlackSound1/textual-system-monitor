@@ -1,28 +1,36 @@
+from typing import List, Dict, Union
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
-import wmi
+from wmi import WMI
 
 from src.utilities import AVAILABILITY_MAP, bytes2human, RARE_INTERVAL
 
 
-def get_gpu_data():
-    wmi_object = wmi.WMI()
-    gpus = wmi_object.Win32_VideoController()
+def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
+    """
+    Get GPU data from WMI
+
+    :return: The list of GPU data, per video controller.
+    """
+
+    wmi_object = WMI()
+    video_controllers = wmi_object.Win32_VideoController()
 
     gpu_data_list = []
 
-    for gpu in gpus:
+    for controller in video_controllers:
         gpu_data_list.append({
-            "GPU": gpu.Name,
-            "Driver Version": gpu.DriverVersion,
-            "Resolution": f"{gpu.CurrentHorizontalResolution} x {gpu.CurrentVerticalResolution}",
-            "Adapter RAM": bytes2human(gpu.AdapterRAM),
-            "Availability": AVAILABILITY_MAP.get(gpu.Availability),
-            "Refresh": gpu.CurrentRefreshRate,
-            "Status": gpu.Status,
+            "gpu": controller.Name,
+            "driver_version": controller.DriverVersion,
+            "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
+            "adapter_ram": bytes2human(controller.AdapterRAM),
+            "availability": AVAILABILITY_MAP.get(controller.Availability),
+            "refresh": controller.CurrentRefreshRate,
+            "status": controller.Status,
         })
 
     return gpu_data_list
@@ -35,10 +43,22 @@ class GPU_Usage(Static):
     gpu_data = reactive(get_gpu_data())
 
     def update_gpu_data(self) -> None:
+        """
+        Update GPU data
+
+        :return: None
+        """
         self.gpu_data = get_gpu_data()
 
     def watch_gpu_data(self, gpu_data: list) -> None:
+        """
+        Watch `gpu_data` and update the Static Widget with the new information
 
+        :param gpu_data: The list of new GPU data
+        :return: None
+        """
+
+        # First, grab the Static Widget
         try:
             static = self.query_one("#gpu-static", Static)
         except NoMatches:
@@ -46,22 +66,32 @@ class GPU_Usage(Static):
 
         static_content = ""
 
+        # Then, for each video controller, update the Static Widget with its new information
         for gpu in gpu_data:
             static_content += (
-                f"GPU: {gpu['GPU']}\n"
-                f"Driver Version: {gpu['Driver Version']}\n"
-                f"Resolution: {gpu['Resolution']}\n"
-                f"Adapter RAM: {gpu['Adapter RAM']}\n"
-                f"Availability: {gpu['Availability']}\n"
-                f"Refresh: {gpu['Refresh']} Hz\n"
-                f"Status: {gpu['Status']}\n"
+                f"GPU: {gpu['gpu']}\n"
+                f"Driver Version: {gpu['driver_version']}\n"
+                f"Resolution: {gpu['resolution']}\n"
+                f"Adapter RAM: {gpu['adapter_ram']}\n"
+                f"Availability: {gpu['availability']}\n"
+                f"Refresh: {gpu['refresh']} Hz\n"
+                f"Status: {gpu['status']}\n"
             )
 
         static.update(static_content)
 
-    def on_mount(self):
+    def on_mount(self) -> None:
+        """
+        Set interval to update the memory information.
+        :return: None
+        """
         self.update_gpu_data = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
     def compose(self) -> ComposeResult:
+        """
+        Generate a ComposeResult by yielding a vertically-scrolling Static widget with the GPU information.
+        :return: The ComposeResult
+        """
+
         with VerticalScroll():
             yield Static(id="gpu-static")
