@@ -21,6 +21,7 @@ class DriveScreen(Screen):
         ("n", "switch_mode('network')", "Network"),
         ("d", "switch_mode('main')", "Main Screen"),
         ("m", "switch_mode('mem')", "Memory"),
+        ("v", "switch_mode('gpu')", "GPU"),
     ]
 
     # Set the default disks value to an initial call to the function

@@ -1,11 +1,40 @@
 from typing import List, Union, Dict
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
+from wmi import WMI
+
+"""
+CONSTANTS
+"""
 
 COMMON_INTERVAL = 1 / 5
 UNCOMMON_INTERVAL = 3
 RARE_INTERVAL = 10
 NET_INTERVAL = 1
+
+AVAILABILITY_MAP = {
+    1: "Other",
+    2: "Unknown",
+    3: "Running or Full Power",
+    4: "Warning",
+    5: "In Test",
+    6: "Not Applicable",
+    7: "Power Off",
+    8: "Off Line",
+    9: "Off Duty",
+    10: "Degraded",
+    11: "Not Installed",
+    12: "Install Error",
+    13: "Power Save - Unknown",
+    14: "Power Save - Low Power Mode",
+    15: "Power Save - Standby",
+    16: "Power Cycle",
+    17: "Power Save - Warning",
+    18: "Paused",
+    19: "Not Ready",
+    20: "Not Configured",
+    21: "Quiesced",
+}
 
 """
 GLOBAL UTILITIES
@@ -62,7 +91,7 @@ def bytes2human(num_bytes: int) -> str:
     """
 
     # If the number of bytes is negative, return '0.0 B'
-    if num_bytes < 0:
+    if num_bytes is None or num_bytes < 0:
         return "0.0 B"
 
     # Create a map of symbols and their corresponding thresholds. Note: 1 << 10 == 1 * 2 ** 10
@@ -216,3 +245,34 @@ def get_mem_data() -> dict:
         "used": virtual_memory().used,
         "percent": virtual_memory().percent
     }
+
+
+"""
+GPU UTILITIES
+"""
+
+
+def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
+    """
+    Get GPU data from WMI
+
+    :return: The list of GPU data, per video controller.
+    """
+
+    wmi_object = WMI()
+    video_controllers = wmi_object.Win32_VideoController()
+
+    gpu_data_list = []
+
+    for controller in video_controllers:
+        gpu_data_list.append({
+            "gpu": controller.Name,
+            "driver_version": controller.DriverVersion,
+            "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
+            "adapter_ram": bytes2human(controller.AdapterRAM),
+            "availability": AVAILABILITY_MAP.get(controller.Availability),
+            "refresh": controller.CurrentRefreshRate,
+            "status": controller.Status,
+        })
+
+    return gpu_data_list

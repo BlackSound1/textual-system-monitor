@@ -51,6 +51,7 @@ The right-hand side shows various system stats.
 - **Memory Usage**: Shows the current status of the system's memory.
 - **CPU Usage**: Shows the current load of each of the systems cores, as well as overall CPU load.
 - **Network Info**: Shows the status of each connected network interface.
+- **GPU Info**: Shows the status of the GPU.
 
 # Assumptions
 
@@ -148,7 +149,7 @@ own remote branch (because you forked it). Create a pull request from your forke
 - [x] Add CPU load info to Processes and sort by highest load
 - [ ] Make certain panels searchable as necessary
 - [x] Make panels clickable to open a new screen showing more info
-- [ ] Add GPU info
+- [x] Add GPU info
 - [ ] Add temperature info
 - [x] Improve colors, so dark mode toggling looks better
 - [x] Lay out information in a nicer, less cluttered way

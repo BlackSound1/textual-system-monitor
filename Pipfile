@@ -7,6 +7,7 @@ name = "pypi"
 textual = "*"
 psutil = "*"
 idna = "*"
+wmi = "*"
 
 [dev-packages]
 flake8 = "*"
