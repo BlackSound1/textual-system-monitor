@@ -26,14 +26,14 @@ as pressing their corresponding keys.
 
 # Main Screen
 
-![Mar29Screenshot.png](images/Mar29Screenshot.png)
+![Main Screen](images/Apr21Screenshot.png)
 
 The above is the Main screen. This is the default screen when the app starts. All system stats are visible here.
 
-On the left are currently active Processes. On the right are Drive, Memory, CPU, and Network stats.
+On the left are currently active Processes. On the right are Drive, Memory, CPU, Network, and GPU stats.
 
 Each of these panes is clickable to reach a dedicated screen for that stat. In addition, the keys displayed on the Footer
-also navigate to those dedicated screens.
+also navigate to and from those dedicated screens.
 
 As the screen gets too small to display all information, the individual panes will show scroll bars as necessary.
 
@@ -43,7 +43,10 @@ When pressing the `G` key (only accessible from the Main screen), the in-app Gui
 
 ![Guide](images/Guide_Screen.png)
 
-As you can see from the Footer, there is less you can do from this Guide screen than the Main screen.
+This screen displays overall information about the app on the left and descriptions of what information the app tracks
+on the right.
+
+As you can see from the Footer, there is less you can do from the Guide screen than the Main screen.
 
 # Processes
 
@@ -59,7 +62,7 @@ The `Pause` button toggles whether to pause updating the list or not.
 
 # Drives
 
-When clicking the Drives pane on the Main screen, or clicking the `d` key, the Drives screen appears:
+When clicking the Drives pane on the Main screen, or pressing the `d` key, the Drives screen appears:
 
 ![Drives](images/Drive_Screen.png)
 
@@ -67,7 +70,7 @@ This also shows a nice table view of currently mounted storage and media drives.
 
 # Memory
 
-When clicking the Memory pane on the Main screen, or clicking the `m` key, the Memory screen appears:
+When clicking the Memory pane on the Main screen, or pressing the `m` key, the Memory screen appears:
 
 ![Memory](images/Memory_Screen.png)
 
@@ -76,7 +79,7 @@ display this nicely yet.
 
 # CPU
 
-When clicking the CPU pane on the Main screen, or clicking the `c` key, the CPU screen appears:
+When clicking the CPU pane on the Main screen, or pressing the `c` key, the CPU screen appears:
 
 ![CPU](images/CPU_Screen.png)
 
@@ -85,8 +88,16 @@ On the right is a table of the per-core CPU load breakdown.
 
 # Network
 
-When clicking the Network pane on the Main screen, or clicking the `n` key, the Network screen appears:
+When clicking the Network pane on the Main screen, or pressing the `n` key, the Network screen appears:
 
 ![Network](images/Network_Screen.png)
 
 This shows a table view of the same information present on the Main screen.
+
+# GPU
+
+When clicking the GPU pane on the Main screen, or pressing the `v` (for video) key, the GPU screen appears.
+
+![GPU](images/GPU_Screen.png)
+
+This screen is threadbare for now.
