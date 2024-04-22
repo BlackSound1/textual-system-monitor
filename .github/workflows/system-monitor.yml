@@ -4,15 +4,24 @@ on:
   push:
     branches:
       - "main"
+    paths:
+      - '**/*.py'  # Run the job only when Python files change
+      - 'Makefile'  # Run the job when Makefile changes
+      - '.github/workflows/system-monitor.yml'  # Run the job when system-monitor.yml changes
   pull_request:
     branches:
       - "main"
+    paths:
+      - '**/*.py'  # Run the job only when Python files change
+      - 'Makefile'  # Run the job when Makefile changes
+      - '.github/workflows/system-monitor.yml'  # Run the job when system-monitor.yml changes
 
 permissions:
   contents: read
 
 jobs:
   build:
+    name: Sanity Check
     runs-on: ubuntu-latest
 
     steps:
