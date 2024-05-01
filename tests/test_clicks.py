@@ -24,44 +24,26 @@ class TestClicks(IsolatedAsyncioTestCase):
         :return: None
         """
 
+        # Define the screens to be tested
+        SCREENS = [
+            ("#processes", ProcessesScreen, "Processes", 'p'),
+            ("#drives", DriveScreen, "Drive Usage", 'd'),
+            ("#mem", MemoryScreen, "Memory", 'm'),
+            ("#cpu", CPU_Screen, "CPU Usage", 'c'),
+            ("#network", NetworkScreen, "Network", 'n'),
+            ("#gpu", GPU_Screen, "GPU Info", 'v')
+        ]
+
         async with self.monitor_app.run_test() as pilot:
 
-            # Test clicking the processes pane
-            await pilot.click("#processes")
-            self.assertIs(type(self.monitor_app.screen), ProcessesScreen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Processes")
-            await pilot.press("p")
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
+            # Iterate over each screen
+            for screen_class, screen_type, screen_title, screen_key in SCREENS:
 
-            # Test clicking the drives pane
-            await pilot.click("#drives")
-            self.assertIs(type(self.monitor_app.screen), DriveScreen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Drive Usage")
-            await pilot.press("d")
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
+                # Click on the screen and assert that we are on the correct screen
+                await pilot.click(screen_class)
+                self.assertIs(type(self.monitor_app.screen), screen_type)
+                self.assertEqual(self.monitor_app.screen.BORDER_TITLE, screen_title)
 
-            # Test clicking the memory pane
-            await pilot.click("#mem")
-            self.assertIs(type(self.monitor_app.screen), MemoryScreen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Memory")
-            await pilot.press("m")
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
-
-            # Test clicking the CPU pane
-            await pilot.click("#cpu")
-            self.assertIs(type(self.monitor_app.screen), CPU_Screen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "CPU Usage")
-            await pilot.press("c")
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
-
-            # Test clicking the network pane
-            await pilot.click("#network")
-            self.assertIs(type(self.monitor_app.screen), NetworkScreen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "Network")
-            await pilot.press("n")
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
-
-            # Test clicking the GPU pane
-            await pilot.click("#gpu")
-            self.assertIs(type(self.monitor_app.screen), GPU_Screen)
-            self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "GPU Info")
+                # Press the key to go back to the main screen and assert that we are on the main screen
+                await pilot.press(screen_key)
+                self.assertIs(type(self.monitor_app.screen), MainScreen)
