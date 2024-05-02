@@ -3,10 +3,7 @@ import platform
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
 
-if platform.system() == "Windows":
-    WINDOWS = True
-else:
-    WINDOWS = False
+WINDOWS = platform.system() == "Windows"
 
 if WINDOWS:
     from wmi import WMI
