@@ -27,10 +27,19 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Set up Python 3.9, pipenv and Pipfile dependencies
-        uses: palewire/install-python-pipenv-pipfile@v3
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9.13"
+          cache: 'pipenv'
+      - name: Install Pipenv
+        run: pip install pipenv
+      - name: Install Pipfile dependencies
+        run: pipenv install --dev
+#      - name: Set up Python 3.9, pipenv and Pipfile dependencies
+#        uses: palewire/install-python-pipenv-pipfile@v3
+#        with:
+#          python-version: "3.9.13"
       - name: Lint with Flake8
         run: pipenv run make lint
       - name: Test with Pytest
