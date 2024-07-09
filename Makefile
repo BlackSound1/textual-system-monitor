@@ -1,5 +1,6 @@
 SHELL := bash
 .ONESHELL:
+.DEFAULT_GOAL := help
 
 .PHONY: install
 install:   ## Install dependencies
@@ -23,7 +24,7 @@ run-dev:   ## Run app in dev mode
 
 
 .PHONY: test
-test:   ## Use Pytest to test the app
+test:   ## Use Pytest to test the whole app
 	@echo ""
 	@pipenv run pytest tests
 
@@ -59,7 +60,7 @@ console:  ## Show the Textual console. Used in debugging
 
 
 .PHONY: show-tests
-show-tests: $(test_files)   ## Show all tests
+show-tests: $(test_files)   ## Show all test files
 	@echo -e ""
 	@find tests -name "*.py" -not -name "__init__.py" -print
 
