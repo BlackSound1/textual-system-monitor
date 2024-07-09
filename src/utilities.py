@@ -1,7 +1,7 @@
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Iterator
 import platform
 
-from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory
+from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
 
 WINDOWS = platform.system() == "Windows"
 
@@ -281,3 +281,22 @@ def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
         })
 
     return gpu_data_list
+
+
+"""
+PROCESS UTILITIES
+"""
+
+
+def get_non_zero_procs(procs: Iterator[Process]) -> Iterator[Process]:
+    """
+    Yield processes with non-zero PID.
+    Windows SYSTEM IDLE Process is excluded.
+
+    :param procs: Iterable of processes to iterate through
+    :return: The processes with a non-zero PID
+    """
+
+    for process in procs:
+        if process.pid != 0:
+            yield process

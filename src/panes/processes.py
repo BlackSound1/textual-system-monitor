@@ -5,7 +5,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL
+from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zero_procs
 
 
 class Processes(Static):
@@ -18,7 +18,7 @@ class Processes(Static):
     procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
     processes = reactive(
         sorted(
-            (p for p in procs),
+            get_non_zero_procs(procs),
             key=lambda x: x.info.get('cpu_percent'),
             reverse=True
         )[:10]
@@ -32,7 +32,7 @@ class Processes(Static):
         procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
 
         self.processes = sorted(
-            (p for p in procs),
+            get_non_zero_procs(procs),
             key=lambda x: x.info['cpu_percent'],
             reverse=True
         )[:10]

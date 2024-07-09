@@ -6,7 +6,7 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Header, Footer, DataTable, Button
 
-from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color
+from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs
 
 
 def get_procs(sort: bool) -> list:
@@ -20,7 +20,7 @@ def get_procs(sort: bool) -> list:
 
     if sort:
         procs = sorted(
-            (p for p in procs),
+            get_non_zero_procs(procs),
             key=lambda x: x.info.get('cpu_percent'),
             reverse=True
         )
