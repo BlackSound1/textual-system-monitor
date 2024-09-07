@@ -14,14 +14,14 @@ class DriveScreen(Screen):
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"
     BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("t", "toggle_dark", "Toggle dark mode"),
-        ("p", "switch_mode('processes')", "Processes"),
-        ("c", "switch_mode('cpu')", "CPU"),
-        ("n", "switch_mode('network')", "Network"),
-        ("d", "switch_mode('main')", "Main Screen"),
-        ("m", "switch_mode('mem')", "Memory"),
-        ("v", "switch_mode('gpu')", "GPU"),
+        ("q", "app.quit", "Quit"),
+        ("t", "app.toggle_dark", "Toggle dark mode"),
+        ("p", "app.switch_mode('processes')", "Processes"),
+        ("c", "app.switch_mode('cpu')", "CPU"),
+        ("n", "app.switch_mode('network')", "Network"),
+        ("d", "app.switch_mode('main')", "Main Screen"),
+        ("m", "app.switch_mode('mem')", "Memory"),
+        ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
     # Set the default disks value to an initial call to the function
