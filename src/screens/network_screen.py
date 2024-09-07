@@ -13,14 +13,14 @@ class NetworkScreen(Screen):
     BORDER_TITLE = "Network"
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS = [
-        ("q", "quit", "Quit"),
-        ("t", "toggle_dark", "Toggle dark mode"),
-        ("p", "switch_mode('processes')", "Processes"),
-        ("c", "switch_mode('cpu')", "CPU"),
-        ("n", "switch_mode('main')", "Main Screen"),
-        ("d", "switch_mode('drive')", "Drives"),
-        ("m", "switch_mode('mem')", "Memory"),
-        ("v", "switch_mode('gpu')", "GPU"),
+        ("q", "app.quit", "Quit"),
+        ("t", "app.toggle_dark", "Toggle dark mode"),
+        ("p", "app.switch_mode('processes')", "Processes"),
+        ("c", "app.switch_mode('cpu')", "CPU"),
+        ("n", "app.switch_mode('main')", "Main Screen"),
+        ("d", "app.switch_mode('drive')", "Drives"),
+        ("m", "app.switch_mode('mem')", "Memory"),
+        ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
     io = reactive(get_network_stats())

@@ -19,8 +19,6 @@ class DriveUsage(Static):
             "mountpoint": item.mountpoint,
             "fstype": item.fstype,
             "opts": item.opts,
-            "maxfile": item.maxfile,
-            "maxpath": item.maxpath,
         }
         for item in disk_partitions()
     )
@@ -36,8 +34,6 @@ class DriveUsage(Static):
                 "mountpoint": item.mountpoint,
                 "fstype": item.fstype,
                 "opts": item.opts,
-                "maxfile": item.maxfile,
-                "maxpath": item.maxpath,
             }
             for item in disk_partitions()
         )
