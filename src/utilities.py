@@ -80,18 +80,31 @@ def compute_percentage_color(
         return percentage, color
 
 
-def bytes2human(num_bytes: int) -> str:
+def bytes2human(num_bytes: int, base: int = 1024) -> str:
     """
     Converts bytes to human-readable format.
+
+    Can use either 1000 ot 1024 as a base.
+
+    If `base` is 1024 (default):
 
     >>> bytes2human(10000)
     '9.8 KB'
     >>> bytes2human(100001221)
     '95.4 MB'
 
+    If `base` is 1000:
+
+    >>> bytes2human(10000, base=1000)
+    '10.0 KB'
+    >>> bytes2human(100001221, base=1000)
+    '100.0 MB'
+
     Originally inspired by: https://code.activestate.com/recipes/578019
 
     :param num_bytes: The number of bytes
+    :param base: The base to use for the conversion (1000 or 1024)
+
     :return: A string representing a human-readable format of those bytes
     """
 
@@ -99,16 +112,22 @@ def bytes2human(num_bytes: int) -> str:
     if num_bytes < 0:
         return "0.0 B"
 
-    # Create a map of symbols and their corresponding thresholds. Note: 1 << 10 == 1 * 2 ** 10
+    # Determine the unit suffix based on the base
+    if base == 1024:
+        unit_suffix = 'i'
+    else:
+        unit_suffix = ''
+
+    # Create a map of symbols and their corresponding thresholds
     symbol_map = {
-        'Ki': 1 << 10,
-        'Mi': 1 << 20,
-        'Gi': 1 << 30,
-        'Ti': 1 << 40,
-        'Pi': 1 << 50,
-        'Ei': 1 << 60,
-        'Zi': 1 << 70,
-        'Yi': 1 << 80
+        f'K{unit_suffix}': base ** 1,
+        f'M{unit_suffix}': base ** 2,
+        f'G{unit_suffix}': base ** 3,
+        f'T{unit_suffix}': base ** 4,
+        f'P{unit_suffix}': base ** 5,
+        f'E{unit_suffix}': base ** 6,
+        f'Z{unit_suffix}': base ** 7,
+        f'Y{unit_suffix}': base ** 8
     }
 
     # For each symbol, check if the number of bytes is greater than the corresponding threshold
@@ -117,7 +136,7 @@ def bytes2human(num_bytes: int) -> str:
             value = float(num_bytes) / threshold
             return f'{value:.1f} {symbol}B'
 
-    # If the number of bytes is less than any threshold, return the number of bytes as-is
+    # If the number of bytes is lower than any threshold, return the number of bytes as-is
     return f'{num_bytes:.1f} B'
 
 
@@ -133,26 +152,28 @@ def get_network_stats() -> List[Dict[str, int]]:
     :return: A sorted list of dictionaries, each containing the network stats for a single interface.
     """
 
-    # Get network stats for each interface
-    interface_stats = [
-        {
-            "interface": interface,
-            "bytes_sent": stats.bytes_sent,
-            "bytes_recv": stats.bytes_recv
-        }
-        for interface, stats in net_io_counters(pernic=True).items()
-    ]
+    return sorted(
+        (
+            {
+                "interface": interface,
+                "bytes_sent": stats.bytes_sent,
+                "bytes_recv": stats.bytes_recv
+            }
+            for interface, stats in net_io_counters(pernic=True).items()
+        ),
+        key=lambda stats: stats['bytes_recv'],
+        reverse=True
+    )
 
-    # Sort interface stats by highest download amount
-    return sorted(interface_stats, key=lambda stats: stats['bytes_recv'], reverse=True)
 
-
-def update_network_static(new_stats: list, old_stats: list) -> str:
+def update_network_static(new_stats: list, old_stats: list, base: int) -> str:
     """
     Generate a string containing the updated network info for each interface
 
     :param new_stats: The updated network stats
     :param old_stats: The old network stats
+    :param base: The base to use for the conversion (1000 or 1024)
+
     :return: The string needed to update the Static widget with the new info
     """
 
@@ -161,13 +182,15 @@ def update_network_static(new_stats: list, old_stats: list) -> str:
     # For each interface, calculate the new info and add it to the string to return
     for old_stat, new_stat in zip(old_stats, new_stats):
         interface = old_stat["interface"]
-        download = bytes2human(new_stat["bytes_recv"])
-        upload = bytes2human(new_stat["bytes_sent"])
+        download = bytes2human(new_stat["bytes_recv"], base)
+        upload = bytes2human(new_stat["bytes_sent"], base)
         upload_speed = bytes2human(
-            round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2)
+            round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
+            base
         )
         download_speed = bytes2human(
-            round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2)
+            round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
+            base
         )
 
         static_content += (

@@ -13,7 +13,6 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    # SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
     MODES = {
         "main": MainScreen,
         "guide": GuideScreen,
@@ -23,6 +22,10 @@ class Monitor(App[str]):
         "drive": DriveScreen,
         "mem": MemoryScreen,
         "gpu": GPU_Screen,
+    }
+
+    CONTEXT = {
+        "kb_size" : 1024
     }
 
     def on_mount(self) -> None:

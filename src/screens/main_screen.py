@@ -23,7 +23,8 @@ class MainScreen(Screen):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
-        ('g', "app.switch_mode('guide')", 'Guide')
+        ('g', "app.switch_mode('guide')", 'Guide'),
+        ('/', 'switch_base', 'Change KB Size')
     ]
 
     def compose(self) -> ComposeResult:
@@ -40,3 +41,12 @@ class MainScreen(Screen):
             yield Stats(id="stats")
 
         yield Footer()
+
+    def action_switch_base(self) -> None:
+        """
+        Toggles the app-wide KB size between 1000 and 1024.
+
+        :return: None
+        """
+
+        self.app.CONTEXT['kb_size'] = 1000 if self.app.CONTEXT['kb_size'] == 1024 else 1024

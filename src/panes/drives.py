@@ -52,6 +52,9 @@ class DriveUsage(Static):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         static_content = ""
 
         # Next, go through each updated disk, get its info, and update the content of the Static with
@@ -67,9 +70,9 @@ class DriveUsage(Static):
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
-                used = bytes2human(usage.used)
-                free = bytes2human(usage.free)
-                total = bytes2human(usage.total)
+                used = bytes2human(usage.used, kb_size)
+                free = bytes2human(usage.free, kb_size)
+                total = bytes2human(usage.total, kb_size)
 
                 # Add the new info for this drive to the content of the Static widget
                 static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "

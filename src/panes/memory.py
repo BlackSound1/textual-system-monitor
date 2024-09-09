@@ -33,10 +33,13 @@ class MemUsage(Static):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         static.update(
-            f"Total Memory: {bytes2human(data['total'])}\n\n"
-            f"Available Memory: {bytes2human(data['available'])}\n\n"
-            f"Used: {bytes2human(data['used'])}\n\n"
+            f"Total Memory: {bytes2human(data['total'], kb_size)}\n\n"
+            f"Available Memory: {bytes2human(data['available'], kb_size)}\n\n"
+            f"Used: {bytes2human(data['used'], kb_size)}\n\n"
             f"Percentage Used: {compute_percentage_color(data['percent'])} %"
         )
 

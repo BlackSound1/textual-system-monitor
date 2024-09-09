@@ -34,9 +34,12 @@ class NetInfo(Static):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         # Next, go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
-        static_content = update_network_static(new, old)
+        static_content = update_network_static(new, old, kb_size)
 
         # Update the content of the Static widget with the new info for all interfaces
         static.update(static_content)
