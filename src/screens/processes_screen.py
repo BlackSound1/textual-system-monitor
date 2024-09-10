@@ -29,8 +29,7 @@ def get_procs(sort: bool) -> list:
 
 
 class ProcessesScreen(Screen):
-    BORDER_TITLE = "Processes"
-    BORDER_SUBTITLE = f"Updated every {UNCOMMON_INTERVAL} seconds"
+    BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),

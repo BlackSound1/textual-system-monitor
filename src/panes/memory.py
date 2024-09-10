@@ -8,13 +8,13 @@ from ..utilities import compute_percentage_color, bytes_to_human, COMMON_INTERVA
 
 
 class MemUsage(Static):
-    BORDER_TITLE = "Memory Usage"
+    BORDER_TITLE = f"Memory Usage - Updated every {COMMON_INTERVAL}s"
 
     mem_data = reactive(get_mem_data())
 
     def update_mem_data(self) -> None:
         """
-        Update the memory information by calling `_get_mem_data`
+        Update the memory information by calling `get_mem_data()`
 
         :return: None
         """
@@ -52,7 +52,7 @@ class MemUsage(Static):
 
     def compose(self) -> ComposeResult:
         """
-        Generate a ComposeResult by yielding a vertically-scrolling Static widget with the memory information.
+        Generate a ComposeResult by yielding a vertically scrolling Static widget with the memory information.
 
         :return: The ComposeResult
         """

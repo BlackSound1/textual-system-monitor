@@ -13,7 +13,7 @@ WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Screen(Screen):
-    BORDER_TITLE = "GPU Info"
+    BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [

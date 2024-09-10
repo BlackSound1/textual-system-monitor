@@ -24,7 +24,7 @@ def reset_percentage_color(digits: Digits) -> Digits:
 
 
 class MemoryScreen(Screen):
-    BORDER_TITLE = "Memory"
+    BORDER_TITLE = f"Memory - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/mem_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),

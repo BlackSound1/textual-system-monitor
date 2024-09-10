@@ -12,8 +12,7 @@ WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Usage(Static):
-    BORDER_TITLE = "GPU Info"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
+    BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
 
     # Get initial GPU data. Different from approach in `update_gpu_data` because
     # we can't use `self` (to get the kb_size context) outside a function

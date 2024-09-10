@@ -8,7 +8,7 @@ from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
 
 
 class CPU_Usage(Static):
-    BORDER_TITLE = "CPU Usage"
+    BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
 
     cpu_data = reactive(get_cpu_data())
 

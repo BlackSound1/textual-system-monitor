@@ -43,6 +43,4 @@ class Monitor(App[str]):
         :return: None
         """
 
-        self.app.screen.styles.background = 'red'
-
         self.app.CONTEXT['kb_size'] = 1000 if self.app.CONTEXT['kb_size'] == 1024 else 1024

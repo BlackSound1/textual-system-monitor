@@ -9,8 +9,8 @@ from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zer
 
 
 class Processes(Static):
-    BORDER_TITLE = "Processes"
-    BORDER_SUBTITLE = f"Top 10 by CPU Load - Updated every {UNCOMMON_INTERVAL} seconds"
+    BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
+    BORDER_SUBTITLE = f"Top 10 by CPU Load"
 
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 

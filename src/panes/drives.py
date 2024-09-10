@@ -9,8 +9,7 @@ from ..utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
 class DriveUsage(Static):
-    BORDER_TITLE = "Drive Usage"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
+    BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
