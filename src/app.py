@@ -13,7 +13,6 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    # SCREENS = {'main': MainScreen(), 'guide': Guide(), 'processes': ProcessesScreen()}
     MODES = {
         "main": MainScreen,
         "guide": GuideScreen,
@@ -25,6 +24,10 @@ class Monitor(App[str]):
         "gpu": GPU_Screen,
     }
 
+    CONTEXT = {
+        "kb_size" : 1024
+    }
+
     def on_mount(self) -> None:
         """
         Set the initial MainScreen screen
@@ -32,3 +35,12 @@ class Monitor(App[str]):
         :return: None
         """
         self.switch_mode("main")
+
+    def action_switch_base(self) -> None:
+        """
+        Toggles the app-wide KB size between 1000 and 1024.
+
+        :return: None
+        """
+
+        self.app.CONTEXT['kb_size'] = 1000 if self.app.CONTEXT['kb_size'] == 1024 else 1024

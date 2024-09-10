@@ -7,13 +7,13 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Header, Footer, DataTable, Static
 
-from src.utilities import RARE_INTERVAL, get_gpu_data
+from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
 
 WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Screen(Screen):
-    BORDER_TITLE = "GPU Info"
+    BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
@@ -25,9 +25,22 @@ class GPU_Screen(Screen):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('main')", "Main Screen"),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     gpu_data = reactive(get_gpu_data()) if WINDOWS else None
+
+    def adapter_ram_wrapper(self, adapter_ram: str) -> str:
+        """
+        Adapter RAM info is given as a string like '1.0 GiB'. Need to separate this to convert the number
+        to a human-readable value of Bytes.
+
+        :param adapter_ram: The string corresponding to the adapter RAM for this GPU
+        :return: The `bytes_to_human` representation of the adapter RAM
+        """
+
+        kb_size = self.app.CONTEXT['kb_size']
+        return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
         """
@@ -36,7 +49,20 @@ class GPU_Screen(Screen):
         :return: None
         """
         if WINDOWS:
-            self.gpu_data = get_gpu_data()
+            self.gpu_data = [
+                {
+                    "gpu": gpu['gpu'],
+                    'driver_version': gpu['driver_version'],
+                    'resolution': gpu['resolution'],
+                    'adapter_ram': self.adapter_ram_wrapper(gpu['adapter_ram']),
+                    'availability': gpu['availability'],
+                    'refresh': gpu['refresh'],
+                    'status': gpu['status'],
+                }
+                for gpu in get_gpu_data()
+            ]
+        else:
+            self.gpu_data = None
 
     def watch_gpu_data(self, gpu_data: list) -> None:
         """

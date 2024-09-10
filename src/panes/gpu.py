@@ -6,16 +6,29 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from src.utilities import get_gpu_data, RARE_INTERVAL
+from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram
 
 WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Usage(Static):
-    BORDER_TITLE = "GPU Info"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
+    BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
 
+    # Get initial GPU data. Different from approach in `update_gpu_data` because
+    # we can't use `self` (to get the kb_size context) outside a function
     gpu_data = reactive(get_gpu_data()) if WINDOWS else None
+
+    def adapter_ram_wrapper(self, adapter_ram: str) -> str:
+        """
+        Adapter RAM info is given as a string like '1.0 GiB'. Need to separate this to convert the number
+        to a human-readable value of Bytes.
+
+        :param adapter_ram: The string corresponding to the adapter RAM for this GPU
+        :return: The `bytes_to_human` representation of the adapter RAM
+        """
+
+        kb_size = self.app.CONTEXT['kb_size']
+        return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
         """
@@ -25,7 +38,20 @@ class GPU_Usage(Static):
         """
 
         if WINDOWS:
-            self.gpu_data = get_gpu_data()
+            self.gpu_data = [
+             {
+                 "gpu": gpu['gpu'],
+                 'driver_version': gpu['driver_version'],
+                 'resolution': gpu['resolution'],
+                 'adapter_ram': self.adapter_ram_wrapper(gpu['adapter_ram']),
+                 'availability': gpu['availability'],
+                 'refresh': gpu['refresh'],
+                 'status': gpu['status'],
+             }
+             for gpu in get_gpu_data()
+         ]
+        else:
+            self.gpu_data = None
 
     def watch_gpu_data(self, gpu_data: list) -> None:
         """

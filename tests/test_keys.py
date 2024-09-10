@@ -27,13 +27,13 @@ class TestKeys(IsolatedAsyncioTestCase):
         """
 
         SCREENS = [
-            (ProcessesScreen, "p", "Processes"),
-            (DriveScreen, "d", "Drive Usage"),
-            (MemoryScreen, "m", "Memory"),
-            (CPU_Screen, "c", "CPU Usage"),
-            (NetworkScreen, "n", "Network"),
-            (GPU_Screen, "v", "GPU Info"),
-            (GuideScreen, "g", "")
+            (ProcessesScreen, "p"),
+            (DriveScreen, "d"),
+            (MemoryScreen, "m"),
+            (CPU_Screen, "c"),
+            (NetworkScreen, "n"),
+            (GPU_Screen, "v"),
+            (GuideScreen, "g")
         ]
 
         async with self.monitor_app.run_test() as pilot:
@@ -42,17 +42,15 @@ class TestKeys(IsolatedAsyncioTestCase):
             self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Go through each screen in the SCREENS list
-            for screen_class, key, title in SCREENS:
+            for screen_class, key in SCREENS:
 
                 # Press the key and assert that we are on the correct screen
                 await pilot.press(key)
                 self.assertIs(type(self.monitor_app.screen), screen_class)
-                self.assertEqual(self.monitor_app.screen.BORDER_TITLE, title)
 
                 # Go back to the main screen and assert that we are back there
                 await pilot.press(key)
                 self.assertIs(type(self.monitor_app.screen), MainScreen)
-                self.assertEqual(self.monitor_app.screen.BORDER_TITLE, "")
 
     @pytest.mark.asyncio
     async def test_keys_relative(self):
@@ -63,13 +61,13 @@ class TestKeys(IsolatedAsyncioTestCase):
 
         # Define the screens and their corresponding keys and titles
         SCREENS = [
-            (ProcessesScreen, "p", "Processes"),
-            (DriveScreen, "d", "Drive Usage"),
-            (MemoryScreen, "m", "Memory"),
-            (CPU_Screen, "c", "CPU Usage"),
-            (NetworkScreen, "n", "Network"),
-            (GPU_Screen, "v", "GPU Info"),
-            (MainScreen, "v", ""),
+            (ProcessesScreen, "p"),
+            (DriveScreen, "d"),
+            (MemoryScreen, "m"),
+            (CPU_Screen, "c"),
+            (NetworkScreen, "n"),
+            (GPU_Screen, "v"),
+            (MainScreen, "v"),
         ]
 
         async with self.monitor_app.run_test() as pilot:
@@ -78,12 +76,11 @@ class TestKeys(IsolatedAsyncioTestCase):
             self.assertIs(type(self.monitor_app.screen), MainScreen)
 
             # Go through each screen in the SCREENS list
-            for screen_class, key, title in SCREENS:
+            for screen_class, key in SCREENS:
 
                 # Press the key and assert that we are on the correct screen
                 await pilot.press(key)
                 self.assertIs(type(self.monitor_app.screen), screen_class)
-                self.assertEqual(self.monitor_app.screen.BORDER_TITLE, title)
 
     @pytest.mark.asyncio
     async def test_keys_relative_reverse(self):

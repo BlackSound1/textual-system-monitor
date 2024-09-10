@@ -8,8 +8,7 @@ from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
 
 
 class NetInfo(Static):
-    BORDER_TITLE = "Network Info"
-    BORDER_SUBTITLE = f"Updated every {NET_INTERVAL} seconds"
+    BORDER_TITLE = f"Network Info - Updated every {NET_INTERVAL}s"
 
     io = reactive(get_network_stats())
 
@@ -34,9 +33,12 @@ class NetInfo(Static):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         # Next, go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
-        static_content = update_network_static(new, old)
+        static_content = update_network_static(new, old, kb_size)
 
         # Update the content of the Static widget with the new info for all interfaces
         static.update(static_content)

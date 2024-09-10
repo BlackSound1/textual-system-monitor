@@ -6,11 +6,11 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Footer, Header, DataTable
 
-from src.utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
+from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
 class DriveScreen(Screen):
-    BORDER_TITLE = "Drive Usage"
+    BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"
     BINDINGS = [
@@ -22,6 +22,7 @@ class DriveScreen(Screen):
         ("d", "app.switch_mode('main')", "Main Screen"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     # Set the default disks value to an initial call to the function
@@ -64,6 +65,9 @@ class DriveScreen(Screen):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         table.clear(columns=True)
         table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
 
@@ -79,9 +83,9 @@ class DriveScreen(Screen):
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
-                used = bytes2human(usage.used)
-                free = bytes2human(usage.free)
-                total = bytes2human(usage.total)
+                used = bytes_to_human(usage.used, kb_size)
+                free = bytes_to_human(usage.free, kb_size)
+                total = bytes_to_human(usage.total, kb_size)
 
                 table.add_row(device, options, fs, pct, total, used, free)
 

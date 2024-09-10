@@ -10,7 +10,7 @@ from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
 
 class CPU_Screen(Screen):
 
-    BORDER_TITLE = "CPU Usage"
+    BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/cpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),

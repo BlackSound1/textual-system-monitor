@@ -25,16 +25,16 @@ This project also works on Linux (at least Ubuntu), but GPU information is not i
 - At any time, press `t` to toggle dark mode.
 - In-app Guide screen.
 - Each system stat has its own dedicated page that can be seen with by hitting the corresponding key, or by clicking
-  the corresponding pane in the main screen.
+  the corresponding pane on the main screen.
 - Footer, which always show what keys can be pressed and what they do.
 - Header, which shows a clock.
 
-Check out [Exmaples.md](Examples.md) for a guide on each screen.
+Check out [EXAMPLES.md](EXAMPLES.md) for a guide on each screen.
 
 # Main Page Overview
 
-The main page is the page that is shown when the app first starts, and is the one in the above screenshot. It has
-simple views for all system stats.
+The main page is the page that is shown when the app first starts and is the one in the above screenshot.
+It has simple views for all system stats.
 
 ## Processes
 
@@ -47,7 +47,7 @@ The right-hand side shows various system stats.
 
 - **Drive Usage**: Shows info on the current drives on your system. Includes both storage and media drives.
 - **Memory Usage**: Shows the current status of the system's memory.
-- **CPU Usage**: Shows the current load of each of the systems cores, as well as overall CPU load.
+- **CPU Usage**: Shows the current load of each system core, as well as overall CPU load.
 - **Network Info**: Shows the status of each connected network interface.
 - **GPU Info**: Shows the status of the GPU.
 
@@ -143,12 +143,13 @@ own remote branch (because you forked it). Create a pull request from your forke
 # Desired Features
 
 - [x] Make all panels live-update
-- [x] Add CPU load info to Processes and sort by highest load
+- [x] Add CPU load info to Processes and sort by the highest load
 - [ ] Make certain panels searchable as necessary
 - [x] Make panels clickable to open a new screen showing more info
 - [x] Add GPU info
 - [ ] Add temperature info
 - [x] Improve colors, so dark mode toggling looks better
 - [x] Lay out information in a nicer, less cluttered way
-- [ ] Add support for Linux and MacOS
+- [ ] Add support for Linux and macOS
 - [x] Make all command-line duties possible in `make`
+- [x] Add the ability to switch between 1000 and 1024-byte kilobytes

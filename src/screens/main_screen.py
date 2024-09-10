@@ -23,7 +23,8 @@ class MainScreen(Screen):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
-        ('g', "app.switch_mode('guide')", 'Guide')
+        ('g', "app.switch_mode('guide')", 'Guide'),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     def compose(self) -> ComposeResult:

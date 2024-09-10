@@ -5,12 +5,11 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
+from ..utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
 class DriveUsage(Static):
-    BORDER_TITLE = "Drive Usage"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
+    BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
@@ -52,6 +51,9 @@ class DriveUsage(Static):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         static_content = ""
 
         # Next, go through each updated disk, get its info, and update the content of the Static with
@@ -67,9 +69,9 @@ class DriveUsage(Static):
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
-                used = bytes2human(usage.used)
-                free = bytes2human(usage.free)
-                total = bytes2human(usage.total)
+                used = bytes_to_human(usage.used, kb_size)
+                free = bytes_to_human(usage.free, kb_size)
+                total = bytes_to_human(usage.total, kb_size)
 
                 # Add the new info for this drive to the content of the Static widget
                 static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
