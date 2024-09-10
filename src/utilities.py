@@ -80,7 +80,7 @@ def compute_percentage_color(
         return percentage, color
 
 
-def bytes2human(num_bytes: int, base: int = 1024) -> str:
+def bytes_to_human(num_bytes: int, base: int = 1024) -> str:
     """
     Converts bytes to human-readable format.
 
@@ -88,16 +88,16 @@ def bytes2human(num_bytes: int, base: int = 1024) -> str:
 
     If `base` is 1024 (default):
 
-    >>> bytes2human(10000)
+    >>> bytes_to_human(10000)
     '9.8 KB'
-    >>> bytes2human(100001221)
+    >>> bytes_to_human(100001221)
     '95.4 MB'
 
     If `base` is 1000:
 
-    >>> bytes2human(10000, base=1000)
+    >>> bytes_to_human(10000, base=1000)
     '10.0 KB'
-    >>> bytes2human(100001221, base=1000)
+    >>> bytes_to_human(100001221, base=1000)
     '100.0 MB'
 
     Originally inspired by: https://code.activestate.com/recipes/578019
@@ -182,13 +182,13 @@ def update_network_static(new_stats: list, old_stats: list, base: int) -> str:
     # For each interface, calculate the new info and add it to the string to return
     for old_stat, new_stat in zip(old_stats, new_stats):
         interface = old_stat["interface"]
-        download = bytes2human(new_stat["bytes_recv"], base)
-        upload = bytes2human(new_stat["bytes_sent"], base)
-        upload_speed = bytes2human(
+        download = bytes_to_human(new_stat["bytes_recv"], base)
+        upload = bytes_to_human(new_stat["bytes_sent"], base)
+        upload_speed = bytes_to_human(
             round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
             base
         )
-        download_speed = bytes2human(
+        download_speed = bytes_to_human(
             round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
             base
         )
@@ -297,7 +297,7 @@ def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
             "gpu": controller.Name,
             "driver_version": controller.DriverVersion,
             "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
-            "adapter_ram": bytes2human(controller.AdapterRAM),
+            "adapter_ram": bytes_to_human(controller.AdapterRAM),
             "availability": AVAILABILITY_MAP.get(controller.Availability),
             "refresh": controller.CurrentRefreshRate,
             "status": controller.Status,
@@ -319,7 +319,7 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     """
 
     adapter_ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
-    return bytes2human(adapter_ram, kb_size)
+    return bytes_to_human(adapter_ram, kb_size)
 
 
 """

@@ -5,7 +5,7 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Header, Footer, DataTable
 
-from src.utilities import NET_INTERVAL, get_network_stats, bytes2human
+from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human
 
 
 class NetworkScreen(Screen):
@@ -58,13 +58,13 @@ class NetworkScreen(Screen):
         # with the new info for each interface
         for old_stat, new_stat in zip(old_stats, new_stats):
             interface = old_stat["interface"]
-            download = bytes2human(new_stat["bytes_recv"], kb_size)
-            upload = bytes2human(new_stat["bytes_sent"], kb_size)
-            upload_speed = bytes2human(
+            download = bytes_to_human(new_stat["bytes_recv"], kb_size)
+            upload = bytes_to_human(new_stat["bytes_sent"], kb_size)
+            upload_speed = bytes_to_human(
                 round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
                 kb_size
             )
-            download_speed = bytes2human(
+            download_speed = bytes_to_human(
                 round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
                 kb_size
             )

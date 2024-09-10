@@ -4,7 +4,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, bytes2human, COMMON_INTERVAL, get_mem_data
+from ..utilities import compute_percentage_color, bytes_to_human, COMMON_INTERVAL, get_mem_data
 
 
 class MemUsage(Static):
@@ -37,9 +37,9 @@ class MemUsage(Static):
         kb_size = self.app.CONTEXT['kb_size']
 
         static.update(
-            f"Total Memory: {bytes2human(data['total'], kb_size)}\n\n"
-            f"Available Memory: {bytes2human(data['available'], kb_size)}\n\n"
-            f"Used: {bytes2human(data['used'], kb_size)}\n\n"
+            f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
+            f"Available Memory: {bytes_to_human(data['available'], kb_size)}\n\n"
+            f"Used: {bytes_to_human(data['used'], kb_size)}\n\n"
             f"Percentage Used: {compute_percentage_color(data['percent'])} %"
         )
 

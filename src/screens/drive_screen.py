@@ -6,7 +6,7 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Footer, Header, DataTable
 
-from src.utilities import compute_percentage_color, bytes2human, RARE_INTERVAL
+from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
 class DriveScreen(Screen):
@@ -83,9 +83,9 @@ class DriveScreen(Screen):
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
-                used = bytes2human(usage.used, kb_size)
-                free = bytes2human(usage.free, kb_size)
-                total = bytes2human(usage.total, kb_size)
+                used = bytes_to_human(usage.used, kb_size)
+                free = bytes_to_human(usage.free, kb_size)
+                total = bytes_to_human(usage.total, kb_size)
 
                 table.add_row(device, options, fs, pct, total, used, free)
 

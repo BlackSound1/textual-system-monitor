@@ -5,7 +5,7 @@ from textual.reactive import reactive
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer, Digits
 
-from src.utilities import get_mem_data, bytes2human, compute_percentage_color, COMMON_INTERVAL
+from src.utilities import get_mem_data, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
 
 def reset_percentage_color(digits: Digits) -> Digits:
@@ -71,17 +71,17 @@ class MemoryScreen(Screen):
         kb_size = self.app.CONTEXT['kb_size']
 
         # Update total information
-        value, denom = bytes2human(data['total'], kb_size).split(' ')
+        value, denom = bytes_to_human(data['total'], kb_size).split(' ')
         total_label.update(f"Total Memory ({denom}):\t")
         total_digits.update(f"{value}")
 
         # Update available information
-        value, denom = bytes2human(data['available'], kb_size).split(' ')
+        value, denom = bytes_to_human(data['available'], kb_size).split(' ')
         avail_label.update(f"Available Memory ({denom}):\t")
         avail_digits.update(f"{value}")
 
         # Update used information
-        value, denom = bytes2human(data['used'], kb_size).split(' ')
+        value, denom = bytes_to_human(data['used'], kb_size).split(' ')
         used_label.update(f"Used Memory ({denom}):\t")
         used_digits.update(f"{value}")
 
