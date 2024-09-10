@@ -24,7 +24,7 @@ class GPU_Usage(Static):
         to a human-readable value of Bytes.
 
         :param adapter_ram: The string corresponding to the adapter RAM for this GPU
-        :return: The `bytes2human` representation of the adapter RAM
+        :return: The `bytes_to_human` representation of the adapter RAM
         """
 
         kb_size = self.app.CONTEXT['kb_size']
