@@ -41,5 +41,3 @@ class MainScreen(Screen):
             yield Stats(id="stats")
 
         yield Footer()
-
-
