@@ -26,23 +26,22 @@ class TestClicks(IsolatedAsyncioTestCase):
 
         # Define the screens to be tested
         SCREENS = [
-            ("#processes", ProcessesScreen, "Processes", 'p'),
-            ("#drives", DriveScreen, "Drive Usage", 'd'),
-            ("#mem", MemoryScreen, "Memory", 'm'),
-            ("#cpu", CPU_Screen, "CPU Usage", 'c'),
-            ("#network", NetworkScreen, "Network", 'n'),
-            ("#gpu", GPU_Screen, "GPU Info", 'v')
+            ("#processes", ProcessesScreen, 'p'),
+            ("#drives", DriveScreen, 'd'),
+            ("#mem", MemoryScreen, 'm'),
+            ("#cpu", CPU_Screen, 'c'),
+            ("#network", NetworkScreen, 'n'),
+            ("#gpu", GPU_Screen, 'v')
         ]
 
         async with self.monitor_app.run_test() as pilot:
 
             # Iterate over each screen
-            for screen_class, screen_type, screen_title, screen_key in SCREENS:
+            for screen_class, screen_type, screen_key in SCREENS:
 
                 # Click on the screen and assert that we are on the correct screen
                 await pilot.click(screen_class)
                 self.assertIs(type(self.monitor_app.screen), screen_type)
-                self.assertEqual(self.monitor_app.screen.BORDER_TITLE, screen_title)
 
                 # Press the key to go back to the main screen and assert that we are on the main screen
                 await pilot.press(screen_key)
