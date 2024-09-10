@@ -35,6 +35,7 @@ class MemoryScreen(Screen):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('main')", "Main Screen"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     mem_data = reactive(get_mem_data())
@@ -66,18 +67,21 @@ class MemoryScreen(Screen):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         # Update total information
-        value, denom = bytes2human(data['total']).split(' ')
+        value, denom = bytes2human(data['total'], kb_size).split(' ')
         total_label.update(f"Total Memory ({denom}):\t")
         total_digits.update(f"{value}")
 
         # Update available information
-        value, denom = bytes2human(data['available']).split(' ')
+        value, denom = bytes2human(data['available'], kb_size).split(' ')
         avail_label.update(f"Available Memory ({denom}):\t")
         avail_digits.update(f"{value}")
 
         # Update used information
-        value, denom = bytes2human(data['used']).split(' ')
+        value, denom = bytes2human(data['used'], kb_size).split(' ')
         used_label.update(f"Used Memory ({denom}):\t")
         used_digits.update(f"{value}")
 

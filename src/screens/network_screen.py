@@ -21,6 +21,7 @@ class NetworkScreen(Screen):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     io = reactive(get_network_stats())
@@ -46,6 +47,9 @@ class NetworkScreen(Screen):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         # Clear the table and add the columns
         table.clear(columns=True)
         table.add_columns("Interface", "Download", "Download Speed (/s)", "Upload", "Upload Speed (/s)")
@@ -54,13 +58,15 @@ class NetworkScreen(Screen):
         # with the new info for each interface
         for old_stat, new_stat in zip(old_stats, new_stats):
             interface = old_stat["interface"]
-            download = bytes2human(new_stat["bytes_recv"])
-            upload = bytes2human(new_stat["bytes_sent"])
+            download = bytes2human(new_stat["bytes_recv"], kb_size)
+            upload = bytes2human(new_stat["bytes_sent"], kb_size)
             upload_speed = bytes2human(
-                round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2)
+                round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
+                kb_size
             )
             download_speed = bytes2human(
-                round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2)
+                round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
+                kb_size
             )
 
             table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)

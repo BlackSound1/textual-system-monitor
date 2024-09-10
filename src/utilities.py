@@ -84,7 +84,7 @@ def bytes2human(num_bytes: int, base: int = 1024) -> str:
     """
     Converts bytes to human-readable format.
 
-    Can use either 1000 ot 1024 as a base.
+    Can use either 1000 or 1024 as a base.
 
     If `base` is 1024 (default):
 
@@ -304,6 +304,22 @@ def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
         })
 
     return gpu_data_list
+
+
+def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
+    """
+    Actually convert the adapter RAM to a human-readable string.
+
+    Given a string like '1.0 GiB', separate this into '1.0' and 'GiB', convert the '1.0' to a quantity of bytes,
+    then send that number of bytes to `bytes2human`.
+
+    :param adapter_ram: The string corresponding to the given adapters RAM
+    :param kb_size: The KB size to use in conversion
+    :return: The string corresponding to the given adapters RAM, converted to a human-readable string
+    """
+
+    adapter_ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
+    return bytes2human(adapter_ram, kb_size)
 
 
 """

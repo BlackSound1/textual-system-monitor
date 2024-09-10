@@ -22,6 +22,7 @@ class DriveScreen(Screen):
         ("d", "app.switch_mode('main')", "Main Screen"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     # Set the default disks value to an initial call to the function
@@ -64,6 +65,9 @@ class DriveScreen(Screen):
         except NoMatches:
             return
 
+        # Get KB size
+        kb_size = self.app.CONTEXT['kb_size']
+
         table.clear(columns=True)
         table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
 
@@ -79,9 +83,9 @@ class DriveScreen(Screen):
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
-                used = bytes2human(usage.used)
-                free = bytes2human(usage.free)
-                total = bytes2human(usage.total)
+                used = bytes2human(usage.used, kb_size)
+                free = bytes2human(usage.free, kb_size)
+                total = bytes2human(usage.total, kb_size)
 
                 table.add_row(device, options, fs, pct, total, used, free)
 

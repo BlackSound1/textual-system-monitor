@@ -15,7 +15,7 @@ class Stats(Static):
         """
         Method to compose and yield DriveUsage, MemUsage, CPU_Usage, and NetInfo objects.
 
-        :return: a ComposeResult object.
+        :return: A ComposeResult object.
         """
         yield DriveUsage(id="drives")
         yield MemUsage(id="mem")

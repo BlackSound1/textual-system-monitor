@@ -35,3 +35,14 @@ class Monitor(App[str]):
         :return: None
         """
         self.switch_mode("main")
+
+    def action_switch_base(self) -> None:
+        """
+        Toggles the app-wide KB size between 1000 and 1024.
+
+        :return: None
+        """
+
+        self.app.screen.styles.background = 'red'
+
+        self.app.CONTEXT['kb_size'] = 1000 if self.app.CONTEXT['kb_size'] == 1024 else 1024
