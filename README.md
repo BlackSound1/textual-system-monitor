@@ -18,7 +18,7 @@ This project also works on Linux (at least Ubuntu), but GPU information is not i
 - Percentages (indicating load) are color-coordinated according to certain thresholds.
   High percentages are <span style="color: red;">red</span>, medium percentages are
   <span style="color: yellow;">yellow</span>, and low percentages are <span style="color: green;">green</span>.
-- Quantities of bytes are automatically shown in human-readable formats, such as KiB and GiB.
+- Quantities of bytes are automatically shown in human-readable formats, such as KiB and GiB. Can switch a kilobyte to be defined as 1000 bytes (KB) or 1024 bytes (KiB).
 - If the window is too small, all panes have vertical scroll bars, such as the one in the
   Processes section in this screenshot.
 - At any time, press `q` to exit the app. `Crtl-C` also works.
