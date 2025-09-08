@@ -60,7 +60,7 @@ The right-hand side shows various system stats.
   - If you don't have Make installed, then whenever I invoke a `make` command here, look for it in the `Makefile`, and
     run those commands directly (without the '`@`').
 
-# Pipenv
+# Virtual Environment
 
 This app uses Pipenv as its virtual environment and package manager. Install with:
 
@@ -71,6 +71,8 @@ pip install --user pipenv
 **Note**: If you don't want to use Pipenv, a `requirements.txt` file has been provided, though it's not guaranteed to be
 a priority of mine to update.
 
+**Note**: If you don't have Pipenv, [UV](https://docs.astral.sh/uv/) is also possible to use.
+
 # Getting Started
 
 Clone with:
@@ -79,6 +81,8 @@ Clone with:
 git clone https://github.com/BlackSound1/textual-system-monitor.git &&
   cd textual-system-monitor
 ```
+
+## Without UV
 
 Install dependencies with:
 
@@ -92,6 +96,20 @@ Run the app with:
 
 ```shell
 make run
+```
+
+## With UV
+
+UV handles your environment for you. You can use the `make` commands from within UV like:
+
+```shell
+uv run make run
+```
+
+Or just run it with:
+
+```shell
+uv run main.py
 ```
 
 # Make
