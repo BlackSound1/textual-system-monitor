@@ -1,6 +1,8 @@
+from typing import Any
 from unittest import IsolatedAsyncioTestCase
 
 import pytest
+from textual.screen import Screen
 
 from src.app import Monitor
 from src.screens.cpu_screen import CPU_Screen
@@ -25,7 +27,7 @@ class TestClicks(IsolatedAsyncioTestCase):
         """
 
         # Define the screens to be tested
-        SCREENS = [
+        SCREENS: list[tuple[str, type[Screen[Any]], str]] = [
             ("#processes", ProcessesScreen, 'p'),
             ("#drives", DriveScreen, 'd'),
             ("#mem", MemoryScreen, 'm'),

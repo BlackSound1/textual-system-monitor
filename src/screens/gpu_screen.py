@@ -12,7 +12,7 @@ from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
 WINDOWS = platform.system() == "Windows"
 
 
-class GPU_Screen(Screen):
+class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"

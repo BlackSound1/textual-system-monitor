@@ -12,7 +12,7 @@ from ..panes.stats import Stats
 logging.basicConfig(handlers=[TextualHandler()], level=logging.WARNING)
 
 
-class MainScreen(Screen):
+class MainScreen(Screen[None]):
     CSS_PATH = "../styles/main_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),

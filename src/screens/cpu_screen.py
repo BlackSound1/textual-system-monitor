@@ -8,7 +8,7 @@ from textual.widgets import Static, Header, Footer, DataTable
 from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
 
 
-class CPU_Screen(Screen):
+class CPU_Screen(Screen[None]):
 
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/cpu_css.tcss"

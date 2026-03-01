@@ -8,7 +8,7 @@ from textual.widgets import Header, Footer, DataTable
 from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human
 
 
-class NetworkScreen(Screen):
+class NetworkScreen(Screen[None]):
 
     BORDER_TITLE = f"Network - Updated every {NET_INTERVAL}s"
     CSS_PATH = "../styles/network_css.tcss"

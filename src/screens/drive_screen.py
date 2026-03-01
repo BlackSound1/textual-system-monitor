@@ -9,7 +9,7 @@ from textual.widgets import Footer, Header, DataTable
 from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
-class DriveScreen(Screen):
+class DriveScreen(Screen[None]):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"

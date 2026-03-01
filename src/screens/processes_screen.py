@@ -1,4 +1,6 @@
-from psutil import process_iter
+from typing import Iterator
+
+from psutil import Process, process_iter
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.css.query import NoMatches
@@ -9,7 +11,7 @@ from textual.widgets import Header, Footer, DataTable, Button
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs
 
 
-def get_procs(sort: bool) -> list:
+def get_procs(sort: bool) -> Iterator[Process]:
     """
     Get the list of processes, depending on the value of `sort`
     :param sort: Whether to sort the processes by CPU load
@@ -28,7 +30,7 @@ def get_procs(sort: bool) -> list:
     return procs
 
 
-class ProcessesScreen(Screen):
+class ProcessesScreen(Screen[None]):
     BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [

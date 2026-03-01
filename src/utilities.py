@@ -206,7 +206,7 @@ CPU UTILITIES
 """
 
 
-def get_cpu_data() -> dict:
+def get_cpu_data() -> dict[str, int | None | float | list[float]]:
     """
     Return a dictionary containing CPU data with keys 'cores', 'overall', and 'individual'
 
@@ -219,7 +219,7 @@ def get_cpu_data() -> dict:
     }
 
 
-def display_percentages_CPU(percentages: list) -> str:
+def display_percentages_CPU(percentages: list[float]) -> str:
     """
     Display the percentages of each core in a string
 
@@ -238,7 +238,7 @@ def display_percentages_CPU(percentages: list) -> str:
     return formatted_percentages
 
 
-def update_CPU_static(cpu_data: dict) -> str:
+def update_CPU_static(cpu_data: dict[str, int | float | list[float] | None]) -> str:
     """
     Generates a string of updated CPU data to update the CPU Screen Static with
 

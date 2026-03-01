@@ -104,7 +104,7 @@ def get_formatted_monitoring_string(mode: str = "dark") -> str:
     return MONITORING_STRING.format(**{label: color_dict[mode] for label, color_dict in COLOR_MAP.items()})
 
 
-class GuideScreen(Screen):
+class GuideScreen(Screen[None]):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
