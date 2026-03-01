@@ -624,6 +624,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pytest-asyncio"
+version = "0.23.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/cd/ef/80107b9e939875ad613c705d99d91e4510dcf5fed29613ac9aecbcba0a8d/pytest-asyncio-0.23.6.tar.gz", hash = "sha256:ffe523a89c1c222598c76856e76852b787504ddb72dd5d9b6617ffa8aa2cde5f", size = 46203, upload-time = "2024-03-19T07:17:34.888Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e0/c9/de22c040d4c821c6c797ca1d720f1f4b2f4293d5757e811c62ae544496c4/pytest_asyncio-0.23.6-py3-none-any.whl", hash = "sha256:68516fdd1018ac57b846c9846b954f0393b26f094764a28c955eabb0536a4e8a", size = 17552, upload-time = "2024-03-19T07:17:32.951Z" },
+]
+
+[[package]]
 name = "rich"
 version = "14.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -673,26 +685,28 @@ source = { virtual = "." }
 dependencies = [
     { name = "psutil" },
     { name = "textual" },
-    { name = "textual-dev" },
 ]
 
 [package.dev-dependencies]
 dev = [
     { name = "flake8" },
     { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "textual-dev" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "psutil", specifier = "==5.9.8" },
     { name = "textual", specifier = "==0.57.0" },
-    { name = "textual-dev", specifier = "==1.5.1" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "flake8", specifier = "==7.0.0" },
     { name = "pytest", specifier = "==8.1.1" },
+    { name = "pytest-asyncio", specifier = "==0.23.6" },
+    { name = "textual-dev", specifier = "==1.5.1" },
 ]
 
 [[package]]
