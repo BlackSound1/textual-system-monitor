@@ -1,4 +1,4 @@
-from typing import List, Union, Dict, Iterator
+from typing import List, Literal, Union, Dict, Iterator
 import platform
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
@@ -47,9 +47,9 @@ GLOBAL UTILITIES
 
 
 def compute_percentage_color(
-        percentage: Union[int, float],
+        percentage: int | float,
         combine_output: bool = True
-) -> Union[str, tuple[int, str]]:
+) -> str | tuple[float, Literal["green", "yellow", "red"]]:
     """
     Takes a given percentage and returns that percentage, colored according to
     whether usage is high, medium, or low.
