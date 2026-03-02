@@ -1,3 +1,5 @@
+from typing import cast
+
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.css.query import NoMatches
@@ -48,13 +50,15 @@ class MemoryScreen(Screen[None]):
         """
         self.mem_data = get_mem_data()
 
-    def watch_mem_data(self, data: dict) -> None:
+    def watch_mem_data(self, data: dict[str, int | float]) -> None:
         """
         Watch for changes in the memory data and update the Widgets accordingly
 
         :param data: The new memory data
         :return: None
         """
+
+        from src.app import Monitor
 
         try:
             total_digits = self.query_one("#total-digits", Digits)
@@ -68,7 +72,7 @@ class MemoryScreen(Screen[None]):
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         # Update total information
         value, denom = bytes_to_human(data['total'], kb_size).split(' ')
@@ -125,7 +129,7 @@ class MemoryScreen(Screen[None]):
         :return: None
         """
 
-        self.update_mem_data = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+        self.set_interval(COMMON_INTERVAL, self.update_mem_data)
 
         try:
             container = self.query_one("#mem-container", expect_type=Container)

@@ -1,3 +1,5 @@
+from typing import cast
+
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
@@ -51,13 +53,15 @@ class DriveScreen(Screen[None]):
             for item in disk_partitions()
         )
 
-    def watch_disks(self, disks: list) -> None:
+    def watch_disks(self, disks: list[dict[str, str]]) -> None:
         """
         Define what happens when `self.disks` changes.
 
         Update the Drive Usage pane with Statics for each disk
         :param disks: The list of new disks to render
         """
+
+        from src.app import Monitor
 
         # First, grab the DataTable Widget
         try:
@@ -66,7 +70,7 @@ class DriveScreen(Screen[None]):
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         table.clear(columns=True)
         table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
@@ -95,7 +99,7 @@ class DriveScreen(Screen[None]):
         :return: None
         """
 
-        self.update_disks = self.set_interval(RARE_INTERVAL, self.update_disks)
+        self.set_interval(RARE_INTERVAL, self.update_disks)
 
         try:
             container = self.query_one("#drive-screen-container", expect_type=Container)

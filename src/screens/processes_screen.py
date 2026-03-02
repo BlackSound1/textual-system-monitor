@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, cast
 
 from psutil import Process, process_iter
 from textual.app import ComposeResult
@@ -11,7 +11,7 @@ from textual.widgets import Header, Footer, DataTable, Button
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs
 
 
-def get_procs(sort: bool) -> Iterator[Process]:
+def get_procs(sort: bool) -> Iterator[Process] | list[Process]:
     """
     Get the list of processes, depending on the value of `sort`
     :param sort: Whether to sort the processes by CPU load
@@ -23,7 +23,7 @@ def get_procs(sort: bool) -> Iterator[Process]:
     if sort:
         procs = sorted(
             get_non_zero_procs(procs),
-            key=lambda x: x.info.get('cpu_percent'),
+            key=lambda x: cast(float, x.info.get('cpu_percent')),
             reverse=True
         )
 
@@ -87,7 +87,7 @@ class ProcessesScreen(Screen[None]):
             sort_button.label = "Sorted" if self.sort else "Unsorted"
             sort_button.variant = "success" if self.sort else "error"
 
-    def watch_processes(self, procs: list) -> None:
+    def watch_processes(self, procs: Iterator[Process] | list[Process]) -> None:
         """
         Define what happens when `self.processes` changes.
 
@@ -127,7 +127,7 @@ class ProcessesScreen(Screen[None]):
         :return: None
         """
 
-        self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+        self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
         try:
             container = self.query_one("#process-container", expect_type=Container)

@@ -1,3 +1,5 @@
+from typing import cast
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
@@ -6,6 +8,9 @@ from textual.screen import Screen
 from textual.widgets import Header, Footer, DataTable
 
 from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human
+
+
+type NetworkStatsType = list[dict[str, str | int]]
 
 
 class NetworkScreen(Screen[None]):
@@ -32,7 +37,7 @@ class NetworkScreen(Screen[None]):
         """
         self.io = get_network_stats()
 
-    def watch_io(self, old_stats: list, new_stats: list) -> None:
+    def watch_io(self, old_stats: NetworkStatsType, new_stats: NetworkStatsType) -> None:
         """
         Define what happens when `self.io` changes.
 
@@ -41,6 +46,8 @@ class NetworkScreen(Screen[None]):
         :param new_stats: The list of new interface info to use
         """
 
+        from src.app import Monitor
+
         # First, grab the DataTable Widget
         try:
             table = self.query_one("#network-screen-table", expect_type=DataTable)
@@ -48,7 +55,7 @@ class NetworkScreen(Screen[None]):
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         # Clear the table and add the columns
         table.clear(columns=True)
@@ -58,14 +65,19 @@ class NetworkScreen(Screen[None]):
         # with the new info for each interface
         for old_stat, new_stat in zip(old_stats, new_stats):
             interface = old_stat["interface"]
-            download = bytes_to_human(new_stat["bytes_recv"], kb_size)
-            upload = bytes_to_human(new_stat["bytes_sent"], kb_size)
+            new_bytes_sent = cast(int, new_stat["bytes_sent"])
+            old_bytes_sent = cast(int, old_stat["bytes_sent"])
+            new_bytes_recv = cast(int, new_stat["bytes_recv"])
+            old_bytes_recv = cast(int, old_stat["bytes_recv"])
+
+            download = bytes_to_human(new_bytes_recv, kb_size)
+            upload = bytes_to_human(new_bytes_sent, kb_size)
             upload_speed = bytes_to_human(
-                round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
+                round((new_bytes_sent - old_bytes_sent) / NET_INTERVAL, 2),
                 kb_size
             )
             download_speed = bytes_to_human(
-                round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
+                round((new_bytes_recv - old_bytes_recv) / NET_INTERVAL, 2),
                 kb_size
             )
 
@@ -77,7 +89,7 @@ class NetworkScreen(Screen[None]):
         :return: None
         """
 
-        self.update_io = self.set_interval(NET_INTERVAL, self.update_io)
+        self.set_interval(NET_INTERVAL, self.update_io)
 
         try:
             container = self.query_one("#network-container", expect_type=Container)

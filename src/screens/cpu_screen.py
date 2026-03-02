@@ -1,3 +1,5 @@
+from typing import cast
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
@@ -32,7 +34,7 @@ class CPU_Screen(Screen[None]):
         """
         self.cpu_data = get_cpu_data()
 
-    def watch_cpu_data(self, cpu_data: dict) -> None:
+    def watch_cpu_data(self, cpu_data: dict[str, int | float | list[float] | None]) -> None:
         """
         Watch CPU data and update the CPU Screen with the new information
 
@@ -53,7 +55,7 @@ class CPU_Screen(Screen[None]):
         individual = [compute_percentage_color(core) for core in cpu_data['individual']]
 
         # Update the Static Widget
-        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
+        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(cast(float, overall))} %\n\n"
         static.update(static_content)
 
         # Clear the table and add the columns
@@ -83,7 +85,7 @@ class CPU_Screen(Screen[None]):
         :return: None
         """
 
-        self.update_cpu_data = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+        self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
 
         try:
             container = self.query_one("#cpu-screen-container", expect_type=Container)

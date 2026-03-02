@@ -1,4 +1,5 @@
 import platform
+from typing import cast
 
 from textual.app import ComposeResult
 from textual.containers import Container, VerticalScroll
@@ -39,7 +40,9 @@ class GPU_Screen(Screen[None]):
         :return: The `bytes_to_human` representation of the adapter RAM
         """
 
-        kb_size = self.app.CONTEXT['kb_size']
+        from src.app import Monitor
+
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
         return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
@@ -54,7 +57,7 @@ class GPU_Screen(Screen[None]):
                     "gpu": gpu['gpu'],
                     'driver_version': gpu['driver_version'],
                     'resolution': gpu['resolution'],
-                    'adapter_ram': self.adapter_ram_wrapper(gpu['adapter_ram']),
+                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu['adapter_ram'])),
                     'availability': gpu['availability'],
                     'refresh': gpu['refresh'],
                     'status': gpu['status'],
@@ -64,7 +67,7 @@ class GPU_Screen(Screen[None]):
         else:
             self.gpu_data = None
 
-    def watch_gpu_data(self, gpu_data: list) -> None:
+    def watch_gpu_data(self, gpu_data:  list[dict[str, str | int]]) -> None:
         """
         Watch `gpu_data` and update the Static Widget with the new information
 
@@ -101,7 +104,7 @@ class GPU_Screen(Screen[None]):
         :return: None
         """
 
-        self.update_gpu_data = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+        self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
             container = self.query_one("#gpu-container", expect_type=Container)
