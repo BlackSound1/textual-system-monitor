@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Any, cast
 
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
@@ -50,7 +50,7 @@ class NetworkScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = self.query_one("#network-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#network-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 

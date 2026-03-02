@@ -1,5 +1,5 @@
 import platform
-from typing import cast
+from typing import Any, cast
 
 from textual.app import ComposeResult
 from textual.containers import Container, VerticalScroll
@@ -77,7 +77,7 @@ class GPU_Screen(Screen[None]):
 
         # First, grab the Static Widget
         try:
-            table = self.query_one("#gpu-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#gpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 

@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Any, cast
 
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
@@ -65,7 +65,7 @@ class DriveScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = self.query_one("#drive-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#drive-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 

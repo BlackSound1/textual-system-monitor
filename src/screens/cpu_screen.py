@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Any, cast
 
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
@@ -45,7 +45,7 @@ class CPU_Screen(Screen[None]):
         # First, grab the Static and DataTable Widgets
         try:
             static = self.query_one("#cpu-screen-static", expect_type=Static)
-            table = self.query_one("#cpu-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#cpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 

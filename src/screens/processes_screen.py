@@ -1,4 +1,4 @@
-from typing import Iterator, cast
+from typing import Any, Iterator, cast
 
 from psutil import Process, process_iter
 from textual.app import ComposeResult
@@ -97,7 +97,7 @@ class ProcessesScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = self.query_one("#process-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#process-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
