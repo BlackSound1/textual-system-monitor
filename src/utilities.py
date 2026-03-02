@@ -1,4 +1,4 @@
-from typing import List, Literal, Union, Dict, Iterator
+from typing import List, Literal, Union, Dict, Iterator, cast
 import platform
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
@@ -80,7 +80,7 @@ def compute_percentage_color(
         return percentage, color
 
 
-def bytes_to_human(num_bytes: int, base: int = 1024) -> str:
+def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
     """
     Converts bytes to human-readable format.
 
@@ -133,7 +133,7 @@ def bytes_to_human(num_bytes: int, base: int = 1024) -> str:
     # For each symbol, check if the number of bytes is greater than the corresponding threshold
     for symbol, threshold in reversed(list(symbol_map.items())):
         if abs(num_bytes) >= threshold:
-            value = float(num_bytes) / threshold
+            value = num_bytes / threshold
             return f'{value:.1f} {symbol}B'
 
     # If the number of bytes is lower than any threshold, return the number of bytes as-is
@@ -145,7 +145,7 @@ NETWORK UTILITIES
 """
 
 
-def get_network_stats() -> List[Dict[str, int]]:
+def get_network_stats() -> list[dict[str, str | int]]:
     """
     Get network statistics per interface, sorted by highest download amount.
 
@@ -166,7 +166,11 @@ def get_network_stats() -> List[Dict[str, int]]:
     )
 
 
-def update_network_static(new_stats: list, old_stats: list, base: int) -> str:
+def update_network_static(
+        new_stats: list[dict[str,  str | int]],
+        old_stats: list[dict[str,  str | int]],
+        base: int
+    ) -> str:
     """
     Generate a string containing the updated network info for each interface
 
@@ -182,14 +186,19 @@ def update_network_static(new_stats: list, old_stats: list, base: int) -> str:
     # For each interface, calculate the new info and add it to the string to return
     for old_stat, new_stat in zip(old_stats, new_stats):
         interface = old_stat["interface"]
-        download = bytes_to_human(new_stat["bytes_recv"], base)
-        upload = bytes_to_human(new_stat["bytes_sent"], base)
+        new_bytes_sent = cast(int, new_stat["bytes_sent"])
+        old_bytes_sent = cast(int, old_stat["bytes_sent"])
+        new_bytes_recv = cast(int, new_stat["bytes_recv"])
+        old_bytes_recv = cast(int, old_stat["bytes_recv"])
+
+        download = bytes_to_human(new_bytes_recv, base)
+        upload = bytes_to_human(new_bytes_sent, base)
         upload_speed = bytes_to_human(
-            round((new_stat["bytes_sent"] - old_stat["bytes_sent"]) / NET_INTERVAL, 2),
+            round((new_bytes_sent - old_bytes_sent) / NET_INTERVAL, 2),
             base
         )
         download_speed = bytes_to_human(
-            round((new_stat["bytes_recv"] - old_stat["bytes_recv"]) / NET_INTERVAL, 2),
+            round((new_bytes_recv - old_bytes_recv) / NET_INTERVAL, 2),
             base
         )
 
@@ -248,8 +257,8 @@ def update_CPU_static(cpu_data: dict[str, int | float | list[float] | None]) -> 
 
     # Get updated CPU data
     cores = cpu_data['cores']
-    overall = cpu_data['overall']
-    individual = display_percentages_CPU(cpu_data['individual'])  # Colorize the percentages
+    overall = cast(float, cpu_data['overall'])
+    individual = display_percentages_CPU(cast(list[float], cpu_data['individual']))  # Colorize the percentages
 
     # Return the string to update the relevant Static with
     return f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\nPer Core: {individual}\n\n"
@@ -260,7 +269,7 @@ MEMORY UTILITIES
 """
 
 
-def get_mem_data() -> dict:
+def get_mem_data() -> dict[str, int | float]:
     """
     Return a dictionary containing information about the memory usage.
 
@@ -318,8 +327,8 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
 
-    adapter_ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
-    return bytes_to_human(adapter_ram, kb_size)
+    ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
+    return bytes_to_human(ram, kb_size)
 
 
 """
