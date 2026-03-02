@@ -1,3 +1,5 @@
+from typing import cast
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
@@ -20,7 +22,7 @@ class MemUsage(Static):
         """
         self.mem_data = get_mem_data()
 
-    def watch_mem_data(self, data: dict) -> None:
+    def watch_mem_data(self, data: dict[str, int | float]) -> None:
         """
         Watch for changes in the memory data and update the Static widget accordingly
 
@@ -28,13 +30,15 @@ class MemUsage(Static):
         :return: None
         """
 
+        from src.app import Monitor
+
         try:
             static = self.query_one("Static", Static)
         except NoMatches:
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         static.update(
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
@@ -64,4 +68,4 @@ class MemUsage(Static):
         Set intervals to update the memory information.
         :return: None
         """
-        self.update_mem_data = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+        self.set_interval(COMMON_INTERVAL, self.update_mem_data)

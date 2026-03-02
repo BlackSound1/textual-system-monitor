@@ -1,3 +1,5 @@
+from typing import cast
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
@@ -5,6 +7,8 @@ from textual.reactive import reactive
 from textual.widgets import Static
 
 from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
+
+type NetworkStatsType = list[dict[str, str | int]]
 
 
 class NetInfo(Static):
@@ -18,7 +22,7 @@ class NetInfo(Static):
         """
         self.io = get_network_stats()
 
-    def watch_io(self, old: list, new: list) -> None:
+    def watch_io(self, old: NetworkStatsType, new: NetworkStatsType) -> None:
         """
         Define what happens when `self.io` changes.
 
@@ -27,6 +31,8 @@ class NetInfo(Static):
         :param new: The list of new interface info to use
         """
 
+        from src.app import Monitor  # Need to import here to avoid circular import
+
         # First, grab the Static Widget
         try:
             static = self.query_one("#network-pane-static", expect_type=Static)
@@ -34,7 +40,7 @@ class NetInfo(Static):
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         # Next, go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
@@ -48,7 +54,7 @@ class NetInfo(Static):
         Hook up the `update_io` function, set to an interval of 1 second
         :return: None
         """
-        self.update_io = self.set_interval(NET_INTERVAL, self.update_io)
+        self.set_interval(NET_INTERVAL, self.update_io)
 
     def on_click(self) -> None:
         """

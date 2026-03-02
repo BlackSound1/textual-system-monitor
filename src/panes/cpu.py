@@ -59,4 +59,4 @@ class CPU_Usage(Static):
         Set intervals to update cpu usage
         :return: None
         """
-        self.update_cpu_data = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+        self.set_interval(COMMON_INTERVAL, self.update_cpu_data)

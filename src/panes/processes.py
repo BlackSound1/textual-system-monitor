@@ -1,4 +1,6 @@
-from psutil import process_iter
+from typing import Iterator, cast
+
+from psutil import Process, process_iter
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
@@ -10,7 +12,7 @@ from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zer
 
 class Processes(Static):
     BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
-    BORDER_SUBTITLE = f"Top 10 by CPU Load"
+    BORDER_SUBTITLE = "Top 10 by CPU Load"
 
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
@@ -19,7 +21,7 @@ class Processes(Static):
     processes = reactive(
         sorted(
             get_non_zero_procs(procs),
-            key=lambda x: x.info.get('cpu_percent'),
+            key=lambda x: cast(float, x.info.get('cpu_percent')),
             reverse=True
         )[:10]
     )
@@ -37,7 +39,7 @@ class Processes(Static):
             reverse=True
         )[:10]
 
-    def watch_processes(self, procs: list) -> None:
+    def watch_processes(self, procs: Iterator[Process]) -> None:
         """
         Define what happens when `self.processes` changes.
 
@@ -78,7 +80,7 @@ class Processes(Static):
         """
         Hook up the `update_processes` function, set to a long interval
         """
-        self.update_processes = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+        self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
     def on_click(self) -> None:
         """
