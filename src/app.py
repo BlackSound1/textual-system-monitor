@@ -1,4 +1,7 @@
+from typing import Callable
+
 from textual.app import App
+from textual.screen import Screen
 
 from .screens.guide_screen import GuideScreen
 from .screens.main_screen import MainScreen
@@ -13,7 +16,7 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    MODES = {
+    MODES: dict[str, str | Screen[None] | Callable[[], Screen[None]]] = {
         "main": MainScreen,
         "guide": GuideScreen,
         "processes": ProcessesScreen,
@@ -43,4 +46,4 @@ class Monitor(App[str]):
         :return: None
         """
 
-        self.app.CONTEXT['kb_size'] = 1000 if self.app.CONTEXT['kb_size'] == 1024 else 1024
+        self.CONTEXT['kb_size'] = 1000 if self.CONTEXT['kb_size'] == 1024 else 1024
