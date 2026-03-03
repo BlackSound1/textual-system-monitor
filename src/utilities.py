@@ -289,7 +289,7 @@ GPU UTILITIES
 """
 
 
-def get_gpu_data() -> List[Dict[str, Union[str, int]]]:
+def get_gpu_data() -> list[dict[str, str | int]]:
     """
     Get GPU data from WMI
 

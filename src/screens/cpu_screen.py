@@ -52,7 +52,8 @@ class CPU_Screen(Screen[None]):
         # Then, get the updated overall data
         cores = cpu_data['cores']
         overall = cpu_data['overall']
-        individual = [compute_percentage_color(core) for core in cpu_data['individual']]
+        indiv_list = cast(list[float], cpu_data['individual'])  # To please static analyzer
+        individual = [compute_percentage_color(core) for core in indiv_list]
 
         # Update the Static Widget
         static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(cast(float, overall))} %\n\n"
