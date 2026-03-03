@@ -36,4 +36,4 @@ jobs:
       - name: Lint with Flake8
         run: uv run make lint
       - name: Test with Pytest
-        run: pipenv run make test
+        run: uv run make test
