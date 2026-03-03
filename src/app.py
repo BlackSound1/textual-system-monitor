@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, ClassVar
 
 from textual.app import App
 from textual.screen import Screen
@@ -16,7 +16,7 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    MODES: dict[str, str | Screen[None] | Callable[[], Screen[None]]] = {
+    MODES: ClassVar[dict[str, str | Screen[None] | Callable[[], Screen[None]]]] = {
         "main": MainScreen,
         "guide": GuideScreen,
         "processes": ProcessesScreen,
