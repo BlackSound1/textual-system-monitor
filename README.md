@@ -2,6 +2,8 @@
 
 A beautiful system monitor app created in Python, using Textual.
 
+<p style="color: red;"> This is project is beginning to be maintained again after a long while. Things may break and documentation may be inaccurate for now. </p>
+
 This is the main page, where you can see live-updating readouts for all system stats:
 
 ![Somewhat Feature Complete Design](images/Apr21Screenshot.png)
