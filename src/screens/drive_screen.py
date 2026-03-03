@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
@@ -9,7 +11,7 @@ from textual.widgets import Footer, Header, DataTable
 from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 
-class DriveScreen(Screen):
+class DriveScreen(Screen[None]):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"
@@ -51,7 +53,7 @@ class DriveScreen(Screen):
             for item in disk_partitions()
         )
 
-    def watch_disks(self, disks: list) -> None:
+    def watch_disks(self, disks: list[dict[str, str]]) -> None:
         """
         Define what happens when `self.disks` changes.
 
@@ -59,14 +61,16 @@ class DriveScreen(Screen):
         :param disks: The list of new disks to render
         """
 
+        from src.app import Monitor
+
         # First, grab the DataTable Widget
         try:
-            table = self.query_one("#drive-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#drive-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         table.clear(columns=True)
         table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
@@ -95,7 +99,7 @@ class DriveScreen(Screen):
         :return: None
         """
 
-        self.update_disks = self.set_interval(RARE_INTERVAL, self.update_disks)
+        self.set_interval(RARE_INTERVAL, self.update_disks)
 
         try:
             container = self.query_one("#drive-screen-container", expect_type=Container)

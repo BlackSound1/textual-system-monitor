@@ -26,32 +26,32 @@ run-dev:   ## Run app in dev mode
 .PHONY: test
 test:   ## Use Pytest to test the whole app
 	@echo ""
-	@pipenv run pytest tests
+	@uv run pytest tests
 
 
 .PHONY: test-clicks
 test-clicks:   ## Use Pytest to test the clicks only
 	@echo ""
-	@pipenv run pytest tests/test_clicks.py
+	@uv run pytest tests/test_clicks.py
 
 
 .PHONY: test-keys
 test-keys:   ## Use Pytest to test the key presses only
 	@echo ""
-	@pipenv run pytest tests/test_keys.py
+	@uv run pytest tests/test_keys.py
 
 
 .PHONY: test-buttons
 test-buttons:   ## Use Pytest to test the buttons only
 	@echo ""
-	@pipenv run pytest tests/test_buttons.py
+	@uv run pytest tests/test_buttons.py
 
 
 .PHONY: lint
 lint:    ## Use Flake8 to lint the Python files
 	@echo ""
-	@pipenv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
-	@pipenv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+	@uv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
+	@uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 
 .PHONY: console

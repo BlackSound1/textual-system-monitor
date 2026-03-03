@@ -19,7 +19,7 @@ class CPU_Usage(Static):
         """
         self.cpu_data = get_cpu_data()
 
-    def watch_cpu_data(self, cpu_data: dict) -> None:
+    def watch_cpu_data(self, cpu_data: dict[str, int | float | list[float] | None]) -> None:
         """
         Watch CPU data and update the Static Widget with the new information
 
@@ -59,4 +59,4 @@ class CPU_Usage(Static):
         Set intervals to update cpu usage
         :return: None
         """
-        self.update_cpu_data = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+        self.set_interval(COMMON_INTERVAL, self.update_cpu_data)

@@ -1,3 +1,4 @@
+from typing import cast
 from unittest import IsolatedAsyncioTestCase
 
 import pytest
@@ -8,10 +9,8 @@ from src.screens.processes_screen import ProcessesScreen
 
 
 class TestButtons(IsolatedAsyncioTestCase):
-
-    @classmethod
-    async def asyncSetUp(cls):
-        cls.monitor_app = Monitor()
+    async def asyncSetUp(self):
+        self.monitor_app = Monitor()
 
     @pytest.mark.asyncio
     async def test_process_screen_buttons(self):
@@ -24,7 +23,7 @@ class TestButtons(IsolatedAsyncioTestCase):
             await pilot.press("p")
 
             # Get the Processes Screen
-            process_screen: ProcessesScreen = self.monitor_app.screen
+            process_screen = cast(ProcessesScreen, self.monitor_app.screen)
 
             # Get the Buttons
             pause_button = process_screen.query_one("#process-pause-button", expect_type=Button)

@@ -1,3 +1,5 @@
+from typing import cast
+
 from psutil import disk_partitions, disk_usage
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
@@ -37,13 +39,15 @@ class DriveUsage(Static):
             for item in disk_partitions()
         )
 
-    def watch_disks(self, disks: list) -> None:
+    def watch_disks(self, disks: list[dict[str, str]]) -> None:
         """
         Define what happens when `self.disks` changes.
 
         Update the Drive Usage pane with Statics for each disk
         :param disks: The list of new disks to render
         """
+
+        from src.app import Monitor  # Need to import here to avoid circular import
 
         # First, grab the Static Widget
         try:
@@ -52,7 +56,7 @@ class DriveUsage(Static):
             return
 
         # Get KB size
-        kb_size = self.app.CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         static_content = ""
 
@@ -84,7 +88,7 @@ class DriveUsage(Static):
         """
         Hook up the `update_disks` function, set to a long interval
         """
-        self.update_disks = self.set_interval(RARE_INTERVAL, self.update_disks)
+        self.set_interval(RARE_INTERVAL, self.update_disks)
 
     def on_click(self) -> None:
         """

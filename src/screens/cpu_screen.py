@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
@@ -8,7 +10,7 @@ from textual.widgets import Static, Header, Footer, DataTable
 from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
 
 
-class CPU_Screen(Screen):
+class CPU_Screen(Screen[None]):
 
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/cpu_css.tcss"
@@ -32,7 +34,7 @@ class CPU_Screen(Screen):
         """
         self.cpu_data = get_cpu_data()
 
-    def watch_cpu_data(self, cpu_data: dict) -> None:
+    def watch_cpu_data(self, cpu_data: dict[str, int | float | list[float] | None]) -> None:
         """
         Watch CPU data and update the CPU Screen with the new information
 
@@ -43,17 +45,18 @@ class CPU_Screen(Screen):
         # First, grab the Static and DataTable Widgets
         try:
             static = self.query_one("#cpu-screen-static", expect_type=Static)
-            table = self.query_one("#cpu-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#cpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
         # Then, get the updated overall data
         cores = cpu_data['cores']
         overall = cpu_data['overall']
-        individual = [compute_percentage_color(core) for core in cpu_data['individual']]
+        indiv_list = cast(list[float], cpu_data['individual'])  # To please static analyzer
+        individual = [compute_percentage_color(core) for core in indiv_list]
 
         # Update the Static Widget
-        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\n"
+        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(cast(float, overall))} %\n\n"
         static.update(static_content)
 
         # Clear the table and add the columns
@@ -83,7 +86,7 @@ class CPU_Screen(Screen):
         :return: None
         """
 
-        self.update_cpu_data = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+        self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
 
         try:
             container = self.query_one("#cpu-screen-container", expect_type=Container)

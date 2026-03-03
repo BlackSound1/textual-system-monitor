@@ -53,7 +53,7 @@ The right-hand side shows various system stats.
 
 # Assumptions
 
-- You have Python >= 3.9.
+- You have Python >= 3.12.
 - Your distribution of Python has Pip installed.
 - You have Make installed. It's possible to get Make on Windows.
   [Read here](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows).

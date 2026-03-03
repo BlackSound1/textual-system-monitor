@@ -1,4 +1,5 @@
-import platform
+import sys
+from typing import Any, cast
 
 from textual.app import ComposeResult
 from textual.containers import Container, VerticalScroll
@@ -9,10 +10,8 @@ from textual.widgets import Header, Footer, DataTable, Static
 
 from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
 
-WINDOWS = platform.system() == "Windows"
 
-
-class GPU_Screen(Screen):
+class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"
@@ -28,7 +27,7 @@ class GPU_Screen(Screen):
         ('/', 'app.switch_base', 'Change KB Size')
     ]
 
-    gpu_data = reactive(get_gpu_data()) if WINDOWS else None
+    gpu_data = reactive(get_gpu_data())
 
     def adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
@@ -39,7 +38,9 @@ class GPU_Screen(Screen):
         :return: The `bytes_to_human` representation of the adapter RAM
         """
 
-        kb_size = self.app.CONTEXT['kb_size']
+        from src.app import Monitor
+
+        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
         return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
@@ -48,13 +49,13 @@ class GPU_Screen(Screen):
 
         :return: None
         """
-        if WINDOWS:
+        if sys.platform == "win32":
             self.gpu_data = [
                 {
                     "gpu": gpu['gpu'],
                     'driver_version': gpu['driver_version'],
                     'resolution': gpu['resolution'],
-                    'adapter_ram': self.adapter_ram_wrapper(gpu['adapter_ram']),
+                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu['adapter_ram'])),
                     'availability': gpu['availability'],
                     'refresh': gpu['refresh'],
                     'status': gpu['status'],
@@ -64,7 +65,7 @@ class GPU_Screen(Screen):
         else:
             self.gpu_data = None
 
-    def watch_gpu_data(self, gpu_data: list) -> None:
+    def watch_gpu_data(self, gpu_data:  list[dict[str, str | int]]) -> None:
         """
         Watch `gpu_data` and update the Static Widget with the new information
 
@@ -74,7 +75,7 @@ class GPU_Screen(Screen):
 
         # First, grab the Static Widget
         try:
-            table = self.query_one("#gpu-screen-table", expect_type=DataTable)
+            table = cast(DataTable[Any], self.query_one("#gpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -101,7 +102,7 @@ class GPU_Screen(Screen):
         :return: None
         """
 
-        self.update_gpu_data = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+        self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
             container = self.query_one("#gpu-container", expect_type=Container)
@@ -120,7 +121,7 @@ class GPU_Screen(Screen):
         yield Header(show_clock=True)
         with Container(id="gpu-container"):
             with VerticalScroll():
-                if WINDOWS:
+                if sys.platform == "win32":
                     yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
                 else:
                     yield Static("GPU information not currently supported on non-Windows systems...")

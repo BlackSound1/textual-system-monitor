@@ -1,6 +1,7 @@
 from unittest import IsolatedAsyncioTestCase
 
 import pytest
+from textual.screen import Screen
 
 from src.app import Monitor
 from src.screens.cpu_screen import CPU_Screen
@@ -13,9 +14,8 @@ from src.screens.gpu_screen import GPU_Screen
 
 
 class TestClicks(IsolatedAsyncioTestCase):
-    @classmethod
-    async def asyncSetUp(cls):
-        cls.monitor_app = Monitor()
+    async def asyncSetUp(self):
+        self.monitor_app = Monitor()
 
     @pytest.mark.asyncio
     async def test_clicks(self):
@@ -25,7 +25,7 @@ class TestClicks(IsolatedAsyncioTestCase):
         """
 
         # Define the screens to be tested
-        SCREENS = [
+        SCREENS: list[tuple[str, type[Screen[None]], str]] = [
             ("#processes", ProcessesScreen, 'p'),
             ("#drives", DriveScreen, 'd'),
             ("#mem", MemoryScreen, 'm'),

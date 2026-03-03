@@ -1,6 +1,7 @@
 from unittest import IsolatedAsyncioTestCase
 
 import pytest
+from textual.screen import Screen
 
 from src.app import Monitor
 from src.screens.cpu_screen import CPU_Screen
@@ -12,12 +13,11 @@ from src.screens.network_screen import NetworkScreen
 from src.screens.processes_screen import ProcessesScreen
 from src.screens.gpu_screen import GPU_Screen
 
+type ScreenListType = list[tuple[type[Screen[None]], str]]
 
 class TestKeys(IsolatedAsyncioTestCase):
-
-    @classmethod
-    async def asyncSetUp(cls):
-        cls.monitor_app = Monitor()
+    async def asyncSetUp(self):
+        self.monitor_app = Monitor()
 
     @pytest.mark.asyncio
     async def test_keys_main(self):
@@ -26,7 +26,7 @@ class TestKeys(IsolatedAsyncioTestCase):
         :return: None
         """
 
-        SCREENS = [
+        SCREENS: ScreenListType = [
             (ProcessesScreen, "p"),
             (DriveScreen, "d"),
             (MemoryScreen, "m"),
@@ -60,7 +60,7 @@ class TestKeys(IsolatedAsyncioTestCase):
         """
 
         # Define the screens and their corresponding keys and titles
-        SCREENS = [
+        SCREENS: ScreenListType = [
             (ProcessesScreen, "p"),
             (DriveScreen, "d"),
             (MemoryScreen, "m"),
@@ -90,7 +90,7 @@ class TestKeys(IsolatedAsyncioTestCase):
         """
 
         # Define the screens and their corresponding keys
-        SCREENS = [
+        SCREENS: ScreenListType = [
             (GPU_Screen, "v"),
             (NetworkScreen, "n"),
             (CPU_Screen, "c"),
