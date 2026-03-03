@@ -27,16 +27,13 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.12"
-          cache: 'pipenv'
-      - name: Install Pipenv
-        run: pip install pipenv
-      - name: Install Pipfile dependencies
-        run: pipenv install --dev
+          python-version-file: ".python-version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
       - name: Lint with Flake8
-        run: pipenv run make lint
+        run: uv run make lint
       - name: Test with Pytest
         run: pipenv run make test
