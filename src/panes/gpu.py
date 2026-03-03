@@ -1,4 +1,4 @@
-import platform
+import sys
 from typing import cast
 
 from textual.app import ComposeResult
@@ -9,15 +9,13 @@ from textual.widgets import Static
 
 from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram
 
-WINDOWS = platform.system() == "Windows"
-
 
 class GPU_Usage(Static):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
 
     # Get initial GPU data. Different from approach in `update_gpu_data` because
     # we can't use `self` (to get the kb_size context) outside a function
-    gpu_data = reactive(get_gpu_data()) if WINDOWS else None
+    gpu_data = reactive(get_gpu_data())
 
     def adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
@@ -40,7 +38,7 @@ class GPU_Usage(Static):
         :return: None
         """
 
-        if WINDOWS:
+        if sys.platform == "win32":
             self.gpu_data = [
              {
                  "gpu": gpu['gpu'],
@@ -54,7 +52,7 @@ class GPU_Usage(Static):
              for gpu in get_gpu_data()
          ]
         else:
-            self.gpu_data = None
+            self.gpu_data = []
 
     def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
         """
@@ -107,7 +105,7 @@ class GPU_Usage(Static):
         """
 
         with VerticalScroll():
-            if WINDOWS:
+            if sys.platform == "win32":
                 yield Static(id="gpu-static")
             else:
                 yield Static("GPU information not currently supported on non-Windows systems...")

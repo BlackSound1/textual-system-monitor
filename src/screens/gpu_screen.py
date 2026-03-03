@@ -1,4 +1,4 @@
-import platform
+import sys
 from typing import Any, cast
 
 from textual.app import ComposeResult
@@ -9,8 +9,6 @@ from textual.screen import Screen
 from textual.widgets import Header, Footer, DataTable, Static
 
 from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
-
-WINDOWS = platform.system() == "Windows"
 
 
 class GPU_Screen(Screen[None]):
@@ -29,7 +27,7 @@ class GPU_Screen(Screen[None]):
         ('/', 'app.switch_base', 'Change KB Size')
     ]
 
-    gpu_data = reactive(get_gpu_data()) if WINDOWS else None
+    gpu_data = reactive(get_gpu_data())
 
     def adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
@@ -51,7 +49,7 @@ class GPU_Screen(Screen[None]):
 
         :return: None
         """
-        if WINDOWS:
+        if sys.platform == "win32":
             self.gpu_data = [
                 {
                     "gpu": gpu['gpu'],
@@ -123,7 +121,7 @@ class GPU_Screen(Screen[None]):
         yield Header(show_clock=True)
         with Container(id="gpu-container"):
             with VerticalScroll():
-                if WINDOWS:
+                if sys.platform == "win32":
                     yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
                 else:
                     yield Static("GPU information not currently supported on non-Windows systems...")

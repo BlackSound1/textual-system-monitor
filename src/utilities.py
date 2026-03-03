@@ -1,11 +1,9 @@
-from typing import List, Literal, Union, Dict, Iterator, cast
-import platform
+import sys
+from typing import Literal, Iterator, cast
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
 
-WINDOWS = platform.system() == "Windows"
-
-if WINDOWS:
+if sys.platform == "win32":
     from wmi import WMI
 
 """
@@ -289,12 +287,15 @@ GPU UTILITIES
 """
 
 
-def get_gpu_data() -> list[dict[str, str | int]]:
+def get_gpu_data() -> list[dict[str, str | int] | None]:
     """
     Get GPU data from WMI
 
     :return: The list of GPU data, per video controller.
     """
+
+    if sys.platform != "win32":
+        return []
 
     wmi_object = WMI()
     video_controllers = wmi_object.Win32_VideoController()
