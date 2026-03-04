@@ -91,6 +91,10 @@ Python's own Pip:
 make install
 ```
 
+If this doesn't work for some reason, `requirements.txt` is provided for
+your convenience. Install them however you know how to install
+dependencies.
+
 After dependencies are installed (or if you have UV), simply run the app with
 
 ```sh
@@ -115,6 +119,8 @@ Install the dependencies (including dev dependencies), with:
 make install-dev
 ```
 
+or use `requirements.txt` and `requirements_dev.txt`.
+
 Check that all tests pass with:
 
 ```sh
@@ -136,8 +142,7 @@ make lint
 
 Have 2 terminals open. I use 2 instances of Bash in Windows Terminal.
 
-- In one instance, navigate to the repo, and run `make console` from within the
-Pipenv shell. This will cause the terminal to create a debug console waiting for an
+- In one instance, navigate to the repo, and run `make console`. This will cause the terminal to create a debug console waiting for an
 instance of the app to hook into. [Read more here](https://textual.textualize.io/guide/devtools/).
 - In the other instance, from the repo directory, run the dev version of the app
 with `make run-dev` to run the app in development mode. The console in the first
