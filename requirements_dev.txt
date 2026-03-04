@@ -1,0 +1,4 @@
+flake8==7.0.0
+pytest==8.1.1
+pytest-asyncio==0.23.6
+textual-dev==1.5.1
