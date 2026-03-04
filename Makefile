@@ -2,25 +2,43 @@ SHELL := bash
 .ONESHELL:
 .DEFAULT_GOAL := help
 
+ifeq ($(OS),Windows_NT)
+	VENV_CMD := "venv\Scripts\activate"
+else
+	VENV_CMD := "source venv/bin/activate"
+endif
+
+
 .PHONY: install
-install:   ## Install dependencies
-	@if command -v pipenv &> /dev/null; then \
-	 echo "Pipenv found, installing dependencies with Pipenv..." && \
-	 pipenv install; \
+install:   ## Install dependencies to a virtual env, if not using UV
+	@if command -v uv &> /dev/null; then \
+	 echo "UV found. Install dependencies by running the app with 'make run'"; \
 	else \
-	 @echo "Pipenv not found, installing dependencies with pip..." && \
-	 @pip install -r requirements.txt;
+	 @echo "UV not found. Installing dependencies with pip..." && \
+	 @python3 -m venv venv && "$(VENV_CMD)" && \
+	 @python3 -m pip3 install -r requirements.txt;
+	fi
+
+
+.PHONY: install-dev
+install-dev:   ## Install ALL dependencies to a virtual env, if not using UV
+	@if command -v uv &> /dev/null; then \
+	 echo "UV found. Install dependencies by running the app with 'make run'"; \
+	else \
+	 @echo "UV not found. Installing dependencies with pip..." && \
+	 @python3 -m venv venv && "$(VENV_CMD)" && \
+	 @python3 -m pip3 install -r requirements.txt && python3 -m pip3 install -r requirements_dev.txt;
 	fi
 
 
 .PHONY: run
 run:   ## Run app
-	@pipenv run textual run main.py
+	@uv run textual run main.py
 
 
 .PHONY: run-dev
 run-dev:   ## Run app in dev mode
-	@pipenv run textual run --dev main.py
+	@uv run textual run --dev main.py
 
 
 .PHONY: test
@@ -56,7 +74,7 @@ lint:    ## Use Flake8 to lint the Python files
 
 .PHONY: console
 console:  ## Show the Textual console. Used in debugging
-	@pipenv run textual console -x EVENT -x SYSTEM -x DEBUG
+	@uv run textual console -x EVENT -x SYSTEM -x DEBUG
 
 
 .PHONY: show-tests
