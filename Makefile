@@ -16,6 +16,17 @@ install:   ## Install dependencies to a virtual env, if not using UV
 	else \
 	 @echo "UV not found. Installing dependencies with pip..." && \
 	 @python3 -m venv venv && "$(VENV_CMD)" && \
+	 @python3 -m pip3 install -r requirements.txt;
+	fi
+
+
+.PHONY: install-dev
+install-dev:   ## Install ALL dependencies to a virtual env, if not using UV
+	@if command -v uv &> /dev/null; then \
+	 echo "UV found. Install dependencies by running the app with 'make run'"; \
+	else \
+	 @echo "UV not found. Installing dependencies with pip..." && \
+	 @python3 -m venv venv && "$(VENV_CMD)" && \
 	 @python3 -m pip3 install -r requirements.txt && python3 -m pip3 install -r requirements_dev.txt;
 	fi
 
