@@ -65,6 +65,12 @@ test-buttons:   ## Use Pytest to test the buttons only
 	@uv run pytest tests/test_buttons.py
 
 
+.PHONY: cov
+cov:   ## Use Pytest to generate code coverage
+	@echo ""
+	@uv run pytest tests --cov=. --cov-branch
+
+
 .PHONY: lint
 lint:    ## Use Flake8 to lint the Python files
 	@echo ""
