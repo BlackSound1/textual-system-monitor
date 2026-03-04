@@ -111,36 +111,47 @@ make help
 
 # Contributing
 
-To develop the app, please fork it, not just clone it.
+To develop the app:
 
-Install the dependencies (including dev dependencies), with:
+1. Please fork it, not just clone it.
 
-```sh
-make install-dev
-```
+2. Install the dependencies (including dev dependencies), with:
 
-or use `requirements.txt` and `requirements_dev.txt`.
+   ```sh
+   make install-dev
+   ```
 
-Check that all tests pass with:
+   or use `requirements.txt` and `requirements_dev.txt`.
 
-```sh
-make test
-```
+3. Check that all tests pass with:
 
-Lint the Python files with:
+   ```sh
+   make test
+   ```
 
-```sh
-make lint
-```
+4. Generate code coverage with:
+   ```sh
+   make cov
+   ```
 
-**Note**: The output should be:
+   We're not necessarily aiming for 100%, but aim for a high percentage that covers
+   everything reasonable.
 
-```sh
-0
-0
-```
+5. Lint the Python files with:
 
-Have 2 terminals open. I use 2 instances of Bash in Windows Terminal.
+   ```sh
+   make lint
+   ```
+
+   The output should be:
+
+   ```sh
+   0
+   0
+   ```
+
+After those steps are done, have 2 terminals open. I use 2 instances of Bash in
+Windows Terminal.
 
 - In one instance, navigate to the repo, and run `make console`. This will cause the terminal to create a debug console waiting for an
 instance of the app to hook into. [Read more here](https://textual.textualize.io/guide/devtools/).
