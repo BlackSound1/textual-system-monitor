@@ -17,6 +17,10 @@ class TestClicks(IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.monitor_app = Monitor()
 
+    async def asyncTearDown(self) -> None:
+        if self.monitor_app:
+            self.monitor_app.exit()
+
     @pytest.mark.asyncio
     async def test_clicks(self):
         """
@@ -41,8 +45,10 @@ class TestClicks(IsolatedAsyncioTestCase):
 
                 # Click on the screen and assert that we are on the correct screen
                 await pilot.click(screen_class)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), screen_type)
 
                 # Press the key to go back to the main screen and assert that we are on the main screen
                 await pilot.press(screen_key)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), MainScreen)
