@@ -6,6 +6,7 @@ from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Footer, Header, DataTable
 
 from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
@@ -26,6 +27,8 @@ class DriveScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
         ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    update_timer: Timer | None = None
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
@@ -99,7 +102,7 @@ class DriveScreen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(RARE_INTERVAL, self.update_disks)
+        self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
 
         try:
             container = self.query_one("#drive-screen-container", expect_type=Container)
@@ -108,6 +111,10 @@ class DriveScreen(Screen[None]):
 
         container.border_title = self.BORDER_TITLE
         container.border_subtitle = self.BORDER_SUBTITLE
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
 
     def compose(self) -> ComposeResult:
         """

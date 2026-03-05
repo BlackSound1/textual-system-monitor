@@ -15,6 +15,7 @@ from src.screens.gpu_screen import GPU_Screen
 
 type ScreenListType = list[tuple[type[Screen[None]], str]]
 
+
 class TestKeys(IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.monitor_app = Monitor()
@@ -46,10 +47,12 @@ class TestKeys(IsolatedAsyncioTestCase):
 
                 # Press the key and assert that we are on the correct screen
                 await pilot.press(key)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), screen_class)
 
                 # Go back to the main screen and assert that we are back there
                 await pilot.press(key)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), MainScreen)
 
     @pytest.mark.asyncio
@@ -80,6 +83,7 @@ class TestKeys(IsolatedAsyncioTestCase):
 
                 # Press the key and assert that we are on the correct screen
                 await pilot.press(key)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), screen_class)
 
     @pytest.mark.asyncio
@@ -110,4 +114,5 @@ class TestKeys(IsolatedAsyncioTestCase):
 
                 # Press the key and assert that we are on the correct screen
                 await pilot.press(key)
+                await pilot.pause()
                 self.assertIs(type(self.monitor_app.screen), screen_class)

@@ -4,7 +4,7 @@ A beautiful system monitoring terminal app created in Python, using Textual.
 
 This is the main page, where you can see live-updating readouts for all system stats:
 
-![Somewhat Feature Complete Design](images/Apr21Screenshot.png)
+![Somewhat Feature Complete Design](images/Mar5_2026Screenshot.png)
 
 **Note**: Personal info has been censored, the orange bars are not present in the real app.
 
@@ -129,13 +129,17 @@ To develop the app:
    make test
    ```
 
+   **Note**: Since a recent update, these tests may take quite a while depending on
+   your computer. I have taken some pains to avoid threading issues, but performance
+   issues may persist.
+
 4. Generate code coverage with:
    ```sh
    make cov
    ```
 
    We're not necessarily aiming for 100%, but aim for a high percentage that covers
-   everything reasonable.
+   everything reasonable. This might also take quite a while.
 
 5. Lint the Python files with:
 

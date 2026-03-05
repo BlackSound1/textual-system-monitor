@@ -6,6 +6,7 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Button
 
 from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs
@@ -47,6 +48,8 @@ class ProcessesScreen(Screen[None]):
     initial = True
     paused = False
     sort = True
+
+    update_timer: Timer | None = None
 
     # Set the default processes value to an initial call to the function
     processes = reactive(get_procs(sort=sort))
@@ -127,7 +130,7 @@ class ProcessesScreen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+        self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
         try:
             container = self.query_one("#process-container", expect_type=Container)
@@ -136,6 +139,10 @@ class ProcessesScreen(Screen[None]):
 
         container.border_title = self.BORDER_TITLE
         container.border_subtitle = self.BORDER_SUBTITLE
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
 
     def compose(self) -> ComposeResult:
         """

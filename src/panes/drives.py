@@ -5,6 +5,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from ..utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
@@ -12,6 +13,8 @@ from ..utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
 
 class DriveUsage(Static):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
+
+    update_timer: Timer | None = None
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
@@ -88,7 +91,11 @@ class DriveUsage(Static):
         """
         Hook up the `update_disks` function, set to a long interval
         """
-        self.set_interval(RARE_INTERVAL, self.update_disks)
+        self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
 
     def on_click(self) -> None:
         """

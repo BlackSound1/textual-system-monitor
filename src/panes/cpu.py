@@ -2,6 +2,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
@@ -9,6 +10,8 @@ from ..utilities import COMMON_INTERVAL, get_cpu_data, update_CPU_static
 
 class CPU_Usage(Static):
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
+
+    update_timer: Timer | None = None
 
     cpu_data = reactive(get_cpu_data())
 
@@ -59,4 +62,8 @@ class CPU_Usage(Static):
         Set intervals to update cpu usage
         :return: None
         """
-        self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+        self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()

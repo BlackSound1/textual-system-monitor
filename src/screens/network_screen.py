@@ -5,6 +5,7 @@ from textual.containers import VerticalScroll, Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable
 
 from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human
@@ -28,6 +29,8 @@ class NetworkScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
         ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    update_timer: Timer | None = None
 
     io = reactive(get_network_stats())
 
@@ -89,7 +92,7 @@ class NetworkScreen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(NET_INTERVAL, self.update_io)
+        self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
 
         try:
             container = self.query_one("#network-container", expect_type=Container)
@@ -97,6 +100,10 @@ class NetworkScreen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
 
     def compose(self) -> ComposeResult:
         """
