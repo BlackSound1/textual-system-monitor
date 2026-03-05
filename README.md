@@ -4,7 +4,7 @@ A beautiful system monitoring terminal app created in Python, using Textual.
 
 This is the main page, where you can see live-updating readouts for all system stats:
 
-![Somewhat Feature Complete Design](images/Apr21Screenshot.png)
+![Somewhat Feature Complete Design](images/Mar5_2026Screenshot.png)
 
 **Note**: Personal info has been censored, the orange bars are not present in the real app.
 
