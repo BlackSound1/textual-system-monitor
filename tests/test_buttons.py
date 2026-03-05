@@ -52,7 +52,7 @@ class TestButtons(IsolatedAsyncioTestCase):
             self.assertEqual(sort_button.variant, "success")
             self.assertEqual(str(sort_button.label), "Sorted")
 
-            await  pilot.pause(0.1)  # Pause to make sure state updates correctly
+            await pilot.pause()  # Pause to make sure state updates correctly
 
             # Press the pause button again and make sure state is correct
             await pilot.click("#process-pause-button")
@@ -72,7 +72,7 @@ class TestButtons(IsolatedAsyncioTestCase):
             self.assertEqual(sort_button.variant, "error")
             self.assertEqual(str(sort_button.label), "Unsorted")
 
-            await  pilot.pause(0.1)  # Pause to make sure state updates correctly
+            await pilot.pause()  # Pause to make sure state updates correctly
 
             # Press the sort button again and make sure state is correct
             await pilot.click("#process-sort-button")
