@@ -559,6 +559,15 @@ wheels = [
 ]
 
 [[package]]
+name = "platformdirs"
+version = "4.9.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/1b/04/fea538adf7dbbd6d186f551d595961e564a3b6715bdf276b477460858672/platformdirs-4.9.2.tar.gz", hash = "sha256:9a33809944b9db043ad67ca0db94b14bf452cc6aeaac46a88ea55b26e2e9d291", size = 28394, upload-time = "2026-02-16T03:56:10.574Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/48/31/05e764397056194206169869b50cf2fee4dbbbc71b344705b9c0d878d4d8/platformdirs-4.9.2-py3-none-any.whl", hash = "sha256:9170634f126f8efdae22fb58ae8a0eaa86f38365bc57897a6c4f781d1f5875bd", size = 21168, upload-time = "2026-02-16T03:56:08.891Z" },
+]
+
+[[package]]
 name = "pluggy"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -764,16 +773,17 @@ wheels = [
 
 [[package]]
 name = "textual"
-version = "0.57.0"
+version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py", extra = ["linkify", "plugins"] },
+    { name = "platformdirs" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/43/7b/db038f682068da7ddbb2392fc4f926e01ae391eb901d2adec02f3b99c1f2/textual-0.57.0.tar.gz", hash = "sha256:1ba65c8516c9332670ddca5c29dfe1a1f9b647728703c9a7cd628810368bbc20", size = 1296936, upload-time = "2024-04-19T10:25:10.284Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1f/b6/59b1de04bb4dca0f21ed7ba0b19309ed7f3f5de4396edf20cc2855e53085/textual-1.0.0.tar.gz", hash = "sha256:bec9fe63547c1c552569d1b75d309038b7d456c03f86dfa3706ddb099b151399", size = 1532733, upload-time = "2024-12-12T10:42:03.286Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/6b/b3ad36ffd0c54095826cd3e9c8e4ccc72677f80c92c7ad190231e0e99dbd/textual-0.57.0-py3-none-any.whl", hash = "sha256:90cee57d7ec453fe4a65e2a2a917478a07188e250ebee8bdd55a26aeb06833f8", size = 549124, upload-time = "2024-04-19T10:25:07.021Z" },
+    { url = "https://files.pythonhosted.org/packages/ac/bb/5fb6656c625019cd653d5215237d7cd6e0b12e7eae4195c3d1c91b2136fc/textual-1.0.0-py3-none-any.whl", hash = "sha256:2d4a701781c05104925e463ae370c630567c70c2880e92ab838052e3e23c986f", size = 660456, upload-time = "2024-12-12T10:42:00.375Z" },
 ]
 
 [[package]]
@@ -794,7 +804,7 @@ wheels = [
 
 [[package]]
 name = "textual-system-monitor"
-version = "0.1.2"
+version = "0.1.4"
 source = { virtual = "." }
 dependencies = [
     { name = "psutil" },
@@ -814,7 +824,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "psutil", specifier = "==5.9.8" },
-    { name = "textual", specifier = "==0.57.0" },
+    { name = "textual", specifier = "==1.0.0" },
     { name = "wmi", marker = "sys_platform == 'win32'", specifier = "==1.5.1" },
 ]
 
