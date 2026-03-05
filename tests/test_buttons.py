@@ -41,6 +41,7 @@ class TestButtons(IsolatedAsyncioTestCase):
 
             # Press the pause button and make sure state is correct
             await pilot.click("#process-pause-button")
+            await pilot.pause()
             self.assertIs(process_screen.paused, True)
             self.assertEqual(pause_button.variant, "error")
             self.assertEqual(str(pause_button.label), "Resume")
@@ -48,10 +49,9 @@ class TestButtons(IsolatedAsyncioTestCase):
             self.assertEqual(sort_button.variant, "success")
             self.assertEqual(str(sort_button.label), "Sorted")
 
-            await pilot.pause()  # Pause to make sure state updates correctly
-
             # Press the pause button again and make sure state is correct
             await pilot.click("#process-pause-button")
+            await pilot.pause()
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
             self.assertEqual(str(pause_button.label), "Pause")
@@ -61,6 +61,7 @@ class TestButtons(IsolatedAsyncioTestCase):
 
             # Press the sort button and make sure state is correct
             await pilot.click("#process-sort-button")
+            await pilot.pause()
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
             self.assertEqual(str(pause_button.label), "Pause")
@@ -68,10 +69,9 @@ class TestButtons(IsolatedAsyncioTestCase):
             self.assertEqual(sort_button.variant, "error")
             self.assertEqual(str(sort_button.label), "Unsorted")
 
-            await pilot.pause()  # Pause to make sure state updates correctly
-
             # Press the sort button again and make sure state is correct
             await pilot.click("#process-sort-button")
+            await pilot.pause()
             self.assertIs(process_screen.paused, False)
             self.assertEqual(pause_button.variant, "success")
             self.assertEqual(str(pause_button.label), "Pause")
