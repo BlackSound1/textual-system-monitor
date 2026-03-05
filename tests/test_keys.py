@@ -20,10 +20,6 @@ class TestKeys(IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.monitor_app = Monitor()
 
-    async def asyncTearDown(self) -> None:
-        if self.monitor_app:
-            self.monitor_app.exit()
-
     @pytest.mark.asyncio
     async def test_keys_main(self):
         """

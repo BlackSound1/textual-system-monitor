@@ -5,6 +5,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram
@@ -12,6 +13,8 @@ from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram
 
 class GPU_Usage(Static):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
+
+    update_timer: Timer | None = None
 
     # Get initial GPU data. Different from approach in `update_gpu_data` because
     # we can't use `self` (to get the kb_size context) outside a function
@@ -89,7 +92,11 @@ class GPU_Usage(Static):
         Set interval to update the memory information.
         :return: None
         """
-        self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+        self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
 
     def on_click(self) -> None:
         """

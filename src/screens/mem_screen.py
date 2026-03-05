@@ -5,6 +5,7 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Static, Header, Footer, Digits
 
 from src.utilities import get_mem_data, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
@@ -39,6 +40,8 @@ class MemoryScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
         ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    update_timer: Timer | None = None
 
     mem_data = reactive(get_mem_data())
 
@@ -129,7 +132,7 @@ class MemoryScreen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+        self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
 
         try:
             container = self.query_one("#mem-container", expect_type=Container)
@@ -137,3 +140,7 @@ class MemoryScreen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
