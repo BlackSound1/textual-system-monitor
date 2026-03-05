@@ -129,13 +129,17 @@ To develop the app:
    make test
    ```
 
+   **Note**: Since a recent update, these tests may take quite a while depending on
+   your computer. I have taken some pains to avoid threading issues, but performance
+   issues may persist.
+
 4. Generate code coverage with:
    ```sh
    make cov
    ```
 
    We're not necessarily aiming for 100%, but aim for a high percentage that covers
-   everything reasonable.
+   everything reasonable. This might also take quite a while.
 
 5. Lint the Python files with:
 
