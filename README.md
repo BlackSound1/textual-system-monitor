@@ -25,6 +25,7 @@ not implemented.
 - Each system stat has its own dedicated page that can be seen with by hitting the corresponding key, or by clicking the corresponding pane on the main screen.
 - Footer, which always show what keys can be pressed and what they do.
 - Header, which shows a clock.
+- Multiple colour themes!
 
 Check out [EXAMPLES.md](EXAMPLES.md) for a guide on each screen.
 
