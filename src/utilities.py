@@ -168,7 +168,7 @@ def update_network_static(
         new_stats: list[dict[str,  str | int]],
         old_stats: list[dict[str,  str | int]],
         base: int
-    ) -> str:
+) -> str:
     """
     Generate a string containing the updated network info for each interface
 

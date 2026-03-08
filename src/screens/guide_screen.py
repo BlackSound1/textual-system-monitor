@@ -53,7 +53,7 @@ MONITORING_STRING = """
   - Username of the user running this process
   - The actual executable file running this process
 
-[{drive_color}]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives. 
+[{drive_color}]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives.
   - If a drive is a storage drive, it will have info on:
     - Disk letter name
     - Options associated with that drive
@@ -70,7 +70,7 @@ MONITORING_STRING = """
   - Total Memory: How much memory is allocated to the system
   - Available Memory: How much is able to be used by programs/ processes
   - Used: How much is already being used
-  - Percentage Used (in %): How much memory is used as a percentage of the total 
+  - Percentage Used (in %): How much memory is used as a percentage of the total
 
 [{cpu_color}]CPU Usage[/]: Updated CPU info about:
   - Cores: The total number of cores present on the system
@@ -80,7 +80,7 @@ MONITORING_STRING = """
 [{net_color}]Network Info[/]: An updated list of network interfaces. Each interface has info on:
   - Download amount and speed
   - Upload amount and speed
-  
+
 [{gpu_color}]GPU Info[/]: Updated GPU info about:
   - GPU name: The name of the GPU
   - Driver version: The version of the GPU driver

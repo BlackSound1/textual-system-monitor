@@ -28,7 +28,7 @@ class Monitor(App[str]):
     }
 
     CONTEXT = {
-        "kb_size" : 1024
+        "kb_size": 1024
     }
 
     def on_mount(self) -> None:

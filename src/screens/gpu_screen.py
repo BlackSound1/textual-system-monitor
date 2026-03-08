@@ -52,15 +52,15 @@ class GPU_Screen(Screen[None]):
         if sys.platform == "win32":
             self.gpu_data = [
                 {
-                    "gpu": gpu['gpu'],
-                    'driver_version': gpu['driver_version'],
-                    'resolution': gpu['resolution'],
-                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu['adapter_ram'])),
-                    'availability': gpu['availability'],
-                    'refresh': gpu['refresh'],
-                    'status': gpu['status'],
+                    "gpu": gpu_info['gpu'],
+                    'driver_version': gpu_info['driver_version'],
+                    'resolution': gpu_info['resolution'],
+                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
+                    'availability': gpu_info['availability'],
+                    'refresh': gpu_info['refresh'],
+                    'status': gpu_info['status'],
                 }
-                for gpu in get_gpu_data()
+                for gpu_info in get_gpu_data() if gpu_info
             ]
         else:
             self.gpu_data = None
@@ -85,14 +85,14 @@ class GPU_Screen(Screen[None]):
                           "Availability", "Refresh", "Status")
 
         # Then, for each video controller, update the Static Widget with its new information
-        for gpu in gpu_data:
-            name = gpu['gpu']
-            version = gpu['driver_version']
-            resolution = gpu['resolution']
-            ram = gpu['adapter_ram']
-            availability = gpu['availability']
-            refresh = gpu['refresh']
-            status = gpu['status']
+        for gpu_info in gpu_data:
+            name = gpu_info['gpu']
+            version = gpu_info['driver_version']
+            resolution = gpu_info['resolution']
+            ram = gpu_info['adapter_ram']
+            availability = gpu_info['availability']
+            refresh = gpu_info['refresh']
+            status = gpu_info['status']
 
             table.add_row(name, version, resolution, ram, availability, refresh, status)
 
