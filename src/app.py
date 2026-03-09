@@ -16,7 +16,7 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    MODES: ClassVar[dict[str, str | Screen[None] | Callable[[], Screen[None]]]] = {
+    MODES: ClassVar[dict[str, str | Callable[[], Screen[None]]]] = {
         "main": MainScreen,
         "guide": GuideScreen,
         "processes": ProcessesScreen,
