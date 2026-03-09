@@ -19,7 +19,7 @@ Created in Python using Textual.
 \t- GPU Information
 \t- More coming soon?
 
-- Dark and Light modes
+- Multiple colour themes
 
 - Keyboard and Mouse controls
 
