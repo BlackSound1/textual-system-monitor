@@ -1,19 +1,19 @@
 COLOR_MAP = {
     'textual-light': {
-        'procs': "#fea62b",
-        'drives': "#a32549",
-        'mem': "#ffe46b",
-        'cpu': "#368ae9",
-        'net': "#64d484",
-        'gpu': "#fe7993",
+        'procs': "#FF8C00",
+        'drives': "#FF0000",
+        'mem': "#F3CD00",
+        'cpu': "#7272f6",
+        'net': "#008000",
+        'gpu': "#FF1493",
     },
     'textual-dark': {
-        'procs': "#fea62b",
-        'drives': "#a32549",
-        'mem': "#ffe46b",
-        'cpu': "#368ae9",
-        'net': "#64d484",
-        'gpu': "#fe7993",
+        'procs': "#FEA62B",
+        'drives': "#FF0000",
+        'mem': "#FFFF00",
+        'cpu': "#ADD8E6",
+        'net': "#90EE90",
+        'gpu': "#FFC0CB",
     },
     'nord': {
         'procs': "#d08770",
@@ -88,3 +88,13 @@ COLOR_MAP = {
         'gpu': "#d33682",
     },
 }
+
+
+def get_pallette(name: str) -> dict[str, str]:
+    """
+    Get the current color pallette based on the current color theme.
+
+    :param str name: The name of the current color theme.
+    :return dict[str, str]: The color pallette as a dict.
+    """
+    return COLOR_MAP.get(name, COLOR_MAP['textual-dark'])
