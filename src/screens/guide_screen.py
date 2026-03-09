@@ -3,7 +3,7 @@ from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
-from src.utils import get_pallette
+from src.utilities import get_pallette
 
 
 DESCRIPTION_STRING = """
