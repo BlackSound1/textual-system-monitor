@@ -2,14 +2,11 @@
     layout: grid;
     grid-size: 2;  /* two columns */
     grid-columns: 1fr;
-    grid-rows: 1fr;
 }
 
 #processes {
-    width: 100%;
-    row-span: 2;
     background: $panel;
-    border: $secondary;
+    border: round orange;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -22,8 +19,8 @@
 }
 
 #stats {
-    layout: grid;
-    grid-size: 1;
+    layout: vertical;
+    height: 1fr;
     /*border: greenyellow;*/
     /*border-title-color: $text;*/
     /*border-title-align: center;*/
@@ -34,9 +31,9 @@
 }
 
 #drives {
-    layout: grid;
     background: $panel;
-    border: red;
+    border: round red;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -45,7 +42,8 @@
 
 #mem {
     background: $panel;
-    border: yellow;
+    border: round yellow;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
 }
@@ -56,7 +54,8 @@
 
 #cpu {
     background: $panel;
-    border: lightblue;
+    border: round lightblue;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
 }
@@ -67,7 +66,8 @@
 
 #network {
     background: $panel;
-    border: lightgreen;
+    border: round lightgreen;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -80,7 +80,8 @@
 
 #gpu {
     background: $panel;
-    border: pink;
+    border: round pink;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
