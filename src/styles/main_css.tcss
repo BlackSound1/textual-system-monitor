@@ -14,7 +14,7 @@
 }
 
 #processes:light {
-    border: darkorange;
+    border: round darkorange;
     background: $boost-darken-1;
 }
 
@@ -49,7 +49,7 @@
 }
 
 #mem:light {
-    border: #F3CD00;
+    border: round #F3CD00;
 }
 
 #cpu {
@@ -61,7 +61,7 @@
 }
 
 #cpu:light {
-    border: blue 90%;
+    border: round blue 90%;
 }
 
 #network {
@@ -75,7 +75,7 @@
 }
 
 #network:light {
-    border: green;
+    border: round green;
 }
 
 #gpu {
@@ -89,7 +89,7 @@
 }
 
 #gpu:light {
-    border: deeppink;
+    border: round deeppink;
 }
 
 .proc {

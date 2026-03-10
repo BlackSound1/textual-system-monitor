@@ -4,11 +4,11 @@
     background: $panel;
     border-title-color: $text;
     border-title-align: center;
-    border: yellow;
+    border: round yellow;
 }
 
 #mem-container:light {
-    border: #F3CD00;
+    border: round #F3CD00;
     background: $boost-darken-1;
 }
 
