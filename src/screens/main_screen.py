@@ -16,7 +16,6 @@ class MainScreen(Screen[None]):
     CSS_PATH = "../styles/main_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('processes')", "Processes"),
         ("c", "app.switch_mode('cpu')", "CPU"),
         ("n", "app.switch_mode('network')", "Network"),

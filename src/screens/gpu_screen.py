@@ -17,7 +17,6 @@ class GPU_Screen(Screen[None]):
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('processes')", "Processes"),
         ("c", "app.switch_mode('cpu')", "CPU"),
         ("n", "app.switch_mode('network')", "Network"),
