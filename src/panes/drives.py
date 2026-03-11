@@ -94,6 +94,9 @@ class DriveUsage(Static):
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 

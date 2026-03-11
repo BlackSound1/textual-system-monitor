@@ -6,6 +6,7 @@ from textual.containers import Container, VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Static
 
 from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
@@ -25,6 +26,8 @@ class GPU_Screen(Screen[None]):
         ("v", "app.switch_mode('main')", "Main Screen"),
         ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    update_timer: Timer | None = None
 
     gpu_data = reactive(get_gpu_data())
 
@@ -101,7 +104,7 @@ class GPU_Screen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+        self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
             container = self.query_one("#gpu-container", expect_type=Container)
@@ -110,6 +113,13 @@ class GPU_Screen(Screen[None]):
 
         container.border_title = self.BORDER_TITLE
         container.border_subtitle = self.BORDER_SUBTITLE
+
+    def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
+        if self.update_timer:
+            self.update_timer.stop()
 
     def compose(self) -> ComposeResult:
         """

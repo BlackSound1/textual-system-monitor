@@ -101,6 +101,9 @@ class NetworkScreen(Screen[None]):
         container.border_title = self.BORDER_TITLE
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 

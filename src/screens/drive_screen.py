@@ -112,6 +112,9 @@ class DriveScreen(Screen[None]):
         container.border_subtitle = self.BORDER_SUBTITLE
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 

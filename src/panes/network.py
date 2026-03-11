@@ -60,6 +60,9 @@ class NetInfo(Static):
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 
