@@ -4,6 +4,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from ..utilities import compute_percentage_color, bytes_to_human, COMMON_INTERVAL, get_mem_data
@@ -11,6 +12,8 @@ from ..utilities import compute_percentage_color, bytes_to_human, COMMON_INTERVA
 
 class MemUsage(Static):
     BORDER_TITLE = f"Memory Usage - Updated every {COMMON_INTERVAL}s"
+
+    update_timer: Timer | None = None
 
     mem_data = reactive(get_mem_data())
 
@@ -68,4 +71,8 @@ class MemUsage(Static):
         Set intervals to update the memory information.
         :return: None
         """
-        self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+        self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
+
+    def on_unmount(self) -> None:
+        if self.update_timer:
+            self.update_timer.stop()
