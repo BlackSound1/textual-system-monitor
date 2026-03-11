@@ -84,7 +84,6 @@ class MemoryScreen(Screen[None]):
         # Update available information
         value, denom = bytes_to_human(data['available'], kb_size).split(' ')
         avail_label.update(f"Available Memory ({denom}):  ")
-        print(avail_label._content)
         avail_digits.update(f"{value}")
 
         # Update used information
