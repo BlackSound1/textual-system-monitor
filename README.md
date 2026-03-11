@@ -20,7 +20,6 @@ not implemented.
 - Quantities of bytes are automatically shown in human-readable formats, such as KiB and GiB. Can switch a kilobyte to be defined as 1000 bytes (KB) or 1024 bytes (KiB).
 - If the window is too small, all panes have vertical scroll bars, such as the one in the Processes section in this screenshot.
 - At any time, press `q` to exit the app. `Crtl-C` also works.
-- At any time, press `t` to toggle dark mode.
 - In-app Guide screen.
 - Each system stat has its own dedicated page that can be seen with by hitting the corresponding key, or by clicking the corresponding pane on the main screen.
 - Footer, which always show what keys can be pressed and what they do.
@@ -179,8 +178,6 @@ branch into my `main` branch.
 - [x] Make panels clickable to open a new screen showing more info
 - [x] Add GPU info
 - [ ] Add temperature info
-- [x] Improve colors, so dark mode toggling looks better
-- [x] Lay out information in a nicer, less cluttered way
 - [ ] Add support for Linux
 - [ ] Add support for macOS
 - [x] Make all command-line duties possible in `make`
