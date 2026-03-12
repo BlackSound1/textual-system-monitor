@@ -8,6 +8,7 @@ VENV_CMD := if os() == "windows" {
     "source venv/bin/activate"
 }
 
+
 # Install dependencies to a virtual env, if not using UV
 [group('installing')]
 install:
@@ -18,6 +19,7 @@ install:
         @python3 -m venv venv && "{{VENV_CMD}}" && \
         @python3 -m pip3 install -r requirements.txt;
     fi
+
 
 # Install ALL dependencies to a virtual env, if not using UV
 [group('installing')]
@@ -39,32 +41,20 @@ install-dev:
 run dev='':
     @uv run textual run "{{dev}}" main.py
 
+
 # Use Pytest to test the whole app
 [group('testing')]
 test:
-	@echo ""
-	@uv run pytest tests
+    @echo ""
+    @uv run pytest tests
 
 
-# Use Pytest to test the clicks only
+# Use Pytest to test only the clicks, keys, or buttons
 [group('testing')]
-test-clicks:
-	@echo ""
-	@uv run pytest tests/test_clicks.py
-
-
-# Use Pytest to test the key presses only
-[group('testing')]
-test-keys:
-	@echo ""
-	@uv run pytest tests/test_keys.py
-
-
-# Use Pytest to test the buttons only
-[group('testing')]
-test-buttons:
-	@echo ""
-	@uv run pytest tests/test_buttons.py
+[arg("kind", pattern='clicks|keys|buttons', help='Run only these kinds of tests')]
+test-only kind:
+    @echo ""
+    @uv run pytest tests/test_"{{kind}}".py
 
 
 # Use Pytest to generate code coverage
