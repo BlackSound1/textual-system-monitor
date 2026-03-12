@@ -36,7 +36,6 @@ class ProcessesScreen(Screen[None]):
     CSS_PATH = "../styles/processes_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('main')", "Main Screen"),
         ("c", "app.switch_mode('cpu')", "CPU"),
         ("n", "app.switch_mode('network')", "Network"),
@@ -141,6 +140,9 @@ class ProcessesScreen(Screen[None]):
         container.border_subtitle = self.BORDER_SUBTITLE
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 

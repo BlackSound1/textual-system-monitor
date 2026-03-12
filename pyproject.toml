@@ -1,12 +1,12 @@
 [project]
 name = "textual-system-monitor"
-version = "0.1.5"
+version = "0.2.0"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "psutil==5.9.8",
-    "textual==1.0.0",
+    "textual==2.0.0",
     "wmi==1.5.1 ; sys_platform == 'win32'",
 ]
 

@@ -17,7 +17,6 @@ class CPU_Screen(Screen[None]):
     CSS_PATH = "../styles/cpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('processes')", "Processes"),
         ("c", "app.switch_mode('main')", "Main Screen"),
         ("n", "app.switch_mode('network')", "Network"),
@@ -99,5 +98,8 @@ class CPU_Screen(Screen[None]):
         container.border_title = self.BORDER_TITLE
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()

@@ -6,6 +6,7 @@ from textual.containers import Container, VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Static
 
 from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
@@ -17,7 +18,6 @@ class GPU_Screen(Screen[None]):
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('processes')", "Processes"),
         ("c", "app.switch_mode('cpu')", "CPU"),
         ("n", "app.switch_mode('network')", "Network"),
@@ -26,6 +26,8 @@ class GPU_Screen(Screen[None]):
         ("v", "app.switch_mode('main')", "Main Screen"),
         ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    update_timer: Timer | None = None
 
     gpu_data = reactive(get_gpu_data())
 
@@ -52,15 +54,15 @@ class GPU_Screen(Screen[None]):
         if sys.platform == "win32":
             self.gpu_data = [
                 {
-                    "gpu": gpu['gpu'],
-                    'driver_version': gpu['driver_version'],
-                    'resolution': gpu['resolution'],
-                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu['adapter_ram'])),
-                    'availability': gpu['availability'],
-                    'refresh': gpu['refresh'],
-                    'status': gpu['status'],
+                    "gpu": gpu_info['gpu'],
+                    'driver_version': gpu_info['driver_version'],
+                    'resolution': gpu_info['resolution'],
+                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
+                    'availability': gpu_info['availability'],
+                    'refresh': gpu_info['refresh'],
+                    'status': gpu_info['status'],
                 }
-                for gpu in get_gpu_data()
+                for gpu_info in get_gpu_data() if gpu_info
             ]
         else:
             self.gpu_data = None
@@ -85,14 +87,14 @@ class GPU_Screen(Screen[None]):
                           "Availability", "Refresh", "Status")
 
         # Then, for each video controller, update the Static Widget with its new information
-        for gpu in gpu_data:
-            name = gpu['gpu']
-            version = gpu['driver_version']
-            resolution = gpu['resolution']
-            ram = gpu['adapter_ram']
-            availability = gpu['availability']
-            refresh = gpu['refresh']
-            status = gpu['status']
+        for gpu_info in gpu_data:
+            name = gpu_info['gpu']
+            version = gpu_info['driver_version']
+            resolution = gpu_info['resolution']
+            ram = gpu_info['adapter_ram']
+            availability = gpu_info['availability']
+            refresh = gpu_info['refresh']
+            status = gpu_info['status']
 
             table.add_row(name, version, resolution, ram, availability, refresh, status)
 
@@ -102,7 +104,7 @@ class GPU_Screen(Screen[None]):
         :return: None
         """
 
-        self.set_interval(RARE_INTERVAL, self.update_gpu_data)
+        self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
             container = self.query_one("#gpu-container", expect_type=Container)
@@ -111,6 +113,13 @@ class GPU_Screen(Screen[None]):
 
         container.border_title = self.BORDER_TITLE
         container.border_subtitle = self.BORDER_SUBTITLE
+
+    def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
+        if self.update_timer:
+            self.update_timer.stop()
 
     def compose(self) -> ComposeResult:
         """

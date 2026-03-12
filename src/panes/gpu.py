@@ -44,16 +44,16 @@ class GPU_Usage(Static):
         if sys.platform == "win32":
             self.gpu_data = [
              {
-                 "gpu": gpu['gpu'],
-                 'driver_version': gpu['driver_version'],
-                 'resolution': gpu['resolution'],
-                 'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu['adapter_ram'])),
-                 'availability': gpu['availability'],
-                 'refresh': gpu['refresh'],
-                 'status': gpu['status'],
+                 "gpu": gpu_info['gpu'],
+                 'driver_version': gpu_info['driver_version'],
+                 'resolution': gpu_info['resolution'],
+                 'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
+                 'availability': gpu_info['availability'],
+                 'refresh': gpu_info['refresh'],
+                 'status': gpu_info['status'],
              }
-             for gpu in get_gpu_data()
-         ]
+             for gpu_info in get_gpu_data() if gpu_info
+            ]
         else:
             self.gpu_data = []
 
@@ -95,6 +95,9 @@ class GPU_Usage(Static):
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()
 

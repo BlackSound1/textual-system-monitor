@@ -2,14 +2,11 @@
     layout: grid;
     grid-size: 2;  /* two columns */
     grid-columns: 1fr;
-    grid-rows: 1fr;
 }
 
 #processes {
-    width: 100%;
-    row-span: 2;
     background: $panel;
-    border: $secondary;
+    border: round orange;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -17,13 +14,13 @@
 }
 
 #processes:light {
-    border: darkorange;
+    border: round darkorange;
     background: $boost-darken-1;
 }
 
 #stats {
-    layout: grid;
-    grid-size: 1;
+    layout: vertical;
+    height: 1fr;
     /*border: greenyellow;*/
     /*border-title-color: $text;*/
     /*border-title-align: center;*/
@@ -34,9 +31,9 @@
 }
 
 #drives {
-    layout: grid;
     background: $panel;
-    border: red;
+    border: round red;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -45,29 +42,32 @@
 
 #mem {
     background: $panel;
-    border: yellow;
+    border: round yellow;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
 }
 
 #mem:light {
-    border: #F3CD00;
+    border: round #F3CD00;
 }
 
 #cpu {
     background: $panel;
-    border: lightblue;
+    border: round lightblue;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
 }
 
 #cpu:light {
-    border: blue 90%;
+    border: round blue 90%;
 }
 
 #network {
     background: $panel;
-    border: lightgreen;
+    border: round lightgreen;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -75,12 +75,13 @@
 }
 
 #network:light {
-    border: green;
+    border: round green;
 }
 
 #gpu {
     background: $panel;
-    border: pink;
+    border: round pink;
+    height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -88,7 +89,7 @@
 }
 
 #gpu:light {
-    border: deeppink;
+    border: round deeppink;
 }
 
 .proc {

@@ -4,6 +4,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
@@ -13,6 +14,8 @@ type NetworkStatsType = list[dict[str, str | int]]
 
 class NetInfo(Static):
     BORDER_TITLE = f"Network Info - Updated every {NET_INTERVAL}s"
+
+    update_timer: Timer | None = None
 
     io = reactive(get_network_stats())
 
@@ -54,7 +57,14 @@ class NetInfo(Static):
         Hook up the `update_io` function, set to an interval of 1 second
         :return: None
         """
-        self.set_interval(NET_INTERVAL, self.update_io)
+        self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
+
+    def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
+        if self.update_timer:
+            self.update_timer.stop()
 
     def on_click(self) -> None:
         """

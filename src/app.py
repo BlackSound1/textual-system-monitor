@@ -16,7 +16,7 @@ from .screens.gpu_screen import GPU_Screen
 class Monitor(App[str]):
     TITLE = "Textual System Monitor"
     SUB_TITLE = "Written in Python using Textual"
-    MODES: ClassVar[dict[str, str | Screen[None] | Callable[[], Screen[None]]]] = {
+    MODES: ClassVar[dict[str, str | Callable[[], Screen[None]]]] = {
         "main": MainScreen,
         "guide": GuideScreen,
         "processes": ProcessesScreen,
@@ -28,7 +28,7 @@ class Monitor(App[str]):
     }
 
     CONTEXT = {
-        "kb_size" : 1024
+        "kb_size": 1024
     }
 
     def on_mount(self) -> None:

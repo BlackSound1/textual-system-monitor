@@ -6,7 +6,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Static, Header, Footer, Digits
+from textual.widgets import Label, Header, Footer, Digits
 
 from src.utilities import get_mem_data, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
@@ -31,7 +31,6 @@ class MemoryScreen(Screen[None]):
     CSS_PATH = "../styles/mem_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("t", "app.toggle_dark", "Toggle dark mode"),
         ("p", "app.switch_mode('processes')", "Processes"),
         ("c", "app.switch_mode('cpu')", "CPU"),
         ("n", "app.switch_mode('network')", "Network"),
@@ -65,11 +64,11 @@ class MemoryScreen(Screen[None]):
 
         try:
             total_digits = self.query_one("#total-digits", Digits)
-            total_label = self.query_one("#total-static-label", Static)
+            total_label = self.query_one("#total-static-label", Label)
             avail_digits = self.query_one("#avail-digits", Digits)
-            avail_label = self.query_one("#avail-static-label", Static)
+            avail_label = self.query_one("#avail-static-label", Label)
             used_digits = self.query_one("#used-digits", Digits)
-            used_label = self.query_one("#used-static-label", Static)
+            used_label = self.query_one("#used-static-label", Label)
             perc_digits = self.query_one("#perc-digits", Digits)
         except NoMatches:
             return
@@ -79,17 +78,17 @@ class MemoryScreen(Screen[None]):
 
         # Update total information
         value, denom = bytes_to_human(data['total'], kb_size).split(' ')
-        total_label.update(f"Total Memory ({denom}):\t")
+        total_label.update(f"Total Memory ({denom}):  ")
         total_digits.update(f"{value}")
 
         # Update available information
         value, denom = bytes_to_human(data['available'], kb_size).split(' ')
-        avail_label.update(f"Available Memory ({denom}):\t")
+        avail_label.update(f"Available Memory ({denom}):  ")
         avail_digits.update(f"{value}")
 
         # Update used information
         value, denom = bytes_to_human(data['used'], kb_size).split(' ')
-        used_label.update(f"Used Memory ({denom}):\t")
+        used_label.update(f"Used Memory ({denom}):  ")
         used_digits.update(f"{value}")
 
         # Update percentage information
@@ -109,19 +108,19 @@ class MemoryScreen(Screen[None]):
 
         with Container(id="mem-container"):
             with Container(classes="mem-static"):
-                yield Static("", id="total-static-label", classes="label")
+                yield Label("", id="total-static-label", classes="label")
                 yield Digits(id="total-digits", classes="digits")
 
             with Container(classes="mem-static"):
-                yield Static("", id="avail-static-label", classes="label")
+                yield Label("", id="avail-static-label", classes="label")
                 yield Digits(id="avail-digits", classes="digits")
 
             with Container(classes="mem-static"):
-                yield Static("", id="used-static-label", classes="label")
+                yield Label("", id="used-static-label", classes="label")
                 yield Digits(id="used-digits", classes="digits")
 
             with Container(classes="mem-static"):
-                yield Static("Percentage Used (%):\t", classes="label")
+                yield Label("Percentage Used (%):  ", classes="label")
                 yield Digits(id="perc-digits", classes="digits")
 
         yield Footer()
@@ -142,5 +141,8 @@ class MemoryScreen(Screen[None]):
         container.border_title = self.BORDER_TITLE
 
     def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
         if self.update_timer:
             self.update_timer.stop()

@@ -5,6 +5,7 @@ from textual.app import ComposeResult
 from textual.containers import VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
+from textual.timer import Timer
 from textual.widgets import Static
 
 from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zero_procs
@@ -13,6 +14,8 @@ from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zer
 class Processes(Static):
     BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
     BORDER_SUBTITLE = "Top 10 by CPU Load"
+
+    update_timer: Timer | None = None
 
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
@@ -80,7 +83,14 @@ class Processes(Static):
         """
         Hook up the `update_processes` function, set to a long interval
         """
-        self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+        self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
+
+    def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
+        if self.update_timer:
+            self.update_timer.stop()
 
     def on_click(self) -> None:
         """
