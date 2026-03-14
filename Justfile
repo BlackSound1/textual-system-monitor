@@ -9,28 +9,17 @@ VENV_CMD := if os() == "windows" {
 }
 
 
-# Install dependencies to a virtual env, if not using UV
-[group('installing')]
-install:
-    @if command -v uv &> /dev/null; then \
-        echo "UV found. Install dependencies by running the app with 'just run'"; \
-    else \
-        @echo "UV not found. Installing dependencies with pip..." && \
-        @python3 -m venv venv && "{{VENV_CMD}}" && \
-        @python3 -m pip3 install -r requirements.txt;
-    fi
-
-
-# Install ALL dependencies to a virtual env, if not using UV
-[group('installing')]
-[group('dev')]
-install-dev:
-    @if command -v uv &> /dev/null; then \
-        echo "UV found. Install dependencies by running the app with 'make run'"; \
-    else \
-        @echo "UV not found. Installing dependencies with pip..." && \
-        @python3 -m venv venv && "{{VENV_CMD}}" && \
-        @python3 -m pip3 install -r requirements.txt && python3 -m pip3 install -r requirements_dev.txt;
+# If not using UV, install dependencies to a virtual env. Use -d to install dev dependencies, too
+[group('dependencies')]
+[arg("dev", long, short='d', value="requirements_dev", help="Install dev dependencies, too")]
+install dev='requirements':
+    #!/usr/bin/env bash
+    if command -v uv &> /dev/null; then
+        echo "UV found. Install dependencies by running the app with 'just run'";
+    else
+        @echo "UV not found. Installing dependencies with pip..." &&
+        @python3 -m venv venv && "{{VENV_CMD}}" &&
+        @python3 -m pip3 install -r {{dev}}.txt;
     fi
 
 
