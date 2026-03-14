@@ -124,6 +124,10 @@ One of the advantages of Just is that its commands can accept arguments, so I wa
 and condense several of the Make targets into single Just commands. I'm sure there's a way to
 simplify my `Makefile` to better resemble the `Justfile`, but Just makes the process quite easy.
 
+For a list of commands, use `just` or `just --list`. For usage instructions,
+use `just --usage <COMMAND>`. To choose a command in an interactive picker while 
+seeing its implementation, use `just --choose`.
+
 # Stack
 
 - Python (language)
