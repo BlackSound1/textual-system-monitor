@@ -1,4 +1,4 @@
-default:
+_default:
     @just --list
 
 
@@ -34,7 +34,7 @@ install-dev:
     fi
 
 
-# Run app normally or in dev mode
+# Run app. Use -d for dev mode
 [group('run')]
 [group('dev')]
 [arg("dev", long, short='d', value="--dev", help="Run the app in dev mode")]
@@ -60,20 +60,19 @@ test-only kind:
 # Use Pytest to generate code coverage
 [group('testing')]
 cov:
-	@echo ""
-	@uv run pytest tests --cov=. --cov-branch
+    @echo ""
+    @uv run pytest tests --cov=. --cov-branch
 
 
-# Show the Textual console. Used in debugging
+# Launch the Textual console. Used in debugging
 [group('dev')]
 console:
-	@uv run textual console -x EVENT -x SYSTEM -x DEBUG
+    @uv run textual console -x EVENT -x SYSTEM -x DEBUG
 
 
 # Use Flake8 to lint the Python files
 [group('dev')]
 lint:
-	@echo ""
-	@uv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
-	@uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
+    @echo ""
+    @uv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
+    @uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
