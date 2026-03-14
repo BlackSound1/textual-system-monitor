@@ -65,7 +65,7 @@ installed separately.
   The version of CPython used is 3.12. Higher is, of course, also possible.
 
 - **Make**. Make is a build tool that can also be used as a command runner (although
-it's not designed to be such). Throughout this guide, `make` commands will be used.
+it's not designed to be such like Just). Throughout this guide, `make` commands will be used.
 In case you don't have Make or can't get it easily, you can just look in the
 `Makefile` for that command name and copy-and-paste the actual command(s) it refers
 to (without the `@`) into your terminal and run it that way. More complicated,
@@ -109,66 +109,36 @@ To see a list of available `make` commands and their uses, use:
 make help
 ```
 
-# Contributing
+# Just
 
-To develop the app:
+As I briefly mentioned earlier, Make is a build tool, not really a command runner. The fact that
+Make can be used as a command runner is a useful byproduct of its other abilities.
+For a true command runner, I use Just. It's a newer tool that I think is kind of neat.
+It's not a requirement for this project because I only have it doing things Make does.
 
-1. Please fork it, not just clone it.
+Check it out here: https://just.systems/man/en/introduction.html.
 
-2. Install the dependencies (including dev dependencies), with:
+Similar to Make, instead of using `make run`, you would use `just run`, etc.
 
-   ```sh
-   make install-dev
-   ```
+One of the advantages of Just is that its commands can accept arguments, so I was able to simplify
+and condense several of the Make targets into single Just commands. I'm sure there's a way to
+simplify my `Makefile` to better resemble the `Justfile`, but Just makes the process quite easy.
 
-   or use `requirements.txt` and `requirements_dev.txt`.
+For a list of commands, use `just` or `just --list`. For usage instructions,
+use `just --usage <COMMAND>`. To choose a command in an interactive picker while 
+seeing its implementation, use `just --choose`.
 
-3. Check that all tests pass with:
+# Stack
 
-   ```sh
-   make test
-   ```
-
-   **Note**: Since a recent update, these tests may take quite a while depending on
-   your computer. I have taken some pains to avoid threading issues, but performance
-   issues may persist.
-
-4. Generate code coverage with:
-   ```sh
-   make cov
-   ```
-
-   We're not necessarily aiming for 100%, but aim for a high percentage that covers
-   everything reasonable. This might also take quite a while.
-
-5. Lint the Python files with:
-
-   ```sh
-   make lint
-   ```
-
-   The output should be:
-
-   ```sh
-   0
-   0
-   ```
-
-After those steps are done, have 2 terminals open. I use 2 instances of Bash in
-Windows Terminal.
-
-- In one instance, navigate to the repo, and run `make console`. This will cause the terminal to create a debug console waiting for an
-instance of the app to hook into. [Read more here](https://textual.textualize.io/guide/devtools/).
-- In the other instance, from the repo directory, run the dev version of the app
-with `make run-dev` to run the app in development mode. The console in the first
-instance should activate with logs from the running app.
-
-More info on the Textual console [here](https://textual.textualize.io/guide/devtools/#console).
-
-When contributing, **always** work from a branch other than `main`. Name your branch
-something meaningful. Push to your 
-own remote branch (because you forked it). Create a pull request from your forked
-branch into my `main` branch.
+- Python (language)
+- UV (Python environment, package, and version manager)
+- Bash (shell. As this is a terminal app, the shell matters. I assume Bash
+  throughout the app)
+- Textual (framework)
+- Pytest (test framework)
+- Flake8 (linter)
+- Make (build tool/ command runner)
+- Just (optional command runner)
 
 # Desired Features
 
