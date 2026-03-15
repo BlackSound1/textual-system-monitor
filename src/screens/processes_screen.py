@@ -77,7 +77,7 @@ class ProcessesScreen(Screen[None]):
         if button_id == "process-pause-button":
             self.paused = not self.paused
 
-            pause_button = self.query_one("#process-pause-button", expect_type=Button)
+            pause_button = self.screen.query_one("#process-pause-button", expect_type=Button)
             pause_button.label = "Resume" if self.paused else "Pause"
             pause_button.variant = "error" if self.paused else "success"
 
@@ -85,7 +85,7 @@ class ProcessesScreen(Screen[None]):
         elif button_id == "process-sort-button":
             self.sort = not self.sort
 
-            sort_button = self.query_one("#process-sort-button", expect_type=Button)
+            sort_button = self.screen.query_one("#process-sort-button", expect_type=Button)
             sort_button.label = "Sorted" if self.sort else "Unsorted"
             sort_button.variant = "success" if self.sort else "error"
 
@@ -99,7 +99,7 @@ class ProcessesScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = cast(DataTable[Any], self.query_one("#process-screen-table", expect_type=DataTable))
+            table = cast(DataTable[Any], self.screen.query_one("#process-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -132,7 +132,7 @@ class ProcessesScreen(Screen[None]):
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
 
         try:
-            container = self.query_one("#process-container", expect_type=Container)
+            container = self.screen.query_one("#process-container", expect_type=Container)
         except NoMatches:
             return
 

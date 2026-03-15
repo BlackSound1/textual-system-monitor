@@ -46,8 +46,8 @@ class CPU_Screen(Screen[None]):
 
         # First, grab the Static and DataTable Widgets
         try:
-            static = self.query_one("#cpu-screen-static", expect_type=Static)
-            table = cast(DataTable[Any], self.query_one("#cpu-screen-table", expect_type=DataTable))
+            static = self.screen.query_one("#cpu-screen-static", expect_type=Static)
+            table = cast(DataTable[Any], self.screen.query_one("#cpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -91,7 +91,7 @@ class CPU_Screen(Screen[None]):
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
 
         try:
-            container = self.query_one("#cpu-screen-container", expect_type=Container)
+            container = self.screen.query_one("#cpu-screen-container", expect_type=Container)
         except NoMatches:
             return
 

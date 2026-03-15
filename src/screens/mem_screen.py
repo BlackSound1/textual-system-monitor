@@ -63,13 +63,13 @@ class MemoryScreen(Screen[None]):
         from src.app import Monitor
 
         try:
-            total_digits = self.query_one("#total-digits", Digits)
-            total_label = self.query_one("#total-static-label", Label)
-            avail_digits = self.query_one("#avail-digits", Digits)
-            avail_label = self.query_one("#avail-static-label", Label)
-            used_digits = self.query_one("#used-digits", Digits)
-            used_label = self.query_one("#used-static-label", Label)
-            perc_digits = self.query_one("#perc-digits", Digits)
+            total_digits = self.screen.query_one("#total-digits", Digits)
+            total_label = self.screen.query_one("#total-static-label", Label)
+            avail_digits = self.screen.query_one("#avail-digits", Digits)
+            avail_label = self.screen.query_one("#avail-static-label", Label)
+            used_digits = self.screen.query_one("#used-digits", Digits)
+            used_label = self.screen.query_one("#used-static-label", Label)
+            perc_digits = self.screen.query_one("#perc-digits", Digits)
         except NoMatches:
             return
 
@@ -134,7 +134,7 @@ class MemoryScreen(Screen[None]):
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
 
         try:
-            container = self.query_one("#mem-container", expect_type=Container)
+            container = self.screen.query_one("#mem-container", expect_type=Container)
         except NoMatches:
             return
 

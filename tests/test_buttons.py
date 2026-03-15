@@ -26,8 +26,8 @@ class TestButtons(IsolatedAsyncioTestCase):
             process_screen = cast(ProcessesScreen, self.monitor_app.screen)
 
             # Get the Buttons
-            pause_button = process_screen.query_one("#process-pause-button", expect_type=Button)
-            sort_button = process_screen.query_one("#process-sort-button", expect_type=Button)
+            pause_button = process_screen.screen.query_one("#process-pause-button", expect_type=Button)
+            sort_button = process_screen.screen.query_one("#process-sort-button", expect_type=Button)
 
             self.assertIs(type(process_screen), ProcessesScreen)
 

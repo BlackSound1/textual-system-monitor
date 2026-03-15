@@ -52,7 +52,7 @@ class NetworkScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = cast(DataTable[Any], self.query_one("#network-screen-table", expect_type=DataTable))
+            table = cast(DataTable[Any], self.screen.query_one("#network-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -94,7 +94,7 @@ class NetworkScreen(Screen[None]):
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
 
         try:
-            container = self.query_one("#network-container", expect_type=Container)
+            container = self.screen.query_one("#network-container", expect_type=Container)
         except NoMatches:
             return
 

@@ -67,7 +67,7 @@ class DriveScreen(Screen[None]):
 
         # First, grab the DataTable Widget
         try:
-            table = cast(DataTable[Any], self.query_one("#drive-screen-table", expect_type=DataTable))
+            table = cast(DataTable[Any], self.screen.query_one("#drive-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -104,7 +104,7 @@ class DriveScreen(Screen[None]):
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
 
         try:
-            container = self.query_one("#drive-screen-container", expect_type=Container)
+            container = self.screen.query_one("#drive-screen-container", expect_type=Container)
         except NoMatches:
             return
 

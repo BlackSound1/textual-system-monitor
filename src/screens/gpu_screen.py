@@ -77,7 +77,7 @@ class GPU_Screen(Screen[None]):
 
         # First, grab the Static Widget
         try:
-            table = cast(DataTable[Any], self.query_one("#gpu-screen-table", expect_type=DataTable))
+            table = cast(DataTable[Any], self.screen.query_one("#gpu-screen-table", expect_type=DataTable))
         except NoMatches:
             return
 
@@ -107,7 +107,7 @@ class GPU_Screen(Screen[None]):
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
-            container = self.query_one("#gpu-container", expect_type=Container)
+            container = self.screen.query_one("#gpu-container", expect_type=Container)
         except NoMatches:
             return
 
