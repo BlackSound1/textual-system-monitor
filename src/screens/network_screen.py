@@ -1,8 +1,8 @@
-from typing import Any, cast
+from typing import cast
 
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
@@ -33,6 +33,10 @@ class NetworkScreen(Screen[None]):
 
     io = reactive(get_network_stats())
 
+    # Query the necessary Widgets
+    container = getters.query_one("#network-container", expect_type=Container)
+    table = getters.query_one("#network-screen-table", expect_type=DataTable)
+
     def update_io(self) -> None:
         """
         Define how to update `self.io`
@@ -50,18 +54,12 @@ class NetworkScreen(Screen[None]):
 
         from src.app import Monitor
 
-        # First, grab the DataTable Widget
-        try:
-            table = cast(DataTable[Any], self.screen.query_one("#network-screen-table", expect_type=DataTable))
-        except NoMatches:
-            return
-
         # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         # Clear the table and add the columns
-        table.clear(columns=True)
-        table.add_columns("Interface", "Download", "Download Speed (/s)", "Upload", "Upload Speed (/s)")
+        self.table.clear(columns=True)
+        self.table.add_columns("Interface", "Download", "Download Speed (/s)", "Upload", "Upload Speed (/s)")
 
         # Next, go through each updated network interface, get its info, and update the DataTable
         # with the new info for each interface
@@ -83,22 +81,15 @@ class NetworkScreen(Screen[None]):
                 kb_size
             )
 
-            table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)
+            self.table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)
 
     def on_mount(self) -> None:
         """
         Perform initial setup for the Network Screen
         :return: None
         """
-
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
-
-        try:
-            container = self.screen.query_one("#network-container", expect_type=Container)
-        except NoMatches:
-            return
-
-        container.border_title = self.BORDER_TITLE
+        self.container.border_title = self.BORDER_TITLE
 
     def on_unmount(self) -> None:
         """
@@ -112,7 +103,6 @@ class NetworkScreen(Screen[None]):
         Display the structure of the Network Screen
         :return: The ComposeResult featuring the structure of the Network Screen
         """
-
         yield Header(show_clock=True)
         with Container(id="network-container"):
             with VerticalScroll():
