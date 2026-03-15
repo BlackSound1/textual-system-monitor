@@ -1,9 +1,9 @@
-from typing import Any, Iterator, cast
+from typing import Iterator, cast
 
 from psutil import Process, process_iter
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import Container
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
@@ -53,14 +53,18 @@ class ProcessesScreen(Screen[None]):
     # Set the default processes value to an initial call to the function
     processes = reactive(get_procs(sort=sort))
 
+    # Query the needed Widgets
+    container = getters.query_one("#process-container", expect_type=Container)
+    table = getters.query_one("#process-screen-table", expect_type=DataTable)
+    pause_button = getters.query_one("#process-pause-button", expect_type=Button)
+    sort_button = getters.query_one("#process-sort-button", expect_type=Button)
+
     def update_processes(self) -> None:
         """
         Define how to update `self.processes`
         """
-
         if self.paused:
             return
-
         self.processes = get_procs(sort=self.sort)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
@@ -76,18 +80,14 @@ class ProcessesScreen(Screen[None]):
         # If the pause button is pressed, toggle the paused state and update the button
         if button_id == "process-pause-button":
             self.paused = not self.paused
-
-            pause_button = self.screen.query_one("#process-pause-button", expect_type=Button)
-            pause_button.label = "Resume" if self.paused else "Pause"
-            pause_button.variant = "error" if self.paused else "success"
+            self.pause_button.label = "Resume" if self.paused else "Pause"
+            self.pause_button.variant = "error" if self.paused else "success"
 
         # If the sort button is pressed, toggle the sort state and update the button
         elif button_id == "process-sort-button":
             self.sort = not self.sort
-
-            sort_button = self.screen.query_one("#process-sort-button", expect_type=Button)
-            sort_button.label = "Sorted" if self.sort else "Unsorted"
-            sort_button.variant = "success" if self.sort else "error"
+            self.sort_button.label = "Sorted" if self.sort else "Unsorted"
+            self.sort_button.variant = "success" if self.sort else "error"
 
     def watch_processes(self, procs: Iterator[Process] | list[Process]) -> None:
         """
@@ -97,15 +97,9 @@ class ProcessesScreen(Screen[None]):
         :param procs: The list of new processes to render
         """
 
-        # First, grab the DataTable Widget
-        try:
-            table = cast(DataTable[Any], self.screen.query_one("#process-screen-table", expect_type=DataTable))
-        except NoMatches:
-            return
-
         # Then, clear the table and add columns
-        table.clear(columns=True)
-        table.add_columns("PID", "Name", "Username", "CPU Load (%)", "EXE")
+        self.table.clear(columns=True)
+        self.table.add_columns("PID", "Name", "Username", "CPU Load (%)", "EXE")
 
         # Next, go through each updated process, get its info, and update the table widget
         # with the new info for each process
@@ -121,23 +115,15 @@ class ProcessesScreen(Screen[None]):
             if name != "N/A":
                 name = f"[blue]{name}[/]"
 
-            table.add_row(PID, name, user_name, cpu_percent, exe)
+            self.table.add_row(PID, name, user_name, cpu_percent, exe)
 
     def on_mount(self) -> None:
         """
         Perform initial setup for the Processes Screen
         :return: None
         """
-
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
-
-        try:
-            container = self.screen.query_one("#process-container", expect_type=Container)
-        except NoMatches:
-            return
-
-        container.border_title = self.BORDER_TITLE
-        container.border_subtitle = self.BORDER_SUBTITLE
+        self.container.border_title = self.BORDER_TITLE
 
     def on_unmount(self) -> None:
         """
