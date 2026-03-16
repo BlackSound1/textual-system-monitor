@@ -1,9 +1,9 @@
 from typing import Iterator, cast
 
 from psutil import Process, process_iter
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -29,13 +29,13 @@ class Processes(Static):
         )[:10]
     )
 
+    static = getters.query_one("#procs_pane_static", expect_type=Static)
+
     def update_processes(self) -> None:
         """
         Update the list of processes with the top 10 by CPU load.
         """
-
         procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
-
         self.processes = sorted(
             get_non_zero_procs(procs),
             key=lambda x: x.info['cpu_percent'],
@@ -55,15 +55,9 @@ class Processes(Static):
             self.initial = False
             return
 
-        # First, grab the Static Widget
-        try:
-            static = self.query_one("Static", expect_type=Static)
-        except NoMatches:
-            return
-
         static_content = ""
 
-        # Next, go through each updated process, get its info, and update the Static widget
+        # Go through each updated process, get its info, and update the Static widget
         # with the new info for each process
         for proc in procs:
             PID = proc.info['pid']
@@ -77,7 +71,7 @@ class Processes(Static):
                                f"Username: {user_name} | EXE: {exe}\n\n")
 
         # Update the content of the Static widget with the new info for all processes
-        static.update(static_content)
+        self.static.update(static_content)
 
     def on_mount(self) -> None:
         """
@@ -98,7 +92,6 @@ class Processes(Static):
 
         :return: None
         """
-
         self.app.switch_mode("processes")
 
     def compose(self) -> ComposeResult:
@@ -107,4 +100,4 @@ class Processes(Static):
         :return: The ComposeResult featuring the VerticalScroll
         """
         with VerticalScroll():
-            yield Static("[blink]Populating...[/]")
+            yield Static("[blink]Populating...[/]", id="procs_pane_static")

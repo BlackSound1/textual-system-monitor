@@ -1,6 +1,6 @@
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -14,6 +14,8 @@ class CPU_Usage(Static):
     update_timer: Timer | None = None
 
     cpu_data = reactive(get_cpu_data())
+
+    static = getters.query_one("#cpu_pane_static", expect_type=Static)
 
     def update_cpu_data(self) -> None:
         """
@@ -29,18 +31,8 @@ class CPU_Usage(Static):
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
         :return: None
         """
-
-        # First, grab the Static Widget
-        try:
-            static = self.query_one("Static", expect_type=Static)
-        except NoMatches:
-            return
-
-        # Then, get the updated data
         static_content = update_CPU_static(cpu_data)
-
-        # Update the Static Widget
-        static.update(static_content)
+        self.static.update(static_content)
 
     def on_click(self) -> None:
         """
@@ -55,7 +47,7 @@ class CPU_Usage(Static):
         :return: The ComposeResult featuring the VerticalScroll and Static Widgets
         """
         with VerticalScroll():
-            yield Static()
+            yield Static(id="cpu_pane_static")
 
     def on_mount(self) -> None:
         """

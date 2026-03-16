@@ -1,9 +1,9 @@
 import sys
 from typing import cast
 
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -19,6 +19,8 @@ class GPU_Usage(Static):
     # Get initial GPU data. Different from approach in `update_gpu_data` because
     # we can't use `self` (to get the kb_size context) outside a function
     gpu_data = reactive(get_gpu_data())
+
+    static = getters.query_one("#gpu_pane_static", expect_type=Static)
 
     def adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
@@ -65,12 +67,6 @@ class GPU_Usage(Static):
         :return: None
         """
 
-        # First, grab the Static Widget
-        try:
-            static = self.query_one("#gpu-static", Static)
-        except NoMatches:
-            return
-
         static_content = ""
 
         # Then, for each video controller, update the Static Widget with its new information
@@ -85,7 +81,7 @@ class GPU_Usage(Static):
                 f"[green]Status[/]: {gpu['status']}\n"
             )
 
-        static.update(static_content)
+        self.static.update(static_content)
 
     def on_mount(self) -> None:
         """
@@ -113,9 +109,8 @@ class GPU_Usage(Static):
         Generate a ComposeResult by yielding a vertically-scrolling Static widget with the GPU information.
         :return: The ComposeResult
         """
-
         with VerticalScroll():
             if sys.platform == "win32":
-                yield Static(id="gpu-static")
+                yield Static(id="gpu_pane_static")
             else:
-                yield Static("GPU information not currently supported on non-Windows systems...")
+                yield Static("GPU information not currently supported on non-Windows systems...", id="gpu_pane_static")

@@ -1,8 +1,8 @@
 from typing import cast
 
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -16,6 +16,8 @@ class MemUsage(Static):
     update_timer: Timer | None = None
 
     mem_data = reactive(get_mem_data())
+
+    static = getters.query_one("#mem_pane_static", expect_type=Static)
 
     def update_mem_data(self) -> None:
         """
@@ -35,15 +37,9 @@ class MemUsage(Static):
 
         from src.app import Monitor
 
-        try:
-            static = self.query_one("Static", Static)
-        except NoMatches:
-            return
-
-        # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        static.update(
+        self.static.update(
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
             f"Available Memory: {bytes_to_human(data['available'], kb_size)}\n\n"
             f"Used: {bytes_to_human(data['used'], kb_size)}\n\n"
@@ -64,7 +60,7 @@ class MemUsage(Static):
         :return: The ComposeResult
         """
         with VerticalScroll():
-            yield Static(id="mem-static")
+            yield Static(id="mem_pane_static")
 
     def on_mount(self) -> None:
         """
