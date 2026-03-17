@@ -1,9 +1,9 @@
 import sys
-from typing import cast
+from typing import Any, cast
 
-from textual import getters
 from textual.app import ComposeResult
 from textual.containers import Container, VerticalScroll
+from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
@@ -30,9 +30,6 @@ class GPU_Screen(Screen[None]):
     update_timer: Timer | None = None
 
     gpu_data = reactive(get_gpu_data())
-
-    container = getters.query_one("#gpu-container", expect_type=Container)
-    table = getters.query_one("#gpu-screen-table", expect_type=DataTable)
 
     def adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
@@ -78,10 +75,16 @@ class GPU_Screen(Screen[None]):
         :return: None
         """
 
+        # First, grab the Static Widget
+        try:
+            table = cast(DataTable[Any], self.screen.query_one("#gpu-screen-table", expect_type=DataTable))
+        except NoMatches:
+            return
+
         # Clear the table and add the columns
-        self.table.clear(columns=True)
-        self.table.add_columns("GPU", "Driver Version", "Resolution", "Adapter RAM",
-                               "Availability", "Refresh", "Status")
+        table.clear(columns=True)
+        table.add_columns("GPU", "Driver Version", "Resolution", "Adapter RAM",
+                          "Availability", "Refresh", "Status")
 
         # Then, for each video controller, update the Static Widget with its new information
         for gpu_info in gpu_data:
@@ -93,7 +96,7 @@ class GPU_Screen(Screen[None]):
             refresh = gpu_info['refresh']
             status = gpu_info['status']
 
-            self.table.add_row(name, version, resolution, ram, availability, refresh, status)
+            table.add_row(name, version, resolution, ram, availability, refresh, status)
 
     def on_mount(self) -> None:
         """
@@ -102,8 +105,13 @@ class GPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
-        self.container.border_title = self.BORDER_TITLE
-        self.container.border_subtitle = self.BORDER_SUBTITLE
+        try:
+            container = self.screen.query_one("#gpu-container", expect_type=Container)
+        except NoMatches:
+            return
+
+        container.border_title = self.BORDER_TITLE
+        container.border_subtitle = self.BORDER_SUBTITLE
 
     def on_unmount(self) -> None:
         """
