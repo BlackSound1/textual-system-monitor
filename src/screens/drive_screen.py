@@ -1,9 +1,9 @@
-from typing import Any, cast
+from typing import cast
 
 from psutil import disk_partitions, disk_usage
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll, Container
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
@@ -40,11 +40,13 @@ class DriveScreen(Screen[None]):
         for item in disk_partitions()
     )
 
+    table = getters.query_one("#drive-screen-table", expect_type=DataTable)
+    container = getters.query_one("#drive-screen-container", expect_type=Container)
+
     def update_disks(self) -> None:
         """
         Define how to update `self.disks`
         """
-
         self.disks = (
             {
                 "device": item.device,
@@ -65,17 +67,10 @@ class DriveScreen(Screen[None]):
 
         from src.app import Monitor
 
-        # First, grab the DataTable Widget
-        try:
-            table = cast(DataTable[Any], self.screen.query_one("#drive-screen-table", expect_type=DataTable))
-        except NoMatches:
-            return
-
-        # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        table.clear(columns=True)
-        table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
+        self.table.clear(columns=True)
+        self.table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
 
         # Next, go through each updated disk, get its info, and add it to the table
         for disk in disks:
@@ -85,7 +80,7 @@ class DriveScreen(Screen[None]):
 
             # If the drive is a CD drive, treat it differently
             if options == "cdrom":
-                table.add_row(device, options, "N/A", "N/A", "N/A", "N/A", "N/A")
+                self.table.add_row(device, options, "N/A", "N/A", "N/A", "N/A", "N/A")
             else:
                 usage = disk_usage(disk['mountpoint'])
                 pct = compute_percentage_color(usage.percent)
@@ -93,23 +88,16 @@ class DriveScreen(Screen[None]):
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
 
-                table.add_row(device, options, fs, pct, total, used, free)
+                self.table.add_row(device, options, fs, pct, total, used, free)
 
     def on_mount(self) -> None:
         """
         Perform initial setup for the Drive Screen
         :return: None
         """
-
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
-
-        try:
-            container = self.screen.query_one("#drive-screen-container", expect_type=Container)
-        except NoMatches:
-            return
-
-        container.border_title = self.BORDER_TITLE
-        container.border_subtitle = self.BORDER_SUBTITLE
+        self.container.border_title = self.BORDER_TITLE
+        self.container.border_subtitle = self.BORDER_SUBTITLE
 
     def on_unmount(self) -> None:
         """
@@ -123,7 +111,6 @@ class DriveScreen(Screen[None]):
         Create the structure of the Drive Screen
         :return: The ComposeResult featuring the Drive Screen structure
         """
-
         yield Header(show_clock=True)
         with Container(id="drive-screen-container"):
             with VerticalScroll():
