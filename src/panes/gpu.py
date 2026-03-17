@@ -67,7 +67,7 @@ class GPU_Usage(Static):
 
         # First, grab the Static Widget
         try:
-            static = self.query_one("#gpu-static", Static)
+            static = self.query_one("#gpu_pane_static", Static)
         except NoMatches:
             return
 
@@ -113,9 +113,8 @@ class GPU_Usage(Static):
         Generate a ComposeResult by yielding a vertically-scrolling Static widget with the GPU information.
         :return: The ComposeResult
         """
-
         with VerticalScroll():
             if sys.platform == "win32":
-                yield Static(id="gpu-static")
+                yield Static(id="gpu_pane_static")
             else:
                 yield Static("GPU information not currently supported on non-Windows systems...")

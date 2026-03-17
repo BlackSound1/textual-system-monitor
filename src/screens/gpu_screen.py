@@ -103,7 +103,6 @@ class GPU_Screen(Screen[None]):
         Perform initial setup for the GPU Screen
         :return: None
         """
-
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         try:
@@ -126,7 +125,6 @@ class GPU_Screen(Screen[None]):
         Display the structure of the GPU Screen
         :return: The ComposeResult featuring the structure of the GPU Screen
         """
-
         yield Header(show_clock=True)
         with Container(id="gpu-container"):
             with VerticalScroll():

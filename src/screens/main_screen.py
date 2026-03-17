@@ -32,11 +32,8 @@ class MainScreen(Screen[None]):
 
         :return: ComposeResult: The composed result of the application screen.
         """
-
         yield Header(show_clock=True)
-
         with Container(id="app-grid"):
             yield Processes(id="processes")
             yield Stats(id="stats")
-
         yield Footer()

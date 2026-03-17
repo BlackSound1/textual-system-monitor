@@ -1,8 +1,8 @@
 from typing import cast
 
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -18,6 +18,8 @@ class NetInfo(Static):
     update_timer: Timer | None = None
 
     io = reactive(get_network_stats())
+
+    static = getters.query_one("#network_pane_static", expect_type=Static)
 
     def update_io(self) -> None:
         """
@@ -36,21 +38,14 @@ class NetInfo(Static):
 
         from src.app import Monitor  # Need to import here to avoid circular import
 
-        # First, grab the Static Widget
-        try:
-            static = self.query_one("#network-pane-static", expect_type=Static)
-        except NoMatches:
-            return
-
-        # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        # Next, go through each updated network interface, get its info, and update the Static widget
+        # Go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
         static_content = update_network_static(new, old, kb_size)
 
         # Update the content of the Static widget with the new info for all interfaces
-        static.update(static_content)
+        self.static.update(static_content)
 
     def on_mount(self) -> None:
         """
@@ -79,4 +74,4 @@ class NetInfo(Static):
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
         with VerticalScroll():
-            yield Static("", id="network-pane-static")
+            yield Static("", id="network_pane_static")

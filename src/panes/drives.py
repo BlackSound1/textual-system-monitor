@@ -1,9 +1,9 @@
 from typing import cast
 
 from psutil import disk_partitions, disk_usage
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import VerticalScroll
-from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
@@ -27,11 +27,12 @@ class DriveUsage(Static):
         for item in disk_partitions()
     )
 
+    static = getters.query_one("#drives_pane_static", expect_type=Static)
+
     def update_disks(self) -> None:
         """
         Define how to update `self.disks`
         """
-
         self.disks = (
             {
                 "device": item.device,
@@ -52,13 +53,6 @@ class DriveUsage(Static):
 
         from src.app import Monitor  # Need to import here to avoid circular import
 
-        # First, grab the Static Widget
-        try:
-            static = self.query_one("Static", expect_type=Static)
-        except NoMatches:
-            return
-
-        # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
         static_content = ""
@@ -85,7 +79,7 @@ class DriveUsage(Static):
                                    f"Total: {total} | Used: {used} | Free: {free}\n\n")
 
         # Update the content of the Static widget with the new info for all drives
-        static.update(static_content)
+        self.static.update(static_content)
 
     def on_mount(self) -> None:
         """
@@ -113,4 +107,4 @@ class DriveUsage(Static):
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
         with VerticalScroll():
-            yield Static()
+            yield Static(id='drives_pane_static')
