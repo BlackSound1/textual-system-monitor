@@ -3,7 +3,7 @@ from typing import Any, Iterator, cast
 from psutil import Process, process_iter
 from textual import getters
 from textual.app import ComposeResult
-from textual.containers import Container
+from textual.containers import Container, Horizontal
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
@@ -140,7 +140,7 @@ class ProcessesScreen(Screen[None]):
         yield Header(show_clock=True)
 
         with Container(id="process-screen-container"):
-            with Container(id="process-options-container"):
+            with Horizontal(id="process-options-container"):
                 yield Button("Sorted", variant="success", id="process-sort-button")
                 yield Button("Pause", variant="success", id="process-pause-button")
 

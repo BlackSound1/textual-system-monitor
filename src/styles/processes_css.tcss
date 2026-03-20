@@ -19,11 +19,13 @@
 }
 
 #process-options-container {
-    layout: grid;
-    grid-size: 10;
     background: $panel;
 }
 
 #process-options-container:light {
     background: $boost-darken-1;
+}
+
+Button {
+    margin: 0 2 0 1;
 }
