@@ -3,13 +3,28 @@ name = "textual-system-monitor"
 version = "0.5.0"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
+authors = [
+    { name = "BlackSound1" }
+]
 license = { file = "LICENSE.md" }
 requires-python = ">=3.12"
+keywords = ["python", "textual", "tui", "uv", "terminal"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+]
 dependencies = [
     "psutil==5.9.8",
     "textual==5.0.0",
     "wmi==1.5.1 ; sys_platform == 'win32'",
 ]
+
+[project.urls]
+Repository = "https://github.com/BlackSound1/textual-system-monitor"
 
 [dependency-groups]
 dev = [
