@@ -39,6 +39,7 @@ class ProcessesScreen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ("/", "", ""),
     ]
 
     initial = True

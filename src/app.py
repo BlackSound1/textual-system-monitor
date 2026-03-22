@@ -31,6 +31,10 @@ class Monitor(App[str]):
         "kb_size": 1024
     }
 
+    BINDINGS = [
+        ('/', 'app.switch_base', 'Change KB Size')
+    ]
+
     def on_mount(self) -> None:
         """
         Set the initial MainScreen screen

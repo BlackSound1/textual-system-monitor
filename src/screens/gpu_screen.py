@@ -24,7 +24,6 @@ class GPU_Screen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('main')", "Main Screen"),
-        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     update_timer: Timer | None = None

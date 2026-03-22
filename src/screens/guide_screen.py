@@ -101,6 +101,7 @@ class GuideScreen(Screen[None]):
     BINDINGS = [
         ("q", "app.quit", "Quit"),
         ('g', "app.switch_mode('main')", 'Main Screen'),
+        ("/", "", ""),
     ]
 
     def compose(self) -> ComposeResult:

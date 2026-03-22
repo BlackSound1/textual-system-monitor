@@ -23,6 +23,7 @@ class CPU_Screen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ("/", "", ""),
     ]
 
     update_timer: Timer | None = None
