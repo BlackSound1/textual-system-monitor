@@ -100,14 +100,24 @@ class GuideScreen(Screen[None]):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ('p', "", ''),
-        ('c', "", ''),
-        ('n', "", ''),
-        ('d', "", ''),
-        ('m', "", ''),
-        ('v', "", ''),
         ('g', "app.switch_mode('main')", 'Main Screen'),
+        ("/", "", ""),
     ]
+
+    def on_mount(self) -> None:
+      """
+      Perform initial setup for the Guide Screen
+
+      :return: None
+      """
+      def _on_theme_change() -> None:
+          """
+          Update the text colors based on the theme
+          """
+          monitoring_desc = self.query_one("#monitoring_desc", expect_type=Static)
+          monitoring_desc.update(get_formatted_monitoring_string(self.app.theme))
+
+      self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def compose(self) -> ComposeResult:
         """
@@ -116,11 +126,10 @@ class GuideScreen(Screen[None]):
 
         :return: The ComposeResult of the screen.
         """
-
         yield Header(show_clock=True)
         with Container(id="guide-container"):
             with VerticalScroll():
                 yield Static(DESCRIPTION_STRING, id="description")
             with VerticalScroll():
-                yield Static(get_formatted_monitoring_string(self.app.theme), id="monitoring-desc")
+                yield Static(get_formatted_monitoring_string(self.app.theme), id="monitoring_desc")
         yield Footer()

@@ -149,7 +149,6 @@ def get_network_stats() -> list[dict[str, str | int]]:
 
     :return: A sorted list of dictionaries, each containing the network stats for a single interface.
     """
-
     return sorted(
         (
             {
@@ -327,7 +326,6 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :param kb_size: The KB size to use in conversion
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
-
     ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
     return bytes_to_human(ram, kb_size)
 
@@ -345,7 +343,6 @@ def get_non_zero_procs(procs: Iterator[Process]) -> Iterator[Process]:
     :param procs: Iterable of processes to iterate through
     :return: The processes with a non-zero PID
     """
-
     for process in procs:
         if process.pid != 0:
             yield process

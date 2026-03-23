@@ -9,12 +9,11 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Static
 
-from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
+from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_pallette
 
 
 class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
@@ -24,7 +23,6 @@ class GPU_Screen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('main')", "Main Screen"),
-        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     update_timer: Timer | None = None
@@ -48,8 +46,6 @@ class GPU_Screen(Screen[None]):
     def update_gpu_data(self) -> None:
         """
         Update GPU data
-
-        :return: None
         """
         if sys.platform == "win32":
             self.gpu_data = [
@@ -101,7 +97,6 @@ class GPU_Screen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the GPU Screen
-        :return: None
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
@@ -111,7 +106,15 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
-        container.border_subtitle = self.BORDER_SUBTITLE
+        container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """
@@ -123,6 +126,7 @@ class GPU_Screen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Display the structure of the GPU Screen
+
         :return: The ComposeResult featuring the structure of the GPU Screen
         """
         yield Header(show_clock=True)

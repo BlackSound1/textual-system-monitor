@@ -6,7 +6,6 @@
 
 #processes {
     background: $panel;
-    border: round orange;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -14,14 +13,12 @@
 }
 
 #processes:light {
-    border: round darkorange;
     background: $boost-darken-1;
 }
 
 #stats {
     layout: vertical;
     height: 1fr;
-    /*border: greenyellow;*/
     /*border-title-color: $text;*/
     /*border-title-align: center;*/
 }
@@ -32,7 +29,6 @@
 
 #drives {
     background: $panel;
-    border: round red;
     height: 1fr;
     border-title-color: $text;
     border-title-align: center;
@@ -42,54 +38,34 @@
 
 #mem {
     background: $panel;
-    border: round yellow;
     height: 1fr;
     border-title-color: $text;
     border-title-align: center;
-}
-
-#mem:light {
-    border: round #F3CD00;
 }
 
 #cpu {
     background: $panel;
-    border: round lightblue;
     height: 1fr;
     border-title-color: $text;
     border-title-align: center;
-}
-
-#cpu:light {
-    border: round blue 90%;
 }
 
 #network {
     background: $panel;
-    border: round lightgreen;
     height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
     border-subtitle-align: center;
-}
-
-#network:light {
-    border: round green;
 }
 
 #gpu {
     background: $panel;
-    border: round pink;
     height: 1fr;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
     border-subtitle-align: center;
-}
-
-#gpu:light {
-    border: round deeppink;
 }
 
 .proc {

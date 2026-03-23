@@ -1,6 +1,5 @@
 #network-container {
     background: $panel;
-    border: round lightgreen;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -8,6 +7,5 @@
 }
 
 #network-container:light {
-    border: round green;
     background: $boost-darken-1;
 }

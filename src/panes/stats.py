@@ -1,5 +1,8 @@
+from textual import getters
 from textual.app import ComposeResult
 from textual.widgets import Static
+
+from src.utilities import get_pallette
 
 from .cpu import CPU_Usage
 from .drives import DriveUsage
@@ -10,6 +13,30 @@ from .network import NetInfo
 
 class Stats(Static):
     BORDER_TITLE = "Stats"
+
+    drives = getters.query_one(DriveUsage)
+    mem = getters.query_one(MemUsage)
+    cpu = getters.query_one(CPU_Usage)
+    net = getters.query_one(NetInfo)
+    gpu = getters.query_one(GPU_Usage)
+
+    def _set_border_colors(self) -> None:
+        """
+        Set the border colors according to the current themes palette
+        """
+        palette = get_pallette(self.app.theme)
+        self.drives.styles.border = ('round', palette['drives'])
+        self.mem.styles.border = ('round', palette['mem'])
+        self.cpu.styles.border = ('round', palette['cpu'])
+        self.net.styles.border = ('round', palette['net'])
+        self.gpu.styles.border = ('round', palette['gpu'])
+
+    def on_mount(self) -> None:
+        """
+        Perform initial setup for the Stats Pane
+        """
+        self._set_border_colors()
+        self.watch(self.app, "theme", self._set_border_colors, init=False)
 
     def compose(self) -> ComposeResult:
         """

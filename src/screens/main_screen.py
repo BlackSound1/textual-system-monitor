@@ -1,10 +1,13 @@
 import logging
 
+from textual import getters
 from textual.app import ComposeResult
 from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Header, Footer
 from textual.logging import TextualHandler
+
+from src.utilities import get_pallette
 
 from ..panes.processes import Processes
 from ..panes.stats import Stats
@@ -23,8 +26,23 @@ class MainScreen(Screen[None]):
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
         ('g', "app.switch_mode('guide')", 'Guide'),
-        ('/', 'app.switch_base', 'Change KB Size')
     ]
+
+    processes = getters.query_one("#processes", expect_type=Processes)
+
+    def on_mount(self) -> None:
+        """
+        Perform initial setup for the Main Screen
+        """
+        self.processes.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.processes.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def compose(self) -> ComposeResult:
         """

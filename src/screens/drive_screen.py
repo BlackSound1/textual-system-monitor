@@ -9,12 +9,11 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Footer, Header, DataTable
 
-from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
+from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL, get_pallette
 
 
 class DriveScreen(Screen[None]):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/drive_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
@@ -24,7 +23,6 @@ class DriveScreen(Screen[None]):
         ("d", "app.switch_mode('main')", "Main Screen"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
-        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     update_timer: Timer | None = None
@@ -62,6 +60,7 @@ class DriveScreen(Screen[None]):
         Define what happens when `self.disks` changes.
 
         Update the Drive Usage pane with Statics for each disk
+
         :param disks: The list of new disks to render
         """
 
@@ -93,11 +92,18 @@ class DriveScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Drive Screen
-        :return: None
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
         self.container.border_title = self.BORDER_TITLE
-        self.container.border_subtitle = self.BORDER_SUBTITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['drives'])
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['drives'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """
@@ -109,6 +115,7 @@ class DriveScreen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Create the structure of the Drive Screen
+
         :return: The ComposeResult featuring the Drive Screen structure
         """
         yield Header(show_clock=True)

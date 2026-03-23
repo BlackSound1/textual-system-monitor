@@ -1,6 +1,5 @@
 #gpu-container {
     background: $panel;
-    border: round pink;
     border-title-color: $text;
     border-title-align: center;
     border-subtitle-color: $text;
@@ -8,6 +7,5 @@
 }
 
 #gpu-container:light {
-    border: round deeppink;
     background: $boost-darken-1;
 }

@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Static, Header, Footer, DataTable
 
-from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
+from src.utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color, get_pallette
 
 
 class CPU_Screen(Screen[None]):
@@ -23,6 +23,7 @@ class CPU_Screen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('mem')", "Memory"),
         ("v", "app.switch_mode('gpu')", "GPU"),
+        ("/", "", ""),
     ]
 
     update_timer: Timer | None = None
@@ -36,7 +37,6 @@ class CPU_Screen(Screen[None]):
     def update_cpu_data(self) -> None:
         """
         Update CPU data
-        :return: None
         """
         self.cpu_data = get_cpu_data()
 
@@ -68,6 +68,7 @@ class CPU_Screen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Create the structure of the CPU Screen
+
         :return: The ComposeResult featuring the CPU Screen structure
         """
         yield Header(show_clock=True)
@@ -81,10 +82,18 @@ class CPU_Screen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the CPU Screen
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """

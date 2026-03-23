@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Label, Header, Footer, Digits
 
-from src.utilities import get_mem_data, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
+from src.utilities import get_mem_data, get_pallette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
 
 def reset_percentage_color(digits: Digits) -> Digits:
@@ -37,7 +37,6 @@ class MemoryScreen(Screen[None]):
         ("d", "app.switch_mode('drive')", "Drives"),
         ("m", "app.switch_mode('main')", "Main Screen"),
         ("v", "app.switch_mode('gpu')", "GPU"),
-        ('/', 'app.switch_base', 'Change KB Size')
     ]
 
     update_timer: Timer | None = None
@@ -56,8 +55,6 @@ class MemoryScreen(Screen[None]):
     def update_mem_data(self) -> None:
         """
         Update the memory information by calling `_get_mem_data`
-
-        :return: None
         """
         self.mem_data = get_mem_data()
 
@@ -126,10 +123,18 @@ class MemoryScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Memory Screen
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """
