@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Static, Header, Footer, DataTable
 
-from ..utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color
+from src.utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color, get_pallette
 
 
 class CPU_Screen(Screen[None]):
@@ -86,6 +86,14 @@ class CPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """

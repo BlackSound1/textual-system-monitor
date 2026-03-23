@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Button
 
-from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs
+from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_zero_procs, get_pallette
 
 
 def get_procs(sort: bool) -> Iterator[Process] | list[Process]:
@@ -124,6 +124,14 @@ class ProcessesScreen(Screen[None]):
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
         self.container.border_subtitle = self.BORDER_SUBTITLE
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """

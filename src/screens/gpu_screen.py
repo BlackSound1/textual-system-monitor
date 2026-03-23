@@ -9,12 +9,11 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Static
 
-from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram
+from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_pallette
 
 
 class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
-    BORDER_SUBTITLE = f"Updated every {RARE_INTERVAL} seconds"
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
@@ -110,7 +109,14 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
-        container.border_subtitle = self.BORDER_SUBTITLE
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """

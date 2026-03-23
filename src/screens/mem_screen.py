@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Label, Header, Footer, Digits
 
-from src.utilities import get_mem_data, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
+from src.utilities import get_mem_data, get_pallette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
 
 def reset_percentage_color(digits: Digits) -> Digits:
@@ -130,6 +130,14 @@ class MemoryScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
+
+        def _on_theme_change() -> None:
+            """
+            Update the border color based on the theme
+            """
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """
