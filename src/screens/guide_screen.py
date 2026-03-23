@@ -115,7 +115,6 @@ class GuideScreen(Screen[None]):
         self.myTheme = self.app.theme
 
     def watch_myTheme(self) -> None:
-        print(self.myTheme)
         try:
             static = self.query_one("#monitoring_desc", expect_type=Static)
         except NoMatches:
