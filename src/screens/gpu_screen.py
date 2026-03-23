@@ -46,8 +46,6 @@ class GPU_Screen(Screen[None]):
     def update_gpu_data(self) -> None:
         """
         Update GPU data
-
-        :return: None
         """
         if sys.platform == "win32":
             self.gpu_data = [
@@ -99,7 +97,6 @@ class GPU_Screen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the GPU Screen
-        :return: None
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
@@ -109,6 +106,7 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
+        container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
 
         def _on_theme_change() -> None:
             """
@@ -128,6 +126,7 @@ class GPU_Screen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Display the structure of the GPU Screen
+
         :return: The ComposeResult featuring the structure of the GPU Screen
         """
         yield Header(show_clock=True)

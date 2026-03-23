@@ -55,8 +55,6 @@ class MemoryScreen(Screen[None]):
     def update_mem_data(self) -> None:
         """
         Update the memory information by calling `_get_mem_data`
-
-        :return: None
         """
         self.mem_data = get_mem_data()
 
@@ -125,11 +123,10 @@ class MemoryScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Memory Screen
-
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
 
         def _on_theme_change() -> None:
             """

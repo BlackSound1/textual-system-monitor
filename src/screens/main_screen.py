@@ -31,6 +31,11 @@ class MainScreen(Screen[None]):
     processes = getters.query_one("#processes", expect_type=Processes)
 
     def on_mount(self) -> None:
+        """
+        Perform initial setup for the Main Screen
+        """
+        self.processes.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme

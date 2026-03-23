@@ -60,6 +60,7 @@ class DriveScreen(Screen[None]):
         Define what happens when `self.disks` changes.
 
         Update the Drive Usage pane with Statics for each disk
+
         :param disks: The list of new disks to render
         """
 
@@ -91,10 +92,10 @@ class DriveScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Drive Screen
-        :return: None
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
         self.container.border_title = self.BORDER_TITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['drives'])
 
         def _on_theme_change() -> None:
             """
@@ -114,6 +115,7 @@ class DriveScreen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Create the structure of the Drive Screen
+
         :return: The ComposeResult featuring the Drive Screen structure
         """
         yield Header(show_clock=True)

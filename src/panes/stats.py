@@ -20,23 +20,23 @@ class Stats(Static):
     net = getters.query_one(NetInfo)
     gpu = getters.query_one(GPU_Usage)
 
+    def _set_border_colors(self) -> None:
+        """
+        Set the border colors according to the current themes palette
+        """
+        palette = get_pallette(self.app.theme)
+        self.drives.styles.border = ('round', palette['drives'])
+        self.mem.styles.border = ('round', palette['mem'])
+        self.cpu.styles.border = ('round', palette['cpu'])
+        self.net.styles.border = ('round', palette['net'])
+        self.gpu.styles.border = ('round', palette['gpu'])
+
     def on_mount(self) -> None:
         """
-        Perform initial setup for the Main Screen
+        Perform initial setup for the Stats Pane
         """
-        def _on_theme_change() -> None:
-            """
-            Update the border colors based on the theme
-            """
-            palette = get_pallette(self.app.theme)
-
-            self.drives.styles.border = ('round', palette['drives'])
-            self.mem.styles.border = ('round', palette['mem'])
-            self.cpu.styles.border = ('round', palette['cpu'])
-            self.net.styles.border = ('round', palette['net'])
-            self.gpu.styles.border = ('round', palette['gpu'])
-
-        self.watch(self.app, "theme", _on_theme_change, init=False)
+        self._set_border_colors()
+        self.watch(self.app, "theme", self._set_border_colors, init=False)
 
     def compose(self) -> ComposeResult:
         """

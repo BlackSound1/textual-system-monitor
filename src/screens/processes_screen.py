@@ -15,6 +15,7 @@ from src.utilities import UNCOMMON_INTERVAL, compute_percentage_color, get_non_z
 def get_procs(sort: bool) -> Iterator[Process] | list[Process]:
     """
     Get the list of processes, depending on the value of `sort`
+
     :param sort: Whether to sort the processes by CPU load
     :return: The list of processes (possibly sorted)
     """
@@ -65,6 +66,7 @@ class ProcessesScreen(Screen[None]):
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """
         Define what to do when either the pause or sort Button is pressed
+
         :param event: The Button Pressed event
         :return: None
         """
@@ -93,6 +95,7 @@ class ProcessesScreen(Screen[None]):
         Define what happens when `self.processes` changes.
 
         Update the Processes pane with Statics for each process
+
         :param procs: The list of new processes to render
         """
 
@@ -119,11 +122,11 @@ class ProcessesScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Processes Screen
-        :return: None
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
         self.container.border_subtitle = self.BORDER_SUBTITLE
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['procs'])
 
         def _on_theme_change() -> None:
             """
@@ -143,6 +146,7 @@ class ProcessesScreen(Screen[None]):
     def compose(self) -> ComposeResult:
         """
         Display the structure of the Process Screen
+
         :return: The ComposeResult featuring the structure of the Screen
         """
 
