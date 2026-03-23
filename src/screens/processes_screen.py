@@ -125,7 +125,6 @@ class ProcessesScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
-        self.container.border_subtitle = self.BORDER_SUBTITLE
         self.container.styles.border = ('round', get_pallette(self.app.theme)['procs'])
 
         def _on_theme_change() -> None:
