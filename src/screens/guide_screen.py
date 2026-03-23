@@ -1,9 +1,12 @@
 from textual.app import ComposeResult
+from textual.css.query import NoMatches
 from textual.containers import Container, VerticalScroll
+from textual.reactive import reactive
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Static, Header, Footer
 
-from src.utilities import get_pallette
+from src.utilities import COMMON_INTERVAL, get_pallette
 
 
 DESCRIPTION_STRING = """
@@ -104,6 +107,31 @@ class GuideScreen(Screen[None]):
         ("/", "", ""),
     ]
 
+    myTheme = reactive("textual-dark")
+
+    update_timer: Timer | None = None
+
+    def update_myTheme(self) -> None:
+        self.myTheme = self.app.theme
+
+    def watch_myTheme(self) -> None:
+        print(self.myTheme)
+        try:
+            static = self.query_one("#monitoring_desc", expect_type=Static)
+        except NoMatches:
+            return
+        static.update(get_formatted_monitoring_string(self.myTheme))
+
+    def on_mount(self) -> None:
+        self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_myTheme)
+
+    def on_unmount(self) -> None:
+        """
+        Kill the timer on unmount to avoid timer-related threading issues
+        """
+        if self.update_timer:
+            self.update_timer.stop()
+
     def compose(self) -> ComposeResult:
         """
         Generate a ComposeResult by yielding a Header, a Container with statics for the description
@@ -117,5 +145,5 @@ class GuideScreen(Screen[None]):
             with VerticalScroll():
                 yield Static(DESCRIPTION_STRING, id="description")
             with VerticalScroll():
-                yield Static(get_formatted_monitoring_string(self.app.theme), id="monitoring-desc")
+                yield Static(get_formatted_monitoring_string(self.myTheme), id="monitoring_desc")
         yield Footer()
