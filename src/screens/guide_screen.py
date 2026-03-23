@@ -1,12 +1,9 @@
 from textual.app import ComposeResult
-from textual.css.query import NoMatches
 from textual.containers import Container, VerticalScroll
-from textual.reactive import reactive
 from textual.screen import Screen
-from textual.timer import Timer
 from textual.widgets import Static, Header, Footer
 
-from src.utilities import COMMON_INTERVAL, get_pallette
+from src.utilities import get_pallette
 
 
 DESCRIPTION_STRING = """
@@ -107,29 +104,20 @@ class GuideScreen(Screen[None]):
         ("/", "", ""),
     ]
 
-    myTheme = reactive("textual-dark")
-
-    update_timer: Timer | None = None
-
-    def update_myTheme(self) -> None:
-        self.myTheme = self.app.theme
-
-    def watch_myTheme(self) -> None:
-        try:
-            static = self.query_one("#monitoring_desc", expect_type=Static)
-        except NoMatches:
-            return
-        static.update(get_formatted_monitoring_string(self.myTheme))
-
     def on_mount(self) -> None:
-        self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_myTheme)
+      """
+      Perform initial setup for the Guide Screen
 
-    def on_unmount(self) -> None:
-        """
-        Kill the timer on unmount to avoid timer-related threading issues
-        """
-        if self.update_timer:
-            self.update_timer.stop()
+      :return: None
+      """
+      def _on_theme_change() -> None:
+          """
+          Update the text colors based on the theme
+          """
+          monitoring_desc = self.query_one("#monitoring_desc", expect_type=Static)
+          monitoring_desc.update(get_formatted_monitoring_string(self.app.theme))
+
+      self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def compose(self) -> ComposeResult:
         """
@@ -138,11 +126,10 @@ class GuideScreen(Screen[None]):
 
         :return: The ComposeResult of the screen.
         """
-
         yield Header(show_clock=True)
         with Container(id="guide-container"):
             with VerticalScroll():
                 yield Static(DESCRIPTION_STRING, id="description")
             with VerticalScroll():
-                yield Static(get_formatted_monitoring_string(self.myTheme), id="monitoring_desc")
+                yield Static(get_formatted_monitoring_string(self.app.theme), id="monitoring_desc")
         yield Footer()

@@ -125,6 +125,7 @@ class MemoryScreen(Screen[None]):
     def on_mount(self) -> None:
         """
         Perform initial setup for the Memory Screen
+
         :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
