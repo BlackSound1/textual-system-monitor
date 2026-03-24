@@ -34,13 +34,13 @@ class MainScreen(Screen[None]):
         """
         Perform initial setup for the Main Screen
         """
-        self.processes.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+        self.processes.styles.border = ('round', get_pallette(self.app.theme)['orange'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.processes.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+            self.processes.styles.border = ('round', get_pallette(self.app.theme)['orange'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

@@ -125,13 +125,13 @@ class ProcessesScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['procs'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

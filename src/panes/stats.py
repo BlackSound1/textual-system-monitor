@@ -25,11 +25,11 @@ class Stats(Static):
         Set the border colors according to the current themes palette
         """
         palette = get_pallette(self.app.theme)
-        self.drives.styles.border = ('round', palette['drives'])
-        self.mem.styles.border = ('round', palette['mem'])
-        self.cpu.styles.border = ('round', palette['cpu'])
-        self.net.styles.border = ('round', palette['net'])
-        self.gpu.styles.border = ('round', palette['gpu'])
+        self.drives.styles.border = ('round', palette['red'])
+        self.mem.styles.border = ('round', palette['yellow'])
+        self.cpu.styles.border = ('round', palette['blue'])
+        self.net.styles.border = ('round', palette['green'])
+        self.gpu.styles.border = ('round', palette['pink'])
 
     def on_mount(self) -> None:
         """

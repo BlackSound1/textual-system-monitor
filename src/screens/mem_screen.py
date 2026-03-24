@@ -126,13 +126,13 @@ class MemoryScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['yellow'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['mem'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['yellow'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

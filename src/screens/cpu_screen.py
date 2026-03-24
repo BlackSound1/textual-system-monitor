@@ -85,13 +85,13 @@ class CPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
