@@ -26,7 +26,7 @@ test:
 
 # Use Pytest to test only the clicks, keys, or buttons
 [group('testing')]
-[arg("kind", pattern='clicks|keys|buttons', help='Run only these kinds of tests')]
+[arg("kind", pattern='clicks|keys|buttons|percent_color', help='Run only these kinds of tests')]
 test-only kind:
     @echo ""
     @uv run pytest tests/test_"{{kind}}".py
