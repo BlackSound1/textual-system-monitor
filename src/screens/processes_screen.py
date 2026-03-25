@@ -117,7 +117,7 @@ class ProcessesScreen(Screen[None]):
 
             # Only colorize the name if it's not "N/A"
             if name != "N/A":
-                name = f"[blue]{name}[/]"
+                name = f"[bold {palette['orange']}]{name}[/]"
 
             self.table.add_row(PID, name, user_name, cpu_percent, exe)
 

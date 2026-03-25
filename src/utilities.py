@@ -132,7 +132,8 @@ def get_network_stats() -> list[dict[str, str | int]]:
 def update_network_static(
         new_stats: list[dict[str,  str | int]],
         old_stats: list[dict[str,  str | int]],
-        base: int
+        base: int,
+        palette: dict[str, str],
 ) -> str:
     """
     Generate a string containing the updated network info for each interface
@@ -140,6 +141,7 @@ def update_network_static(
     :param new_stats: The updated network stats
     :param old_stats: The old network stats
     :param base: The base to use for the conversion (1000 or 1024)
+    :param palette: The color palette to use for the current theme
 
     :return: The string needed to update the Static widget with the new info
     """
@@ -166,8 +168,8 @@ def update_network_static(
         )
 
         static_content += (
-            f"[green]{interface}[/]: [blue]Download[/]: {download} at "
-            f"{download_speed} /s | [blue]Upload[/]: {upload} at {upload_speed} /s\n\n"
+            f"[bold {palette['green']}]{interface}[/]: [bold {palette['blue']}]Download[/]: {download} at "
+            f"{download_speed} /s | [bold {palette['blue']}]Upload[/]: {upload} at {upload_speed} /s\n\n"
         )
 
     return static_content
@@ -507,4 +509,4 @@ def get_color_formatted_string(palette: dict[str, str], num: int | float) -> str
     """
     _, color_pre = compute_percentage_color(num)
     color_post = palette[color_pre]
-    return f"[{color_post}]{num}[/]"
+    return f"[bold {color_post}]{num}[/]"

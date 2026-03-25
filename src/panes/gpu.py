@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram
+from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram, get_pallette
 
 
 class GPU_Usage(Static):
@@ -70,19 +70,21 @@ class GPU_Usage(Static):
             static = self.query_one("#gpu_pane_static", Static)
         except NoMatches:
             return
+        
+        green = get_pallette(self.app.theme)['green']
 
         static_content = ""
 
         # Then, for each video controller, update the Static Widget with its new information
         for gpu in gpu_data:
             static_content += (
-                f"[green]GPU[/]: {gpu['gpu']}\n"
-                f"[green]Driver Version[/]: {gpu['driver_version']}\n"
-                f"[green]Resolution[/]: {gpu['resolution']}\n"
-                f"[green]Adapter RAM[/]: {gpu['adapter_ram']}\n"
-                f"[green]Availability[/]: {gpu['availability']}\n"
-                f"[green]Refresh[/]: {gpu['refresh']} Hz\n"
-                f"[green]Status[/]: {gpu['status']}\n"
+                f"[bold {green}]GPU[/]: {gpu['gpu']}\n"
+                f"[bold {green}]Driver Version[/]: {gpu['driver_version']}\n"
+                f"[bold {green}]Resolution[/]: {gpu['resolution']}\n"
+                f"[bold {green}]Adapter RAM[/]: {gpu['adapter_ram']}\n"
+                f"[bold {green}]Availability[/]: {gpu['availability']}\n"
+                f"[bold {green}]Refresh[/]: {gpu['refresh']} Hz\n"
+                f"[bold {green}]Status[/]: {gpu['status']}\n"
             )
 
         static.update(static_content)
