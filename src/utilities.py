@@ -44,40 +44,6 @@ GLOBAL UTILITIES
 """
 
 
-def compute_percentage_color(
-        percentage: int | float,
-        combine_output: bool = True
-) -> str | tuple[float, Literal["green", "yellow", "red"]]:
-    """
-    Takes a given percentage and returns that percentage, colored according to
-    whether usage is high, medium, or low.
-
-    :param percentage: The uncolored percentage value
-    :param combine_output: Whether to combine the output into a single string
-    :return: The colored percentage value as a string
-    """
-
-    # Clamp the percentage between 0 and 100
-    percentage = max(0, min(100, percentage))
-
-    # Round the percentage to 1 decimal place
-    percentage = round(percentage, 1)
-
-    # Set the color based on the percentage
-    if percentage <= 75:
-        color = "green"
-    elif 75 < percentage < 90:
-        color = "yellow"
-    else:
-        color = "red"
-
-    # Decide whether we should combine the output into a single string
-    if combine_output:
-        return f"[{color}]{percentage:.1f}[/]"
-    else:
-        return percentage, color
-
-
 def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
     """
     Converts bytes to human-readable format.
@@ -348,6 +314,11 @@ def get_non_zero_procs(procs: Iterator[Process]) -> Iterator[Process]:
             yield process
 
 
+"""
+COLOR UTILITIES
+"""
+
+
 COLOR_MAP = {
     'textual-light': {
         'orange': "#FF8C00",
@@ -488,6 +459,31 @@ COLOR_MAP = {
 }
 
 
+def compute_percentage_color(percentage: int | float) -> tuple[float, Literal["green", "yellow", "red"]]:
+    """
+    Takes a given percentage and returns "green", "yellow", or "red" depending on how high the number is.
+
+    :param percentage: The number to associate with a color.
+    :return: The color associated with that percentage.
+    """
+
+    # Clamp the percentage between 0 and 100
+    percentage = max(0, min(100, percentage))
+
+    # Round the percentage to 1 decimal place
+    percentage = round(percentage, 1)
+
+    # Set the color based on the percentage
+    if percentage <= 75:
+        color = "green"
+    elif 75 < percentage < 90:
+        color = "yellow"
+    else:
+        color = "red"
+
+    return percentage, color
+
+
 def get_pallette(name: str) -> dict[str, str]:
     """
     Get the current color pallette based on the current color theme.
@@ -496,3 +492,17 @@ def get_pallette(name: str) -> dict[str, str]:
     :return dict[str, str]: The color pallette as a dict.
     """
     return COLOR_MAP.get(name, COLOR_MAP['textual-dark'])
+
+
+def get_color_formatted_string(palette: dict[str, str], num: int | float) -> str:
+    """
+    Produces a string like "[color]text[/]", based on the given theme and number.
+
+    :param palette: The color palette to select a color based on.
+    :param num: The number to turn into a formatted color string.
+
+    :return str: The color-formatted string.
+    """
+    _, color_pre = compute_percentage_color(num)
+    color_post = palette[color_pre]
+    return f"[{color_post}]{num}[/]"
