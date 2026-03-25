@@ -7,7 +7,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, bytes_to_human, COMMON_INTERVAL, get_mem_data
+from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_pallette
 
 
 class MemUsage(Static):
@@ -39,11 +39,13 @@ class MemUsage(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
+        palette = get_pallette(self.app.theme)
+
         self.static.update(
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
             f"Available Memory: {bytes_to_human(data['available'], kb_size)}\n\n"
             f"Used: {bytes_to_human(data['used'], kb_size)}\n\n"
-            f"Percentage Used: {compute_percentage_color(data['percent'])} %"
+            f"Percentage Used: {get_color_formatted_string(palette, data['percent'])} %"
         )
 
     def on_click(self) -> None:

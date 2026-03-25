@@ -11,21 +11,6 @@ from textual.widgets import Label, Header, Footer, Digits
 from src.utilities import get_mem_data, get_pallette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
 
-def reset_percentage_color(digits: Digits) -> Digits:
-    """
-    Reset the color classes of the Digits widget
-
-    :param digits: The Digits widget to reset color classes for
-    :return: The updated Digits widget
-    """
-
-    digits.remove_class("green")
-    digits.remove_class("yellow")
-    digits.remove_class("red")
-
-    return digits
-
-
 class MemoryScreen(Screen[None]):
     BORDER_TITLE = f"Memory - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/mem_css.tcss"
@@ -87,10 +72,10 @@ class MemoryScreen(Screen[None]):
         self.used_digits.update(f"{value}")
 
         # Update percentage information
-        pct, color = compute_percentage_color(data['percent'], combine_output=False)
-        perc_digits = reset_percentage_color(self.perc_digits)
-        perc_digits.add_class(color)
-        perc_digits.update(f"{pct}")
+        palette = get_pallette(self.app.theme)
+        pct, color = compute_percentage_color(data['percent'])
+        self.perc_digits.update(f'{pct}')
+        self.perc_digits.styles.color = palette[color]
 
     def compose(self) -> ComposeResult:
         """
