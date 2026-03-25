@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL
+from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_pallette
 
 
 class DriveUsage(Static):
@@ -55,6 +55,8 @@ class DriveUsage(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
+        palette = get_pallette(self.app.theme)
+
         static_content = ""
 
         # Next, go through each updated disk, get its info, and update the content of the Static with
@@ -69,13 +71,12 @@ class DriveUsage(Static):
                 static_content += f"Disk: {device} | Options: {options}\n\n"
             else:
                 usage = disk_usage(disk['mountpoint'])
-                pct = compute_percentage_color(usage.percent)
                 used = bytes_to_human(usage.used, kb_size)
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
 
                 # Add the new info for this drive to the content of the Static widget
-                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {pct} % | "
+                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {get_color_formatted_string(palette, usage.percent)} % | "
                                    f"Total: {total} | Used: {used} | Free: {free}\n\n")
 
         # Update the content of the Static widget with the new info for all drives
