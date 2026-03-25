@@ -70,7 +70,7 @@ class GPU_Usage(Static):
             static = self.query_one("#gpu_pane_static", Static)
         except NoMatches:
             return
-        
+
         green = get_pallette(self.app.theme)['green']
 
         static_content = ""
@@ -96,7 +96,34 @@ class GPU_Usage(Static):
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
-        self.watch(self.app, "theme", self.watch_gpu_data, init=False)
+        def _on_theme_change() -> None:
+            # First, grab the Static Widget
+            try:
+                static = self.query_one("#gpu_pane_static", Static)
+            except NoMatches:
+                return
+
+            green = get_pallette(self.app.theme)['green']
+
+            static_content = ""
+
+            gpu_data = cast(list[dict[str, str | int]], self.gpu_data)
+
+            # Then, for each video controller, update the Static Widget with its new information
+            for gpu in gpu_data:
+                static_content += (
+                    f"[bold {green}]GPU[/]: {gpu['gpu']}\n"
+                    f"[bold {green}]Driver Version[/]: {gpu['driver_version']}\n"
+                    f"[bold {green}]Resolution[/]: {gpu['resolution']}\n"
+                    f"[bold {green}]Adapter RAM[/]: {gpu['adapter_ram']}\n"
+                    f"[bold {green}]Availability[/]: {gpu['availability']}\n"
+                    f"[bold {green}]Refresh[/]: {gpu['refresh']} Hz\n"
+                    f"[bold {green}]Status[/]: {gpu['status']}\n"
+                )
+
+            static.update(static_content)
+
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def on_unmount(self) -> None:
         """
