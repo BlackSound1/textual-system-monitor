@@ -191,11 +191,12 @@ def get_cpu_data() -> dict[str, int | None | float | list[float]]:
     }
 
 
-def display_percentages_CPU(percentages: list[float]) -> str:
+def display_percentages_CPU(percentages: list[float], palette: dict[str, str]) -> str:
     """
     Display the percentages of each core in a string
 
     :param percentages: The list of CPU load percentages for each core
+    :param palette: The palette to use for the current theme
     :return: The string containing the formatted percentages
     """
 
@@ -203,28 +204,29 @@ def display_percentages_CPU(percentages: list[float]) -> str:
 
     # For each core, colorize the percentage and add it to the string
     for core_index, core_percentage in enumerate(percentages):
-        formatted_percentage = compute_percentage_color(core_percentage)
+        formatted_percentage = get_color_formatted_string(palette, core_percentage)
         separator = " | " if core_index < len(percentages) - 1 else ""
         formatted_percentages += f"Core {core_index + 1}: {formatted_percentage} % {separator}"
 
     return formatted_percentages
 
 
-def update_CPU_static(cpu_data: dict[str, int | float | list[float] | None]) -> str:
+def update_CPU_static(cpu_data: dict[str, int | float | list[float] | None], palette: dict[str, str]) -> str:
     """
     Generates a string of updated CPU data to update the CPU Screen Static with
 
     :param cpu_data: The updated CPU data
+    :param palette: The palette to use for the current theme
     :return: The string of updated CPU data
     """
 
     # Get updated CPU data
     cores = cpu_data['cores']
     overall = cast(float, cpu_data['overall'])
-    individual = display_percentages_CPU(cast(list[float], cpu_data['individual']))  # Colorize the percentages
+    individual = display_percentages_CPU(cast(list[float], cpu_data['individual']), palette)  # Colorize the percentages
 
     # Return the string to update the relevant Static with
-    return f"Cores: {cores}\n\nOverall: {compute_percentage_color(overall)} %\n\nPer Core: {individual}\n\n"
+    return f"Cores: {cores}\n\nOverall: {get_color_formatted_string(palette, overall)} %\n\nPer Core: {individual}\n\n"
 
 
 """
