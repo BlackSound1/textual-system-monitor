@@ -106,13 +106,13 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
-        container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
+        container.styles.border = ('round', get_pallette(self.app.theme)['pink'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            container.styles.border = ('round', get_pallette(self.app.theme)['gpu'])
+            container.styles.border = ('round', get_pallette(self.app.theme)['pink'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

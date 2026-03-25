@@ -38,14 +38,14 @@ Created in Python using Textual.
 MONITORING_STRING = """
 [bold underline]Monitoring Descriptions[/]
 
-[{procs}]Processes[/]: An updated list of running processes, sorted by CPU load. Each process has info on:
+[{orange}]Processes[/]: An updated list of running processes, sorted by CPU load. Each process has info on:
   - Process ID (PID)
   - CPU load (in %)
   - Application name
   - Username of the user running this process
   - The actual executable file running this process
 
-[{drives}]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives.
+[{red}]Drive Usage[/]: An updated list of drives in use by the system. Includes both storage and media drives.
   - If a drive is a storage drive, it will have info on:
     - Disk letter name
     - Options associated with that drive
@@ -58,22 +58,22 @@ MONITORING_STRING = """
     - Disk letter name
     - Options associated with that drive
 
-[{mem}]Memory Usage[/]: Updated info about system memory allocation:
+[{yellow}]Memory Usage[/]: Updated info about system memory allocation:
   - Total Memory: How much memory is allocated to the system
   - Available Memory: How much is able to be used by programs/ processes
   - Used: How much is already being used
   - Percentage Used (in %): How much memory is used as a percentage of the total
 
-[{cpu}]CPU Usage[/]: Updated CPU info about:
+[{blue}]CPU Usage[/]: Updated CPU info about:
   - Cores: The total number of cores present on the system
   - Usage (Overall) (in %): A measure of overall CPU usage
   - Usage (per Core) (in %): A measure of each CPU Cores usage
 
-[{net}]Network Info[/]: An updated list of network interfaces. Each interface has info on:
+[{green}]Network Info[/]: An updated list of network interfaces. Each interface has info on:
   - Download amount and speed
   - Upload amount and speed
 
-[{gpu}]GPU Info[/]: Updated GPU info about:
+[{pink}]GPU Info[/]: Updated GPU info about:
   - GPU name: The name of the GPU
   - Driver version: The version of the GPU driver
   - Resolution: The resolution of the GPU

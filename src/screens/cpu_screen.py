@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Static, Header, Footer, DataTable
 
-from src.utilities import COMMON_INTERVAL, get_cpu_data, compute_percentage_color, get_pallette
+from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_pallette
 
 
 class CPU_Screen(Screen[None]):
@@ -48,14 +48,16 @@ class CPU_Screen(Screen[None]):
         :return: None
         """
 
+        palette = get_pallette(self.app.theme)
+
         # Get the updated overall data
         cores = cpu_data['cores']
         overall = cpu_data['overall']
         indiv_list = cast(list[float], cpu_data['individual'])  # To please static analyzer
-        individual = [compute_percentage_color(core) for core in indiv_list]
+        individual = [get_color_formatted_string(palette, core) for core in indiv_list]
 
         # Update the Static Widget
-        static_content = f"Cores: {cores}\n\nOverall: {compute_percentage_color(cast(float, overall))} %\n\n"
+        static_content = f"Cores: {cores}\n\nOverall: {get_color_formatted_string(palette, cast(float, overall))} %\n\n"
         self.static.update(static_content)
 
         # Clear the table and add the columns
@@ -85,13 +87,13 @@ class CPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['cpu'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

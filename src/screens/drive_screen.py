@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Footer, Header, DataTable
 
-from src.utilities import compute_percentage_color, bytes_to_human, RARE_INTERVAL, get_pallette
+from src.utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_pallette
 
 
 class DriveScreen(Screen[None]):
@@ -68,6 +68,8 @@ class DriveScreen(Screen[None]):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
+        palette = get_pallette(self.app.theme)
+
         self.table.clear(columns=True)
         self.table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
 
@@ -82,12 +84,11 @@ class DriveScreen(Screen[None]):
                 self.table.add_row(device, options, "N/A", "N/A", "N/A", "N/A", "N/A")
             else:
                 usage = disk_usage(disk['mountpoint'])
-                pct = compute_percentage_color(usage.percent)
                 used = bytes_to_human(usage.used, kb_size)
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
 
-                self.table.add_row(device, options, fs, pct, total, used, free)
+                self.table.add_row(device, options, fs, get_color_formatted_string(palette, usage.percent), total, used, free)
 
     def on_mount(self) -> None:
         """
@@ -95,13 +96,13 @@ class DriveScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['drives'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['red'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['drives'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['red'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

@@ -7,7 +7,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import NET_INTERVAL, get_network_stats, update_network_static
+from ..utilities import NET_INTERVAL, get_network_stats, get_pallette, update_network_static
 
 type NetworkStatsType = list[dict[str, str | int]]
 
@@ -40,9 +40,11 @@ class NetInfo(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
+        palette = get_pallette(self.app.theme)
+
         # Go through each updated network interface, get its info, and update the Static widget
         # with the new info for each interface
-        static_content = update_network_static(new, old, kb_size)
+        static_content = update_network_static(new, old, kb_size, palette)
 
         # Update the content of the Static widget with the new info for all interfaces
         self.static.update(static_content)

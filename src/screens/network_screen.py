@@ -87,13 +87,13 @@ class NetworkScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['net'])
+        self.container.styles.border = ('round', get_pallette(self.app.theme)['green'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['net'])
+            self.container.styles.border = ('round', get_pallette(self.app.theme)['green'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

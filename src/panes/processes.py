@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import compute_percentage_color, UNCOMMON_INTERVAL, get_non_zero_procs
+from ..utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_pallette
 
 
 class Processes(Static):
@@ -50,6 +50,8 @@ class Processes(Static):
         :param procs: The list of new processes to render
         """
 
+        palette = get_pallette(self.app.theme)
+
         # Don't bother if this is the first tick of the update function
         if self.initial:
             self.initial = False
@@ -63,11 +65,11 @@ class Processes(Static):
             PID = proc.info['pid']
             name = proc.info['name'] or 'N/A'
             exe = proc.info['exe'] or 'N/A'
-            cpu_percent = compute_percentage_color(proc.info['cpu_percent'])
+            cpu_percent = get_color_formatted_string(palette, proc.info['cpu_percent'])
             user_name = proc.info['username'] or 'N/A'
 
             # Add the new info for this process to the content of the Static widget
-            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [blue]{name}[/] | "
+            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [bold {palette['orange']}]{name}[/] | "
                                f"Username: {user_name} | EXE: {exe}\n\n")
 
         # Update the content of the Static widget with the new info for all processes
