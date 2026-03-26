@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_pallette
+from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_palette
 
 
 class DriveUsage(Static):
@@ -55,7 +55,7 @@ class DriveUsage(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         static_content = ""
 

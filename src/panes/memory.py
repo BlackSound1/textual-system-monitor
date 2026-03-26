@@ -7,7 +7,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_pallette
+from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_palette
 
 
 class MemUsage(Static):
@@ -39,7 +39,7 @@ class MemUsage(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         self.static.update(
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"

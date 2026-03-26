@@ -3,7 +3,7 @@ from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
-from src.utilities import get_pallette
+from src.utilities import get_palette
 
 
 DESCRIPTION_STRING = """
@@ -93,7 +93,7 @@ def get_formatted_monitoring_string(theme: str) -> str:
     :return: The formatted string with proper Rich color tags based on color theme
     """
 
-    return MONITORING_STRING.format(**{label: color for label, color in get_pallette(theme).items()})
+    return MONITORING_STRING.format(**{label: color for label, color in get_palette(theme).items()})
 
 
 class GuideScreen(Screen[None]):

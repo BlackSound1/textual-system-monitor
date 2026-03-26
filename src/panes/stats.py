@@ -2,7 +2,7 @@ from textual import getters
 from textual.app import ComposeResult
 from textual.widgets import Static
 
-from src.utilities import get_pallette
+from src.utilities import get_palette
 
 from .cpu import CPU_Usage
 from .drives import DriveUsage
@@ -24,7 +24,7 @@ class Stats(Static):
         """
         Set the border colors according to the current themes palette
         """
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
         self.drives.styles.border = ('round', palette['red'])
         self.mem.styles.border = ('round', palette['yellow'])
         self.cpu.styles.border = ('round', palette['blue'])

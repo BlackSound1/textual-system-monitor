@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Footer, Header, DataTable
 
-from src.utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_pallette
+from src.utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_palette
 
 
 class DriveScreen(Screen[None]):
@@ -68,7 +68,7 @@ class DriveScreen(Screen[None]):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         self.table.clear(columns=True)
         self.table.add_columns("Drive", "Options", "Filesystem", "Usage (%)", "Total", "Used", "Free")
@@ -96,13 +96,13 @@ class DriveScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['red'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['red'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['red'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['red'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

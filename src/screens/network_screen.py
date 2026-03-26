@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable
 
-from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human, get_pallette
+from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human, get_palette
 
 
 type NetworkStatsType = list[dict[str, str | int]]
@@ -87,13 +87,13 @@ class NetworkScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['green'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['green'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['green'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['green'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

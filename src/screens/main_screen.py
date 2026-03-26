@@ -7,7 +7,7 @@ from textual.screen import Screen
 from textual.widgets import Header, Footer
 from textual.logging import TextualHandler
 
-from src.utilities import get_pallette
+from src.utilities import get_palette
 
 from ..panes.processes import Processes
 from ..panes.stats import Stats
@@ -34,13 +34,13 @@ class MainScreen(Screen[None]):
         """
         Perform initial setup for the Main Screen
         """
-        self.processes.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+        self.processes.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.processes.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+            self.processes.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

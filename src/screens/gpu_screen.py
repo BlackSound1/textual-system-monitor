@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Static
 
-from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_pallette
+from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_palette
 
 
 class GPU_Screen(Screen[None]):
@@ -106,13 +106,13 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
-        container.styles.border = ('round', get_pallette(self.app.theme)['pink'])
+        container.styles.border = ('round', get_palette(self.app.theme)['pink'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            container.styles.border = ('round', get_pallette(self.app.theme)['pink'])
+            container.styles.border = ('round', get_palette(self.app.theme)['pink'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

@@ -5,7 +5,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import COMMON_INTERVAL, get_cpu_data, get_pallette, update_CPU_static
+from ..utilities import COMMON_INTERVAL, get_cpu_data, get_palette, update_CPU_static
 
 
 class CPU_Usage(Static):
@@ -31,7 +31,7 @@ class CPU_Usage(Static):
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
         :return: None
         """
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
         static_content = update_CPU_static(cpu_data, palette)
         self.static.update(static_content)
 

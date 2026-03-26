@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram, get_pallette
+from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram, get_palette
 
 
 class GPU_Usage(Static):
@@ -71,7 +71,7 @@ class GPU_Usage(Static):
         except NoMatches:
             return
 
-        green = get_pallette(self.app.theme)['green']
+        green = get_palette(self.app.theme)['green']
 
         static_content = ""
 
@@ -103,7 +103,7 @@ class GPU_Usage(Static):
             except NoMatches:
                 return
 
-            green = get_pallette(self.app.theme)['green']
+            green = get_palette(self.app.theme)['green']
 
             static_content = ""
 

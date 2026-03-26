@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Button
 
-from src.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_pallette
+from src.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_palette
 
 
 def get_procs(sort: bool) -> Iterator[Process] | list[Process]:
@@ -99,7 +99,7 @@ class ProcessesScreen(Screen[None]):
         :param procs: The list of new processes to render
         """
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         # Clear the table and add columns
         self.table.clear(columns=True)
@@ -127,13 +127,13 @@ class ProcessesScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
