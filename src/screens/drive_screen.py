@@ -25,7 +25,7 @@ class DriveScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     # Set the default disks value to an initial call to the function
     disks = reactive(

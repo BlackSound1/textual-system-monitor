@@ -24,7 +24,7 @@ class MemoryScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     mem_data = reactive(get_mem_data())
 
@@ -48,7 +48,6 @@ class MemoryScreen(Screen[None]):
         Watch for changes in the memory data and update the Widgets accordingly
 
         :param data: The new memory data
-        :return: None
         """
 
         from src.app import Monitor
@@ -83,26 +82,20 @@ class MemoryScreen(Screen[None]):
 
         :return: The ComposeResult
         """
-
         yield Header(show_clock=True)
-
         with Container(id="mem-container"):
             with Container(classes="mem-static"):
                 yield Label("", id="total-static-label", classes="label")
                 yield Digits(id="total-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("", id="avail-static-label", classes="label")
                 yield Digits(id="avail-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("", id="used-static-label", classes="label")
                 yield Digits(id="used-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("Percentage Used (%):  ", classes="label")
                 yield Digits(id="perc-digits", classes="digits")
-
         yield Footer()
 
     def on_mount(self) -> None:

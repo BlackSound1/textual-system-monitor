@@ -26,7 +26,7 @@ class CPU_Screen(Screen[None]):
         ("/", "", ""),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     cpu_data = reactive(get_cpu_data())
 
@@ -45,9 +45,7 @@ class CPU_Screen(Screen[None]):
         Watch CPU data and update the CPU Screen with the new information
 
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
-        :return: None
         """
-
         palette = get_palette(self.app.theme)
 
         # Get the updated overall data

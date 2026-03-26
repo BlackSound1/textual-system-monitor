@@ -28,7 +28,7 @@ class NetworkScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     io = reactive(get_network_stats())
 

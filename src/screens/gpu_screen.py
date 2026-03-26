@@ -25,7 +25,7 @@ class GPU_Screen(Screen[None]):
         ("v", "app.switch_mode('main')", "Main Screen"),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     gpu_data = reactive(get_gpu_data())
 
@@ -68,7 +68,6 @@ class GPU_Screen(Screen[None]):
         Watch `gpu_data` and update the Static Widget with the new information
 
         :param gpu_data: The list of new GPU data
-        :return: None
         """
 
         # First, grab the Static Widget
