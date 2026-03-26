@@ -14,7 +14,7 @@ from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram, get_
 class GPU_Usage(Static):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     # Get initial GPU data. Different from approach in `update_gpu_data` because
     # we can't use `self` (to get the kb_size context) outside a function
@@ -57,7 +57,14 @@ class GPU_Usage(Static):
         else:
             self.gpu_data = []
 
-    def _update_static(self, gpu_data: list[dict[str, str | int]]) -> None:
+    def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
+        """
+        Watch `gpu_data` and update the Static Widget with the new information
+
+        :param gpu_data: The list of new GPU data
+        :return: None
+        """
+
         # First, grab the Static Widget
         try:
             static = self.query_one("#gpu_pane_static", Static)
@@ -82,15 +89,6 @@ class GPU_Usage(Static):
 
         static.update(static_content)
 
-    def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
-        """
-        Watch `gpu_data` and update the Static Widget with the new information
-
-        :param gpu_data: The list of new GPU data
-        :return: None
-        """
-        self._update_static(gpu_data)
-
     def on_mount(self) -> None:
         """
         Set interval to update the memory information.
@@ -100,8 +98,6 @@ class GPU_Usage(Static):
 
         def _on_theme_change() -> None:
             self.update_timer.reset()
-            # gpu_data = cast(list[dict[str, str | int]], self.gpu_data)
-            # self._update_static(gpu_data)
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
