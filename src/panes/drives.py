@@ -8,13 +8,13 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_pallette
+from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_palette
 
 
 class DriveUsage(Static):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     # Set the default disks value to an initial call to the function
     disks = reactive(
@@ -48,6 +48,7 @@ class DriveUsage(Static):
         Define what happens when `self.disks` changes.
 
         Update the Drive Usage pane with Statics for each disk
+
         :param disks: The list of new disks to render
         """
 
@@ -55,7 +56,7 @@ class DriveUsage(Static):
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         static_content = ""
 
@@ -76,7 +77,8 @@ class DriveUsage(Static):
                 total = bytes_to_human(usage.total, kb_size)
 
                 # Add the new info for this drive to the content of the Static widget
-                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | Usage: {get_color_formatted_string(palette, usage.percent)} % | "
+                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | "
+                                   f"Usage: {get_color_formatted_string(palette, usage.percent)} % | "
                                    f"Total: {total} | Used: {used} | Free: {free}\n\n")
 
         # Update the content of the Static widget with the new info for all drives
@@ -98,13 +100,13 @@ class DriveUsage(Static):
     def on_click(self) -> None:
         """
         When this pane is clicked, switch to the Network screen
-        :return: None
         """
         self.app.switch_mode("drive")
 
     def compose(self) -> ComposeResult:
         """
         Start off with a VerticalScroll Widget with a blank Static inside
+
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
         with VerticalScroll():

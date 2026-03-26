@@ -3,7 +3,7 @@ from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
 
-from src.utilities import get_pallette
+from src.utilities import get_palette
 
 
 DESCRIPTION_STRING = """
@@ -84,7 +84,7 @@ MONITORING_STRING = """
 """
 
 
-def get_formatted_monitoring_string(theme: str) -> str:
+def _get_formatted_monitoring_string(theme: str) -> str:
     """
     Returns a formatted string for the monitoring description based on what theme is being used.
     The colors for the headings need to be selected accordingly.
@@ -93,7 +93,7 @@ def get_formatted_monitoring_string(theme: str) -> str:
     :return: The formatted string with proper Rich color tags based on color theme
     """
 
-    return MONITORING_STRING.format(**{label: color for label, color in get_pallette(theme).items()})
+    return MONITORING_STRING.format(**{label: color for label, color in get_palette(theme).items()})
 
 
 class GuideScreen(Screen[None]):
@@ -107,15 +107,13 @@ class GuideScreen(Screen[None]):
     def on_mount(self) -> None:
       """
       Perform initial setup for the Guide Screen
-
-      :return: None
       """
       def _on_theme_change() -> None:
           """
           Update the text colors based on the theme
           """
           monitoring_desc = self.query_one("#monitoring_desc", expect_type=Static)
-          monitoring_desc.update(get_formatted_monitoring_string(self.app.theme))
+          monitoring_desc.update(_get_formatted_monitoring_string(self.app.theme))
 
       self.watch(self.app, "theme", _on_theme_change, init=False)
 
@@ -131,5 +129,5 @@ class GuideScreen(Screen[None]):
             with VerticalScroll():
                 yield Static(DESCRIPTION_STRING, id="description")
             with VerticalScroll():
-                yield Static(get_formatted_monitoring_string(self.app.theme), id="monitoring_desc")
+                yield Static(_get_formatted_monitoring_string(self.app.theme), id="monitoring_desc")
         yield Footer()

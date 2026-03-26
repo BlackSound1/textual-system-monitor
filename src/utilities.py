@@ -488,7 +488,7 @@ def compute_percentage_color(percentage: int | float) -> tuple[float, Literal["g
     return percentage, color
 
 
-def get_pallette(name: str) -> dict[str, str]:
+def get_palette(name: str) -> dict[str, str]:
     """
     Get the current color pallette based on the current color theme.
 

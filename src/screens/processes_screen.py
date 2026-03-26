@@ -9,10 +9,10 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Header, Footer, DataTable, Button
 
-from src.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_pallette
+from src.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_palette
 
 
-def get_procs(sort: bool) -> Iterator[Process] | list[Process]:
+def _get_procs(sort: bool) -> Iterator[Process] | list[Process]:
     """
     Get the list of processes, depending on the value of `sort`
 
@@ -47,10 +47,10 @@ class ProcessesScreen(Screen[None]):
     paused = False
     sort = True
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     # Set the default processes value to an initial call to the function
-    processes = reactive(get_procs(sort=sort))
+    processes = reactive(_get_procs(sort=sort))
 
     table = cast(DataTable[Any], getters.query_one("#process-screen-table", expect_type=DataTable))
     container = getters.query_one("#process-container", expect_type=Container)
@@ -61,14 +61,13 @@ class ProcessesScreen(Screen[None]):
         """
         if self.paused:
             return
-        self.processes = get_procs(sort=self.sort)
+        self.processes = _get_procs(sort=self.sort)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """
         Define what to do when either the pause or sort Button is pressed
 
         :param event: The Button Pressed event
-        :return: None
         """
 
         # Get which button was pressed
@@ -98,8 +97,7 @@ class ProcessesScreen(Screen[None]):
 
         :param procs: The list of new processes to render
         """
-
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         # Clear the table and add columns
         self.table.clear(columns=True)
@@ -127,13 +125,13 @@ class ProcessesScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['orange'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
@@ -150,15 +148,11 @@ class ProcessesScreen(Screen[None]):
 
         :return: The ComposeResult featuring the structure of the Screen
         """
-
         yield Header(show_clock=True)
-
         with Container(id="process-screen-container"):
             with Horizontal(id="process-options-container"):
                 yield Button("Sorted", variant="success", id="process-sort-button")
                 yield Button("Pause", variant="success", id="process-pause-button")
-
             with Container(id="process-container"):
                 yield DataTable(id="process-screen-table", show_cursor=True, cursor_type="row", zebra_stripes=True)
-
         yield Footer()

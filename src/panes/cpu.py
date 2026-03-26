@@ -5,13 +5,13 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import COMMON_INTERVAL, get_cpu_data, get_pallette, update_CPU_static
+from ..utilities import COMMON_INTERVAL, get_cpu_data, get_palette, update_CPU_static
 
 
 class CPU_Usage(Static):
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     cpu_data = reactive(get_cpu_data())
 
@@ -20,7 +20,6 @@ class CPU_Usage(Static):
     def update_cpu_data(self) -> None:
         """
         Update CPU data
-        :return: None
         """
         self.cpu_data = get_cpu_data()
 
@@ -29,22 +28,21 @@ class CPU_Usage(Static):
         Watch CPU data and update the Static Widget with the new information
 
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
-        :return: None
         """
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
         static_content = update_CPU_static(cpu_data, palette)
         self.static.update(static_content)
 
     def on_click(self) -> None:
         """
         When this pane is clicked, switch to the CPU screen
-        :return: None
         """
         self.app.switch_mode("cpu")
 
     def compose(self) -> ComposeResult:
         """
         Start off with a VerticalScroll Widget with a Static Widget insider
+
         :return: The ComposeResult featuring the VerticalScroll and Static Widgets
         """
         with VerticalScroll():
@@ -53,7 +51,6 @@ class CPU_Usage(Static):
     def on_mount(self) -> None:
         """
         Set intervals to update cpu usage
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
 

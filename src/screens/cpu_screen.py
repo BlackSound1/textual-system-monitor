@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Static, Header, Footer, DataTable
 
-from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_pallette
+from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_palette
 
 
 class CPU_Screen(Screen[None]):
@@ -26,7 +26,7 @@ class CPU_Screen(Screen[None]):
         ("/", "", ""),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     cpu_data = reactive(get_cpu_data())
 
@@ -45,10 +45,8 @@ class CPU_Screen(Screen[None]):
         Watch CPU data and update the CPU Screen with the new information
 
         :param cpu_data: A dictionary containing updated CPU data with keys 'cores', 'overall', and 'individual'.
-        :return: None
         """
-
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         # Get the updated overall data
         cores = cpu_data['cores']
@@ -87,13 +85,13 @@ class CPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['blue'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['blue'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['blue'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

@@ -7,13 +7,13 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_pallette
+from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_palette
 
 
 class MemUsage(Static):
     BORDER_TITLE = f"Memory Usage - Updated every {COMMON_INTERVAL}s"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     mem_data = reactive(get_mem_data())
 
@@ -22,8 +22,6 @@ class MemUsage(Static):
     def update_mem_data(self) -> None:
         """
         Update the memory information by calling `get_mem_data()`
-
-        :return: None
         """
         self.mem_data = get_mem_data()
 
@@ -32,14 +30,13 @@ class MemUsage(Static):
         Watch for changes in the memory data and update the Static widget accordingly
 
         :param data: The new memory data
-        :return: None
         """
 
         from src.app import Monitor
 
         kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         self.static.update(
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
@@ -51,7 +48,6 @@ class MemUsage(Static):
     def on_click(self) -> None:
         """
         Switch to the Memory screen when clicked
-        :return: None
         """
         self.app.switch_mode("mem")
 
@@ -67,7 +63,6 @@ class MemUsage(Static):
     def on_mount(self) -> None:
         """
         Set intervals to update the memory information.
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
 

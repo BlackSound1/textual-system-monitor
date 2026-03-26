@@ -8,14 +8,14 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_pallette
+from ..utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_palette
 
 
 class Processes(Static):
     BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
     BORDER_SUBTITLE = "Top 10 by CPU Load"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
@@ -47,10 +47,11 @@ class Processes(Static):
         Define what happens when `self.processes` changes.
 
         Update the Processes pane with Statics for each process
+
         :param procs: The list of new processes to render
         """
 
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
 
         # Don't bother if this is the first tick of the update function
         if self.initial:
@@ -91,14 +92,13 @@ class Processes(Static):
     def on_click(self) -> None:
         """
         When this pane is clicked, switch to the Processes screen
-
-        :return: None
         """
         self.app.switch_mode("processes")
 
     def compose(self) -> ComposeResult:
         """
         Start off with a simple VerticalScroll Widget with some initial text
+
         :return: The ComposeResult featuring the VerticalScroll
         """
         with VerticalScroll():

@@ -8,7 +8,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Label, Header, Footer, Digits
 
-from src.utilities import get_mem_data, get_pallette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
+from src.utilities import get_mem_data, get_palette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
 
 
 class MemoryScreen(Screen[None]):
@@ -24,7 +24,7 @@ class MemoryScreen(Screen[None]):
         ("v", "app.switch_mode('gpu')", "GPU"),
     ]
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     mem_data = reactive(get_mem_data())
 
@@ -48,7 +48,6 @@ class MemoryScreen(Screen[None]):
         Watch for changes in the memory data and update the Widgets accordingly
 
         :param data: The new memory data
-        :return: None
         """
 
         from src.app import Monitor
@@ -72,7 +71,7 @@ class MemoryScreen(Screen[None]):
         self.used_digits.update(f"{value}")
 
         # Update percentage information
-        palette = get_pallette(self.app.theme)
+        palette = get_palette(self.app.theme)
         pct, color = compute_percentage_color(data['percent'])
         self.perc_digits.update(f'{pct}')
         self.perc_digits.styles.color = palette[color]
@@ -83,26 +82,20 @@ class MemoryScreen(Screen[None]):
 
         :return: The ComposeResult
         """
-
         yield Header(show_clock=True)
-
         with Container(id="mem-container"):
             with Container(classes="mem-static"):
                 yield Label("", id="total-static-label", classes="label")
                 yield Digits(id="total-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("", id="avail-static-label", classes="label")
                 yield Digits(id="avail-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("", id="used-static-label", classes="label")
                 yield Digits(id="used-digits", classes="digits")
-
             with Container(classes="mem-static"):
                 yield Label("Percentage Used (%):  ", classes="label")
                 yield Digits(id="perc-digits", classes="digits")
-
         yield Footer()
 
     def on_mount(self) -> None:
@@ -111,13 +104,13 @@ class MemoryScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_pallette(self.app.theme)['yellow'])
+        self.container.styles.border = ('round', get_palette(self.app.theme)['yellow'])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_pallette(self.app.theme)['yellow'])
+            self.container.styles.border = ('round', get_palette(self.app.theme)['yellow'])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
