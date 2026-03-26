@@ -20,7 +20,7 @@ class GPU_Usage(Static):
     # we can't use `self` (to get the kb_size context) outside a function
     gpu_data = reactive(get_gpu_data())
 
-    def adapter_ram_wrapper(self, adapter_ram: str) -> str:
+    def _adapter_ram_wrapper(self, adapter_ram: str) -> str:
         """
         Adapter RAM info is given as a string like '1.0 GiB'. Need to separate this to convert the number
         to a human-readable value of Bytes.
@@ -37,17 +37,14 @@ class GPU_Usage(Static):
     def update_gpu_data(self) -> None:
         """
         Update GPU data
-
-        :return: None
         """
-
         if sys.platform == "win32":
             self.gpu_data = [
              {
                  "gpu": gpu_info['gpu'],
                  'driver_version': gpu_info['driver_version'],
                  'resolution': gpu_info['resolution'],
-                 'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
+                 'adapter_ram': self._adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
                  'availability': gpu_info['availability'],
                  'refresh': gpu_info['refresh'],
                  'status': gpu_info['status'],
@@ -62,7 +59,6 @@ class GPU_Usage(Static):
         Watch `gpu_data` and update the Static Widget with the new information
 
         :param gpu_data: The list of new GPU data
-        :return: None
         """
 
         # First, grab the Static Widget
@@ -92,11 +88,13 @@ class GPU_Usage(Static):
     def on_mount(self) -> None:
         """
         Set interval to update the memory information.
-        :return: None
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_gpu_data)
 
         def _on_theme_change() -> None:
+            """
+            Callback to cause immediate update when the theme changes
+            """
             self.update_timer.reset()
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
@@ -111,13 +109,13 @@ class GPU_Usage(Static):
     def on_click(self) -> None:
         """
         When this pane is clicked, switch to the GPU screen
-        :return: None
         """
         self.app.switch_mode("gpu")
 
     def compose(self) -> ComposeResult:
         """
         Generate a ComposeResult by yielding a vertically-scrolling Static widget with the GPU information.
+
         :return: The ComposeResult
         """
         with VerticalScroll():

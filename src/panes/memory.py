@@ -13,7 +13,7 @@ from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_str
 class MemUsage(Static):
     BORDER_TITLE = f"Memory Usage - Updated every {COMMON_INTERVAL}s"
 
-    update_timer: Timer | None = None
+    update_timer: Timer
 
     mem_data = reactive(get_mem_data())
 
@@ -22,8 +22,6 @@ class MemUsage(Static):
     def update_mem_data(self) -> None:
         """
         Update the memory information by calling `get_mem_data()`
-
-        :return: None
         """
         self.mem_data = get_mem_data()
 
@@ -32,7 +30,6 @@ class MemUsage(Static):
         Watch for changes in the memory data and update the Static widget accordingly
 
         :param data: The new memory data
-        :return: None
         """
 
         from src.app import Monitor
@@ -51,7 +48,6 @@ class MemUsage(Static):
     def on_click(self) -> None:
         """
         Switch to the Memory screen when clicked
-        :return: None
         """
         self.app.switch_mode("mem")
 
@@ -67,7 +63,6 @@ class MemUsage(Static):
     def on_mount(self) -> None:
         """
         Set intervals to update the memory information.
-        :return: None
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
 
