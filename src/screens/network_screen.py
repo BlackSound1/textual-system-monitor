@@ -20,12 +20,12 @@ class NetworkScreen(Screen[None]):
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("p", "app.switch_mode('processes')", "Processes"),
-        ("c", "app.switch_mode('cpu')", "CPU"),
-        ("n", "app.switch_mode('main')", "Main Screen"),
-        ("d", "app.switch_mode('drive')", "Drives"),
-        ("m", "app.switch_mode('mem')", "Memory"),
-        ("v", "app.switch_mode('gpu')", "GPU"),
+        ("p", "app.switch_screen('processes')", "Processes"),
+        ("c", "app.switch_screen('cpu')", "CPU"),
+        ("n", "app.switch_screen('main')", "Main Screen"),
+        ("d", "app.switch_screen('drive')", "Drives"),
+        ("m", "app.switch_screen('mem')", "Memory"),
+        ("v", "app.switch_screen('gpu')", "GPU"),
     ]
 
     update_timer: Timer

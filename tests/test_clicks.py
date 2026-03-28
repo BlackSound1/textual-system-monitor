@@ -21,7 +21,6 @@ class TestClicks(IsolatedAsyncioTestCase):
     async def test_clicks(self):
         """
         Test clicking the different panes in the Main Screen
-        :return: None
         """
 
         # Define the screens to be tested

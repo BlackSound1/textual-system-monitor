@@ -100,7 +100,7 @@ class GuideScreen(Screen[None]):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ('g', "app.switch_mode('main')", 'Main Screen'),
+        ('g', "app.switch_screen('main')", 'Main Screen'),
         ("/", "", ""),
     ]
 

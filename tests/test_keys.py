@@ -24,7 +24,6 @@ class TestKeys(IsolatedAsyncioTestCase):
     async def test_keys_main(self):
         """
         Test that we can go to each Screen from the main Screen
-        :return: None
         """
 
         SCREENS: ScreenListType = [
@@ -59,7 +58,6 @@ class TestKeys(IsolatedAsyncioTestCase):
     async def test_keys_relative(self):
         """
         Starting from the Main Screen, test that we can go to each Screen in order
-        :return: None
         """
 
         # Define the screens and their corresponding keys and titles
@@ -90,7 +88,6 @@ class TestKeys(IsolatedAsyncioTestCase):
     async def test_keys_relative_reverse(self):
         """
         Starting from the Main Screen, test that we can go to each Screen in order but in reverse
-        :return: None
         """
 
         # Define the screens and their corresponding keys

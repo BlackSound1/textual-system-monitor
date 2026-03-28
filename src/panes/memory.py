@@ -49,7 +49,7 @@ class MemUsage(Static):
         """
         Switch to the Memory screen when clicked
         """
-        self.app.switch_mode("mem")
+        self.app.switch_screen("mem")
 
     def compose(self) -> ComposeResult:
         """

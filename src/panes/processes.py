@@ -93,7 +93,7 @@ class Processes(Static):
         """
         When this pane is clicked, switch to the Processes screen
         """
-        self.app.switch_mode("processes")
+        self.app.switch_screen("processes")
 
     def compose(self) -> ComposeResult:
         """

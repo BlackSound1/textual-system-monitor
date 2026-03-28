@@ -37,7 +37,7 @@ class CPU_Usage(Static):
         """
         When this pane is clicked, switch to the CPU screen
         """
-        self.app.switch_mode("cpu")
+        self.app.switch_screen("cpu")
 
     def compose(self) -> ComposeResult:
         """

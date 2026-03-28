@@ -67,7 +67,7 @@ class NetInfo(Static):
         """
         When this pane is clicked, switch to the Network screen
         """
-        self.app.switch_mode("network")
+        self.app.switch_screen("network")
 
     def compose(self) -> ComposeResult:
         """
