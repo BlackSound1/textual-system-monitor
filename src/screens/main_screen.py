@@ -19,13 +19,13 @@ class MainScreen(Screen[None]):
     CSS_PATH = "../styles/main_css.tcss"
     BINDINGS = [
         ("q", "app.quit", "Quit"),
-        ("p", "app.switch_mode('processes')", "Processes"),
-        ("c", "app.switch_mode('cpu')", "CPU"),
-        ("n", "app.switch_mode('network')", "Network"),
-        ("d", "app.switch_mode('drive')", "Drives"),
-        ("m", "app.switch_mode('mem')", "Memory"),
-        ("v", "app.switch_mode('gpu')", "GPU"),
-        ('g', "app.switch_mode('guide')", 'Guide'),
+        ("p", "app.switch_screen('processes')", "Processes"),
+        ("c", "app.switch_screen('cpu')", "CPU"),
+        ("n", "app.switch_screen('network')", "Network"),
+        ("d", "app.switch_screen('drive')", "Drives"),
+        ("m", "app.switch_screen('mem')", "Memory"),
+        ("v", "app.switch_screen('gpu')", "GPU"),
+        ('g', "app.switch_screen('guide')", 'Guide'),
     ]
 
     processes = getters.query_one("#processes", expect_type=Processes)

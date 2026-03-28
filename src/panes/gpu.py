@@ -110,7 +110,7 @@ class GPU_Usage(Static):
         """
         When this pane is clicked, switch to the GPU screen
         """
-        self.app.switch_mode("gpu")
+        self.app.switch_screen("gpu")
 
     def compose(self) -> ComposeResult:
         """

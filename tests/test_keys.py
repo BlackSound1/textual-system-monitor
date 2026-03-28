@@ -1,5 +1,3 @@
-from unittest import IsolatedAsyncioTestCase
-
 import pytest
 from textual.screen import Screen
 
@@ -13,106 +11,110 @@ from src.screens.network_screen import NetworkScreen
 from src.screens.processes_screen import ProcessesScreen
 from src.screens.gpu_screen import GPU_Screen
 
+
 type ScreenListType = list[tuple[type[Screen[None]], str]]
 
 
-class TestKeys(IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        self.monitor_app = Monitor()
+@pytest.mark.asyncio
+async def test_keys_main() -> None:
+    """
+    Starting from the Main Screen, go to each Screen in turn and try to
+    return to the Main Screen from the other Screen
+    """
 
-    @pytest.mark.asyncio
-    async def test_keys_main(self):
-        """
-        Test that we can go to each Screen from the main Screen
-        :return: None
-        """
+    SCREENS: ScreenListType = [
+        (ProcessesScreen, "p"),
+        (DriveScreen, "d"),
+        (MemoryScreen, "m"),
+        (CPU_Screen, "c"),
+        (NetworkScreen, "n"),
+        (GPU_Screen, "v"),
+        (GuideScreen, "g")
+    ]
 
-        SCREENS: ScreenListType = [
-            (ProcessesScreen, "p"),
-            (DriveScreen, "d"),
-            (MemoryScreen, "m"),
-            (CPU_Screen, "c"),
-            (NetworkScreen, "n"),
-            (GPU_Screen, "v"),
-            (GuideScreen, "g")
-        ]
+    app = Monitor()
 
-        async with self.monitor_app.run_test() as pilot:
+    async with app.run_test() as pilot:
 
-            # Make sure we are on the main screen to begin
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
+        # Make sure we are on the main screen to begin
+        assert type(app.screen) == MainScreen
 
-            # Go through each screen in the SCREENS list
-            for screen_class, key in SCREENS:
+        # Go through each screen in the SCREENS list
+        for screen_class, key in SCREENS:
 
-                # Press the key and assert that we are on the correct screen
-                await pilot.press(key)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), screen_class)
+            # Press the key and assert that we are on the correct screen
+            await pilot.press(key)
+            await pilot.pause()
+            assert type(app.screen) == screen_class
 
-                # Go back to the main screen and assert that we are back there
-                await pilot.press(key)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), MainScreen)
+            # Go back to the main screen and assert that we are back there
+            await pilot.press(key)
+            await pilot.pause()
+            assert type(app.screen) == MainScreen
 
-    @pytest.mark.asyncio
-    async def test_keys_relative(self):
-        """
-        Starting from the Main Screen, test that we can go to each Screen in order
-        :return: None
-        """
 
-        # Define the screens and their corresponding keys and titles
-        SCREENS: ScreenListType = [
-            (ProcessesScreen, "p"),
-            (DriveScreen, "d"),
-            (MemoryScreen, "m"),
-            (CPU_Screen, "c"),
-            (NetworkScreen, "n"),
-            (GPU_Screen, "v"),
-            (MainScreen, "v"),
-        ]
+@pytest.mark.asyncio
+async def test_keys_relative() -> None:
+    """
+    Starting from the Main Screen, test that we can go to each Screen in order
+    """
 
-        async with self.monitor_app.run_test() as pilot:
+    # Define the screens and their corresponding keys and titles
+    SCREENS: ScreenListType = [
+        (ProcessesScreen, "p"),
+        (DriveScreen, "d"),
+        (MemoryScreen, "m"),
+        (CPU_Screen, "c"),
+        (NetworkScreen, "n"),
+        (GPU_Screen, "v"),
+        (MainScreen, "v"),
+    ]
 
-            # Make sure we are on the main screen to begin
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
+    app = Monitor()
 
-            # Go through each screen in the SCREENS list
-            for screen_class, key in SCREENS:
+    async with app.run_test() as pilot:
 
-                # Press the key and assert that we are on the correct screen
-                await pilot.press(key)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), screen_class)
+        # Make sure we are on the main screen to begin
+        assert type(app.screen) == MainScreen
 
-    @pytest.mark.asyncio
-    async def test_keys_relative_reverse(self):
-        """
-        Starting from the Main Screen, test that we can go to each Screen in order but in reverse
-        :return: None
-        """
+        # Go through each screen in the SCREENS list
+        for screen_class, key in SCREENS:
 
-        # Define the screens and their corresponding keys
-        SCREENS: ScreenListType = [
-            (GPU_Screen, "v"),
-            (NetworkScreen, "n"),
-            (CPU_Screen, "c"),
-            (MemoryScreen, "m"),
-            (DriveScreen, "d"),
-            (ProcessesScreen, "p"),
-            (MainScreen, "p"),
-        ]
+            # Press the key and assert that we are on the correct screen
+            await pilot.press(key)
+            await pilot.pause()
+            assert type(app.screen) == screen_class
 
-        async with self.monitor_app.run_test() as pilot:
 
-            # Make sure we are on the main screen to begin
-            self.assertIs(type(self.monitor_app.screen), MainScreen)
+@pytest.mark.asyncio
+async def test_keys_relative_reverse() -> None:
+    """
+    Starting from the Main Screen, test that we can go to each Screen in order but in reverse
+    """
 
-            # Iterate through the screens and their corresponding keys
-            for screen_class, key in SCREENS:
+    # Define the screens and their corresponding keys
+    SCREENS: ScreenListType = [
+        (GPU_Screen, "v"),
+        (NetworkScreen, "n"),
+        (CPU_Screen, "c"),
+        (MemoryScreen, "m"),
+        (DriveScreen, "d"),
+        (ProcessesScreen, "p"),
+        (MainScreen, "p"),
+    ]
 
-                # Press the key and assert that we are on the correct screen
-                await pilot.press(key)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), screen_class)
+    app = Monitor()
+
+    async with app.run_test() as pilot:
+
+        # Make sure we are on the main screen to begin
+        assert type(app.screen) == MainScreen
+
+        # Iterate through the screens and their corresponding keys
+        for screen_class, key in SCREENS:
+
+            # Press the key and assert that we are on the correct screen
+            await pilot.press(key)
+            await pilot.pause()
+            assert type(app.screen) == screen_class
+

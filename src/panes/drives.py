@@ -101,7 +101,7 @@ class DriveUsage(Static):
         """
         When this pane is clicked, switch to the Network screen
         """
-        self.app.switch_mode("drive")
+        self.app.switch_screen("drive")
 
     def compose(self) -> ComposeResult:
         """

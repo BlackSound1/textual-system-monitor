@@ -1,5 +1,3 @@
-from unittest import IsolatedAsyncioTestCase
-
 import pytest
 from textual.screen import Screen
 
@@ -13,38 +11,33 @@ from src.screens.processes_screen import ProcessesScreen
 from src.screens.gpu_screen import GPU_Screen
 
 
-class TestClicks(IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        self.monitor_app = Monitor()
+@pytest.mark.asyncio
+async def test_clicks() -> None:
+    """
+    From the Main Screen, click on each pane to go to its Screen. Then,
+    hit the corresponding key to go back to the Main Screen
+    """
 
-    @pytest.mark.asyncio
-    async def test_clicks(self):
-        """
-        Test clicking the different panes in the Main Screen
-        :return: None
-        """
+    SCREENS: list[tuple[str, type[Screen[None]], str]] = [
+        ("#processes", ProcessesScreen, 'p'),
+        ("#drives", DriveScreen, 'd'),
+        ("#mem", MemoryScreen, 'm'),
+        ("#cpu", CPU_Screen, 'c'),
+        ("#network", NetworkScreen, 'n'),
+        ("#gpu", GPU_Screen, 'v')
+    ]
 
-        # Define the screens to be tested
-        SCREENS: list[tuple[str, type[Screen[None]], str]] = [
-            ("#processes", ProcessesScreen, 'p'),
-            ("#drives", DriveScreen, 'd'),
-            ("#mem", MemoryScreen, 'm'),
-            ("#cpu", CPU_Screen, 'c'),
-            ("#network", NetworkScreen, 'n'),
-            ("#gpu", GPU_Screen, 'v')
-        ]
+    app = Monitor()
 
-        async with self.monitor_app.run_test() as pilot:
+    async with app.run_test() as pilot:
 
-            # Iterate over each screen
-            for screen_class, screen_type, screen_key in SCREENS:
+        # Iterate over each screen
+        for screen_class, screen_type, screen_key in SCREENS:
 
-                # Click on the screen and assert that we are on the correct screen
-                await pilot.click(screen_class)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), screen_type)
+            # Click on the screen and assert that we are on the correct screen
+            await pilot.click(screen_class)
+            assert type(app.screen) == screen_type
 
-                # Press the key to go back to the main screen and assert that we are on the main screen
-                await pilot.press(screen_key)
-                await pilot.pause()
-                self.assertIs(type(self.monitor_app.screen), MainScreen)
+            # Press the key to go back to the main screen and assert that we are on the main screen
+            await pilot.press(screen_key)
+            assert type(app.screen) == MainScreen
