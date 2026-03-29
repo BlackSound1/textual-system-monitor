@@ -1,11 +1,9 @@
-import pytest
 from textual.widgets import Button
 
 from src.app import Monitor
 from src.screens.processes_screen import ProcessesScreen
 
 
-@pytest.mark.asyncio
 async def test_process_screen_buttons():
     """
     Go to the Processes Screen and test the Buttons

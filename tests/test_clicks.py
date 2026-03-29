@@ -1,4 +1,3 @@
-import pytest
 from textual.screen import Screen
 
 from src.app import Monitor
@@ -11,7 +10,6 @@ from src.screens.processes_screen import ProcessesScreen
 from src.screens.gpu_screen import GPU_Screen
 
 
-@pytest.mark.asyncio
 async def test_clicks() -> None:
     """
     From the Main Screen, click on each pane to go to its Screen. Then,

@@ -21,7 +21,7 @@ run dev='':
 [group('testing')]
 test:
     @echo ""
-    @uv run pytest tests
+    @uv run pytest --asyncio-mode=auto tests
 
 
 # Use Pytest to test only the clicks, keys, or buttons
@@ -29,14 +29,14 @@ test:
 [arg("kind", pattern='clicks|keys|buttons|percent_color|bytes', help='Run only these kinds of tests')]
 test-only kind:
     @echo ""
-    @uv run pytest tests/test_"{{kind}}".py
+    @uv run pytest --asyncio-mode=auto tests/test_"{{kind}}".py
 
 
 # Use Pytest to generate code coverage
 [group('testing')]
 cov:
     @echo ""
-    @uv run pytest tests --cov=. --cov-branch
+    @uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
 
 
 # Launch the Textual console. Used in debugging
