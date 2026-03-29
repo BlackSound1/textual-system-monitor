@@ -76,3 +76,15 @@ async def test_gpu_pane_linux_empty_Static() -> None:
             gpu_pane = app.screen.query_one(GPU_Usage)
             static = gpu_pane.query_one("#gpu_pane_empty", expect_type=Static)
             assert static.content == "GPU information not currently supported on non-Windows systems..."
+
+
+async def test_gpu_screen_linux_empty_Static() -> None:
+    """Make sure Linux has an empty Static on the GPU screen"""
+    with patch('sys.platform', 'linux'):
+        app = Monitor()
+        async with app.run_test() as pilot:
+            await pilot.press('v')
+            await pilot.pause()
+            gpu_screen = app.screen
+            static = gpu_screen.query_one('#gpu_screen_empty', expect_type=Static)
+            assert static.content == "GPU information not currently supported on non-Windows systems..."
