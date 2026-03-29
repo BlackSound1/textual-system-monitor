@@ -44,31 +44,31 @@ run-dev:   ## Run app in dev mode
 .PHONY: test
 test:   ## Use Pytest to test the whole app
 	@echo ""
-	@uv run pytest tests
+	@uv run pytest --asyncio-mode=auto tests
 
 
 .PHONY: test-clicks
 test-clicks:   ## Use Pytest to test the clicks only
 	@echo ""
-	@uv run pytest tests/test_clicks.py
+	@uv run pytest --asyncio-mode=auto tests/test_clicks.py
 
 
 .PHONY: test-keys
 test-keys:   ## Use Pytest to test the key presses only
 	@echo ""
-	@uv run pytest tests/test_keys.py
+	@uv run pytest --asyncio-mode=auto tests/test_keys.py
 
 
 .PHONY: test-buttons
 test-buttons:   ## Use Pytest to test the buttons only
 	@echo ""
-	@uv run pytest tests/test_buttons.py
+	@uv run pytest --asyncio-mode=auto tests/test_buttons.py
 
 
 .PHONY: cov
 cov:   ## Use Pytest to generate code coverage
 	@echo ""
-	@uv run pytest tests --cov=. --cov-branch
+	@uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
 
 
 .PHONY: lint

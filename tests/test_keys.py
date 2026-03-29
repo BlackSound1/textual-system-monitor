@@ -1,4 +1,3 @@
-import pytest
 from textual.screen import Screen
 
 from src.app import Monitor
@@ -15,7 +14,6 @@ from src.screens.gpu_screen import GPU_Screen
 type ScreenListType = list[tuple[type[Screen[None]], str]]
 
 
-@pytest.mark.asyncio
 async def test_keys_main() -> None:
     """
     Starting from the Main Screen, go to each Screen in turn and try to
@@ -53,7 +51,6 @@ async def test_keys_main() -> None:
             assert type(app.screen) == MainScreen
 
 
-@pytest.mark.asyncio
 async def test_keys_relative() -> None:
     """
     Starting from the Main Screen, test that we can go to each Screen in order
@@ -86,7 +83,6 @@ async def test_keys_relative() -> None:
             assert type(app.screen) == screen_class
 
 
-@pytest.mark.asyncio
 async def test_keys_relative_reverse() -> None:
     """
     Starting from the Main Screen, test that we can go to each Screen in order but in reverse

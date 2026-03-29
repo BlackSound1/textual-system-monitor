@@ -18,9 +18,12 @@ To develop the app:
    make test
    ```
 
-   **Note**: Since a recent update, these tests may take quite a while depending on
-   your computer. I have taken some pains to avoid threading issues, but performance
-   issues may persist.
+   **Note**: If you see Pytest failing with errors like
+   "NoMatches: No nodes match...", this is a known race condition problem. When
+   testing, occasionally the app will render too slowly and the asserts may fail.
+   This app is naturally vulnerable to these race conditions because much of its
+   functionality involves UI rendering. If you see these errors, just run the tests
+   again. I know this is not a real solution, but I'm looking into it.
 
 4. Generate code coverage with:
    ```sh

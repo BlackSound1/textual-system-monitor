@@ -1,28 +1,21 @@
-import unittest
-
 from src.utilities import compute_percentage_color
 
+async def test_percent_green():
+    _, color = compute_percentage_color(1)
+    assert color == "green"
 
-class TestPercentColor(unittest.TestCase):
-    def test_percent_green(self):
-        _, color = compute_percentage_color(1)
-        self.assertEqual(color, "green")
+async def test_percent_yellow():
+    _, color = compute_percentage_color(80)
+    assert color == "yellow"
 
-    def test_percent_yellow(self):
-        _, color = compute_percentage_color(80)
-        self.assertEqual(color, "yellow")
+async def test_percent_red():
+    _, color = compute_percentage_color(95)
+    assert color == "red"
 
-    def test_percent_red(self):
-        _, color = compute_percentage_color(95)
-        self.assertEqual(color, "red")
+async def test_too_low():
+    _, color = compute_percentage_color(-100)
+    assert color == "green"
 
-    def test_too_low(self):
-        _, color = compute_percentage_color(-100)
-        self.assertEqual(color, "green")
-
-    def test_too_high(self):
-        _, color = compute_percentage_color(200)
-        self.assertEqual(color, "red")
-
-if __name__ == '__main__':
-    unittest.main()
+async def test_too_high():
+    _, color = compute_percentage_color(200)
+    assert color == "red"

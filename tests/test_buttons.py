@@ -1,80 +1,78 @@
-from typing import cast
-from unittest import IsolatedAsyncioTestCase
-
-import pytest
 from textual.widgets import Button
 
 from src.app import Monitor
 from src.screens.processes_screen import ProcessesScreen
 
 
-class TestButtons(IsolatedAsyncioTestCase):
-    async def asyncSetUp(self):
-        self.monitor_app = Monitor()
+async def test_process_screen_buttons():
+    """
+    Go to the Processes Screen and test the Buttons
+    """
 
-    @pytest.mark.asyncio
-    async def test_process_screen_buttons(self):
-        """
-        Go to the Processes Screen and test the Buttons
-        :return: None
-        """
+    app = Monitor()
 
-        async with self.monitor_app.run_test() as pilot:
-            await pilot.press("p")
+    DELAY = 0.2
 
-            # Get the Processes Screen
-            process_screen = cast(ProcessesScreen, self.monitor_app.screen)
+    async with app.run_test() as pilot:
 
-            # Get the Buttons
-            pause_button = process_screen.screen.query_one("#process-pause-button", expect_type=Button)
-            sort_button = process_screen.screen.query_one("#process-sort-button", expect_type=Button)
+        # Get the Processes Screen
+        await pilot.press("p")
+        process_screen = app.screen
 
-            self.assertIs(type(process_screen), ProcessesScreen)
+        # Get the Buttons
+        pause_button = process_screen.screen.query_one("#process-pause-button", expect_type=Button)
+        sort_button = process_screen.screen.query_one("#process-sort-button", expect_type=Button)
 
-            # Ensure initial state is correct
-            self.assertIs(process_screen.paused, False)
-            self.assertEqual(pause_button.variant, "success")
-            self.assertEqual(str(pause_button.label), "Pause")
-            self.assertIs(process_screen.sort, True)
-            self.assertEqual(sort_button.variant, "success")
-            self.assertEqual(str(sort_button.label), "Sorted")
+        assert type(process_screen) == ProcessesScreen
 
-            # Press the pause button and make sure state is correct
-            await pilot.click("#process-pause-button")
-            await pilot.pause(0.2)
-            self.assertIs(process_screen.paused, True)
-            self.assertEqual(pause_button.variant, "error")
-            self.assertEqual(str(pause_button.label), "Resume")
-            self.assertIs(process_screen.sort, True)
-            self.assertEqual(sort_button.variant, "success")
-            self.assertEqual(str(sort_button.label), "Sorted")
+        # Ensure initial state is correct
+        assert not process_screen.paused
+        assert pause_button.variant == 'success'
+        assert pause_button.label == 'Pause'
+        assert process_screen.sort
+        assert sort_button.variant == 'success'
+        assert sort_button.label == 'Sorted'
 
-            # Press the pause button again and make sure state is correct
-            await pilot.click("#process-pause-button")
-            await pilot.pause(0.2)
-            self.assertIs(process_screen.paused, False)
-            self.assertEqual(pause_button.variant, "success")
-            self.assertEqual(str(pause_button.label), "Pause")
-            self.assertIs(process_screen.sort, True)
-            self.assertEqual(sort_button.variant, "success")
-            self.assertEqual(str(sort_button.label), "Sorted")
+        # Press the pause button and make sure state is correct
+        await pilot.click(pause_button)
+        await pilot.pause(DELAY)
 
-            # Press the sort button and make sure state is correct
-            await pilot.click("#process-sort-button")
-            await pilot.pause(0.2)
-            self.assertIs(process_screen.paused, False)
-            self.assertEqual(pause_button.variant, "success")
-            self.assertEqual(str(pause_button.label), "Pause")
-            self.assertIs(process_screen.sort, False)
-            self.assertEqual(sort_button.variant, "error")
-            self.assertEqual(str(sort_button.label), "Unsorted")
+        assert process_screen.paused
+        assert pause_button.variant == 'error'
+        assert pause_button.label == 'Resume'
+        assert process_screen.sort
+        assert sort_button.variant == 'success'
+        assert sort_button.label == 'Sorted'
 
-            # Press the sort button again and make sure state is correct
-            await pilot.click("#process-sort-button")
-            await pilot.pause(0.2)
-            self.assertIs(process_screen.paused, False)
-            self.assertEqual(pause_button.variant, "success")
-            self.assertEqual(str(pause_button.label), "Pause")
-            self.assertIs(process_screen.sort, True)
-            self.assertEqual(sort_button.variant, "success")
-            self.assertEqual(str(sort_button.label), "Sorted")
+        # Press the pause button again and make sure state is correct
+        await pilot.click(pause_button)
+        await pilot.pause(DELAY)
+
+        assert not process_screen.paused
+        assert pause_button.variant == 'success'
+        assert pause_button.label == 'Pause'
+        assert process_screen.sort
+        assert sort_button.variant == 'success'
+        assert sort_button.label == 'Sorted'
+
+        # Press the sort button and make sure state is correct
+        await pilot.click(sort_button)
+        await pilot.pause(DELAY)
+
+        assert not process_screen.paused
+        assert pause_button.variant == 'success'
+        assert pause_button.label == 'Pause'
+        assert not process_screen.sort
+        assert sort_button.variant == 'error'
+        assert sort_button.label == 'Unsorted'
+
+        # Press the sort button again and make sure state is correct
+        await pilot.click(sort_button)
+        await pilot.pause(DELAY)
+
+        assert not process_screen.paused
+        assert pause_button.variant == 'success'
+        assert pause_button.label == 'Pause'
+        assert process_screen.sort
+        assert sort_button.variant == 'success'
+        assert sort_button.label == 'Sorted'
