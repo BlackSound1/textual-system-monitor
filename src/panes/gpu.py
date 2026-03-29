@@ -122,4 +122,4 @@ class GPU_Usage(Static):
             if sys.platform == "win32":
                 yield Static(id="gpu_pane_static")
             else:
-                yield Static("GPU information not currently supported on non-Windows systems...")
+                yield Static("GPU information not currently supported on non-Windows systems...", id="gpu_pane_empty")
