@@ -1,3 +1,4 @@
+from typing import cast
 from unittest.mock import patch
 
 from textual.widgets import Static
@@ -28,12 +29,43 @@ async def test_run_calls_monitor_run() -> None:
         mock_monitor_run.assert_called_once()
 
 
-async def test_gpu_pane_linux_gpu_data_empty() -> None:
+async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
     """Non-Windows platforms should have no GPU data"""
     with patch('sys.platform', 'linux'):
         gpu_pane = GPU_Usage()
         gpu_pane.update_gpu_data()
         assert gpu_pane.gpu_data == []
+
+
+@patch('src.panes.gpu.get_gpu_data', return_value=[
+    {
+        'gpu': 'MY GPU',
+        'driver_version': '1',
+        'resolution': '1920 x 1080',
+        'adapter_ram': '1.0 GB',
+        'availability': 'Running',
+        'refresh': '1',
+        'status': 'OK'
+    }
+])
+async def test_gpu_pane_gpu_data_windows(_: list[dict[str, str]]) -> None:
+    """On Windows, GPU data should be populated"""
+    with patch('sys.platform', 'win32'):
+        app = Monitor()
+        app.CONTEXT['kb_size'] = 1000
+        async with app.run_test():
+            gpu_pane = app.screen.query_one(GPU_Usage)
+            gpu_pane.update_gpu_data()
+            data = cast(list[dict[str, str]], gpu_pane.gpu_data)
+            assert len(data) == 1
+            only_item = data[0]
+            assert only_item['gpu'] == 'MY GPU'
+            assert only_item['driver_version'] == '1'
+            assert only_item['resolution'] == '1920 x 1080'
+            assert only_item['adapter_ram'] == '1.0 GB'
+            assert only_item['availability'] == 'Running'
+            assert only_item['refresh'] == '1'
+            assert only_item['status'] == 'OK'
 
 
 async def test_gpu_pane_linux_empty_Static() -> None:
