@@ -1,6 +1,8 @@
 from typing import cast
 from unittest.mock import patch
 
+from textual.containers import Container
+from textual.css.query import NoMatches
 from textual.widgets import Static
 
 from src.app import Monitor
@@ -135,3 +137,29 @@ async def test_update_gpu_screen_data_on_linux() -> None:
             gpu_screen.update_gpu_data()
             assert gpu_screen.gpu_data is None
 
+
+async def test_gpu_screen_border_change() -> None:
+    """Test that the `_on_theme_change` function works on the GPU Screen"""
+    new_pink = '#FF1493'
+    app = Monitor()
+    async with app.run_test() as pilot:
+        await pilot.press('v')
+        await pilot.pause()
+        app.theme = 'textual-light'
+        gpu_screen = cast(GPU_Screen, app.screen)
+        container = gpu_screen.query_one("#gpu-container", expect_type=Container)
+        for k, v in container.styles.border:
+            assert k == 'round'
+            assert v.hex6 == new_pink
+
+
+async def test_gpu_screen_no_container_found() -> None:
+    """Make sure that if no `#gpu-container` is loaded, then `on_mount` early returns"""
+    app = Monitor()
+    async with app.run_test():
+        gpu_screen = GPU_Screen()
+        with patch.object(gpu_screen.screen, 'query_one', side_effect=NoMatches('', '')):
+            with patch.object(gpu_screen, 'watch') as mock_watch:
+                gpu_screen.on_mount()
+                mock_watch.assert_not_called()
+                gpu_screen.on_unmount()  # Force dismounting to kill the timer
