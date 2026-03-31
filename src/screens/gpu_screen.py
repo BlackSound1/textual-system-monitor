@@ -134,5 +134,5 @@ class GPU_Screen(Screen[None]):
                 if sys.platform == "win32":
                     yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
                 else:
-                    yield Static("GPU information not currently supported on non-Windows systems...")
+                    yield Static("GPU information not currently supported on non-Windows systems...", id='gpu_screen_empty')
         yield Footer()
