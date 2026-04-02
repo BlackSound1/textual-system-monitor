@@ -372,6 +372,22 @@ COLOR_MAP = {
         'green': "#40a02b",
         'pink': "#ea76cb",
     },
+    'catpuccin-frappe': {
+        'orange': "#ef9f76",
+        'red': "#e78284",
+        'yellow': "#e5c890",
+        'blue': "#8caaee",
+        'green': "#a6d189",
+        'pink': "#f4b8e4",
+    },
+    'catpuccin-macchiato': {
+        'orange': "#f5a97f",
+        'red': "#ed8796",
+        'yellow': "#eed49f",
+        'blue': "#8aadf4",
+        'green': "#a6da95",
+        'pink': "#f5bde6",
+    },
     'dracula': {
         'orange': "#ffb86c",
         'red': "#ff5555",
