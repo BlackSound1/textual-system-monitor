@@ -21,6 +21,7 @@ run dev='':
 [group('testing')]
 [arg("only", long, short='o', pattern='clicks|keys|buttons|color|bytes|misc|', help='Test the app')]
 test only='':
+    @echo ""
     uv run pytest --asyncio-mode=auto {{ 
         if only == "color" { "tests/test_percent_color.py" }
         else if only != "" { "tests/test_" + only + ".py" }
