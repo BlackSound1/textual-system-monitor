@@ -2,6 +2,7 @@ import sys
 from typing import Any, cast
 
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
 from textual.css.query import NoMatches
 from textual.reactive import reactive
@@ -16,13 +17,13 @@ class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     CSS_PATH = "../styles/gpu_css.tcss"
     BINDINGS = [
-        ("q", "app.quit", "Quit"),
-        ("p", "app.switch_screen('processes')", "Processes"),
-        ("c", "app.switch_screen('cpu')", "CPU"),
-        ("n", "app.switch_screen('network')", "Network"),
-        ("d", "app.switch_screen('drive')", "Drives"),
-        ("m", "app.switch_screen('mem')", "Memory"),
-        ("v", "app.switch_screen('main')", "Main Screen"),
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
+        Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
+        Binding(key="n", action="app.switch_screen('network')", description="Network"),
+        Binding(key="d", action="app.switch_screen('drive')", description="Drives"),
+        Binding(key="m", action="app.switch_screen('mem')", description="Memory"),
+        Binding(key="v", action="app.switch_screen('main')", description="Main Screen"),
     ]
 
     update_timer: Timer
@@ -134,5 +135,8 @@ class GPU_Screen(Screen[None]):
                 if sys.platform == "win32":
                     yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
                 else:
-                    yield Static("GPU information not currently supported on non-Windows systems...", id='gpu_screen_empty')
+                    yield Static(
+                        "GPU information not currently supported on non-Windows systems...",
+                        id='gpu_screen_empty',
+                    )
         yield Footer()

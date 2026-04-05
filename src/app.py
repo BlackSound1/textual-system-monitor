@@ -1,6 +1,7 @@
 from typing import Callable, ClassVar
 
 from textual.app import App
+from textual.binding import Binding
 from textual.screen import Screen
 
 from .screens.guide_screen import GuideScreen
@@ -32,7 +33,7 @@ class Monitor(App[str]):
     }
 
     BINDINGS = [
-        ('/', 'app.switch_base', 'Change KB Size')
+        Binding(key='/', action='app.switch_base', description='Change KB Size')
     ]
 
     def on_mount(self) -> None:

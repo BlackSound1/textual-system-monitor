@@ -2,6 +2,7 @@ import logging
 
 from textual import getters
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container
 from textual.screen import Screen
 from textual.widgets import Header, Footer
@@ -18,14 +19,14 @@ logging.basicConfig(handlers=[TextualHandler()], level=logging.WARNING)
 class MainScreen(Screen[None]):
     CSS_PATH = "../styles/main_css.tcss"
     BINDINGS = [
-        ("q", "app.quit", "Quit"),
-        ("p", "app.switch_screen('processes')", "Processes"),
-        ("c", "app.switch_screen('cpu')", "CPU"),
-        ("n", "app.switch_screen('network')", "Network"),
-        ("d", "app.switch_screen('drive')", "Drives"),
-        ("m", "app.switch_screen('mem')", "Memory"),
-        ("v", "app.switch_screen('gpu')", "GPU"),
-        ('g', "app.switch_screen('guide')", 'Guide'),
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
+        Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
+        Binding(key="n", action="app.switch_screen('network')", description="Network"),
+        Binding(key="d", action="app.switch_screen('drive')", description="Drives"),
+        Binding(key="m", action="app.switch_screen('mem')", description="Memory"),
+        Binding(key="v", action="app.switch_screen('gpu')", description="GPU"),
+        Binding(key='g', action="app.switch_screen('guide')", description='Guide'),
     ]
 
     processes = getters.query_one("#processes", expect_type=Processes)

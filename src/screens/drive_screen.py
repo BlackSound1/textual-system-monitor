@@ -3,6 +3,7 @@ from typing import cast
 from psutil import disk_partitions, disk_usage
 from textual import getters
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import VerticalScroll, Container
 from textual.reactive import reactive
 from textual.screen import Screen
@@ -16,13 +17,13 @@ class DriveScreen(Screen[None]):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
     CSS_PATH = "../styles/drive_css.tcss"
     BINDINGS = [
-        ("q", "app.quit", "Quit"),
-        ("p", "app.switch_screen('processes')", "Processes"),
-        ("c", "app.switch_screen('cpu')", "CPU"),
-        ("n", "app.switch_screen('network')", "Network"),
-        ("d", "app.switch_screen('main')", "Main Screen"),
-        ("m", "app.switch_screen('mem')", "Memory"),
-        ("v", "app.switch_screen('gpu')", "GPU"),
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
+        Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
+        Binding(key="n", action="app.switch_screen('network')", description="Network"),
+        Binding(key="d", action="app.switch_screen('main')", description="Main Screen"),
+        Binding(key="m", action="app.switch_screen('mem')", description="Memory"),
+        Binding(key="v", action="app.switch_screen('gpu')", description="GPU"),
     ]
 
     update_timer: Timer
@@ -88,7 +89,15 @@ class DriveScreen(Screen[None]):
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
 
-                self.table.add_row(device, options, fs, get_color_formatted_string(palette, usage.percent), total, used, free)
+                self.table.add_row(
+                    device,
+                    options,
+                    fs,
+                    get_color_formatted_string(palette, usage.percent),
+                    total,
+                    used,
+                    free
+                )
 
     def on_mount(self) -> None:
         """
