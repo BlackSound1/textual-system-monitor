@@ -17,19 +17,19 @@ run dev='':
     @uv run textual run "{{dev}}" main.py
 
 
-# Use Pytest to test the whole app
+# Use Pytest to test the app, either wholly, or a subset of it
 [group('testing')]
-test:
-    @echo ""
-    @uv run pytest --asyncio-mode=auto tests
-
-
-# Use Pytest to test only the clicks, keys, or buttons
-[group('testing')]
-[arg("kind", pattern='clicks|keys|buttons|percent_color|bytes|misc', help='Run only these kinds of tests')]
-test-only kind:
-    @echo ""
-    @uv run pytest --asyncio-mode=auto tests/test_"{{kind}}".py
+[arg("only", long, short='o', pattern='clicks|keys|buttons|color|bytes|misc|', help='Test the app')]
+test only='':
+    uv run pytest --asyncio-mode=auto {{
+        if only == "clicks" { "tests/test_clicks.py" }
+        else if only == "keys" { "tests/test_keys.py" }
+        else if only == "buttons" { "tests/test_buttons.py" }
+        else if only == "bytes" { "tests/test_bytes.py" }
+        else if only == "misc" { "tests/test_misc.py" }
+        else if only == "color" { "tests/test_percent_color.py" }
+        else { "tests" }
+    }}
 
 
 # Use Pytest to generate code coverage
