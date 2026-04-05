@@ -21,13 +21,9 @@ run dev='':
 [group('testing')]
 [arg("only", long, short='o', pattern='clicks|keys|buttons|color|bytes|misc|', help='Test the app')]
 test only='':
-    uv run pytest --asyncio-mode=auto {{
-        if only == "clicks" { "tests/test_clicks.py" }
-        else if only == "keys" { "tests/test_keys.py" }
-        else if only == "buttons" { "tests/test_buttons.py" }
-        else if only == "bytes" { "tests/test_bytes.py" }
-        else if only == "misc" { "tests/test_misc.py" }
-        else if only == "color" { "tests/test_percent_color.py" }
+    uv run pytest --asyncio-mode=auto {{ 
+        if only == "color" { "tests/test_percent_color.py" }
+        else if only != "" { "tests/test_" + only + ".py" }
         else { "tests" }
     }}
 
