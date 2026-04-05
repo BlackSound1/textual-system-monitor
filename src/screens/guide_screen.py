@@ -1,4 +1,5 @@
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Static, Header, Footer
@@ -99,23 +100,23 @@ def _get_formatted_monitoring_string(theme: str) -> str:
 class GuideScreen(Screen[None]):
     CSS_PATH = "../styles/guide_css.tcss"
     BINDINGS = [
-        ("q", "app.quit", "Quit"),
-        ('g', "app.switch_screen('main')", 'Main Screen'),
-        ("/", "", ""),
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key='g', action="app.switch_screen('main')", description='Main Screen'),
+        Binding(key="/", action="", description=""),
     ]
 
     def on_mount(self) -> None:
-      """
-      Perform initial setup for the Guide Screen
-      """
-      def _on_theme_change() -> None:
-          """
-          Update the text colors based on the theme
-          """
-          monitoring_desc = self.query_one("#monitoring_desc", expect_type=Static)
-          monitoring_desc.update(_get_formatted_monitoring_string(self.app.theme))
+        """
+        Perform initial setup for the Guide Screen
+        """
+        def _on_theme_change() -> None:
+            """
+            Update the text colors based on the theme
+            """
+            monitoring_desc = self.query_one("#monitoring_desc", expect_type=Static)
+            monitoring_desc.update(_get_formatted_monitoring_string(self.app.theme))
 
-      self.watch(self.app, "theme", _on_theme_change, init=False)
+        self.watch(self.app, "theme", _on_theme_change, init=False)
 
     def compose(self) -> ComposeResult:
         """

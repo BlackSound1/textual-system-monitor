@@ -2,6 +2,7 @@ from typing import cast
 
 from textual import getters
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Container
 from textual.reactive import reactive
 from textual.screen import Screen
@@ -15,13 +16,13 @@ class MemoryScreen(Screen[None]):
     BORDER_TITLE = f"Memory - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/mem_css.tcss"
     BINDINGS = [
-        ("q", "app.quit", "Quit"),
-        ("p", "app.switch_screen('processes')", "Processes"),
-        ("c", "app.switch_screen('cpu')", "CPU"),
-        ("n", "app.switch_screen('network')", "Network"),
-        ("d", "app.switch_screen('drive')", "Drives"),
-        ("m", "app.switch_screen('main')", "Main Screen"),
-        ("v", "app.switch_screen('gpu')", "GPU"),
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
+        Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
+        Binding(key="n", action="app.switch_screen('network')", description="Network"),
+        Binding(key="d", action="app.switch_screen('drive')", description="Drives"),
+        Binding(key="m", action="app.switch_screen('main')", description="Main Screen"),
+        Binding(key="v", action="app.switch_screen('gpu')", description="GPU"),
     ]
 
     update_timer: Timer
