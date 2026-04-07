@@ -8,9 +8,9 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Header, Footer, DataTable, Static
+from textual.widgets import DataTable, Footer, Header, Static
 
-from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_palette
+from src.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
 
 
 class GPU_Screen(Screen[None]):

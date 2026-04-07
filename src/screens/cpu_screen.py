@@ -3,11 +3,11 @@ from typing import ClassVar, cast
 from textual import getters
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Static, Header, Footer, DataTable
+from textual.widgets import DataTable, Footer, Header, Static
 
 from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_palette
 

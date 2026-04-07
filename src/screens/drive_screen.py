@@ -4,13 +4,13 @@ from psutil import disk_partitions, disk_usage
 from textual import getters
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Footer, Header, DataTable
+from textual.widgets import DataTable, Footer, Header
 
-from src.utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_palette
+from src.utilities import RARE_INTERVAL, bytes_to_human, get_color_formatted_string, get_palette
 
 
 class DriveScreen(Screen[None]):
