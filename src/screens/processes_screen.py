@@ -1,5 +1,5 @@
-from typing import Any, ClassVar, cast
 from collections.abc import Iterator
+from typing import Any, ClassVar, cast
 
 from psutil import Process, process_iter
 from textual import getters
@@ -9,7 +9,7 @@ from textual.containers import Container, Horizontal
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Header, Footer, DataTable, Button
+from textual.widgets import Button, DataTable, Footer, Header
 
 from src.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_palette
 

@@ -7,7 +7,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, COMMON_INTERVAL, get_color_formatted_string, get_mem_data, get_palette
+from ..utilities import COMMON_INTERVAL, bytes_to_human, get_color_formatted_string, get_mem_data, get_palette
 
 
 class MemUsage(Static):

@@ -1,6 +1,6 @@
 [project]
 name = "textual-system-monitor"
-version = "0.8.8"
+version = "0.8.9"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 authors = [
@@ -57,12 +57,15 @@ extend-select = [
     "ARG",   # Enable flake8-unused-arguments rules
     "F",     # Enable Pyflakes rules
     "FURB",  # Enable refurb rules
-    "PERF",  # Perflint
-    "RUF",   # Ruff specific rules
-    "SIM",   # flake8-simplify
-    "Q",     # flake8-quotes
+    "PERF",  # Enable Perflint rules
+    "RUF",   # Enable Ruff specific rules
+    "SIM",   # Enable flake8-simplify rules
+    "Q",     # Enable flake8-quotes rules
+    "I",     # Enable isort rules
+
+    # Unused rules for now:
+
     # "TC", # flake8-type-checking
-    # "I", # isort
     # "DOC", # pydoclint
     # "PL", # Pylint
 ]

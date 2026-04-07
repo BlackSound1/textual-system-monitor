@@ -1,8 +1,8 @@
 import sys
-from typing import Literal, cast
 from collections.abc import Iterator
+from typing import Literal, cast
 
-from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
+from psutil import Process, cpu_count, cpu_percent, net_io_counters, virtual_memory
 
 if sys.platform == "win32":
     from wmi import WMI

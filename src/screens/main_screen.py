@@ -5,9 +5,9 @@ from textual import getters
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Container
-from textual.screen import Screen
-from textual.widgets import Header, Footer
 from textual.logging import TextualHandler
+from textual.screen import Screen
+from textual.widgets import Footer, Header
 
 from src.utilities import get_palette
 

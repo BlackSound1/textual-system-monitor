@@ -7,9 +7,9 @@ from textual.containers import Container
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Label, Header, Footer, Digits
+from textual.widgets import Digits, Footer, Header, Label
 
-from src.utilities import get_mem_data, get_palette, bytes_to_human, compute_percentage_color, COMMON_INTERVAL
+from src.utilities import COMMON_INTERVAL, bytes_to_human, compute_percentage_color, get_mem_data, get_palette
 
 
 class MemoryScreen(Screen[None]):

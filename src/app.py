@@ -1,18 +1,18 @@
-from typing import ClassVar
 from collections.abc import Callable
+from typing import ClassVar
 
 from textual.app import App
 from textual.binding import Binding
 from textual.screen import Screen
 
-from .screens.guide_screen import GuideScreen
-from .screens.main_screen import MainScreen
-from .screens.processes_screen import ProcessesScreen
-from .screens.network_screen import NetworkScreen
 from .screens.cpu_screen import CPU_Screen
 from .screens.drive_screen import DriveScreen
-from .screens.mem_screen import MemoryScreen
 from .screens.gpu_screen import GPU_Screen
+from .screens.guide_screen import GuideScreen
+from .screens.main_screen import MainScreen
+from .screens.mem_screen import MemoryScreen
+from .screens.network_screen import NetworkScreen
+from .screens.processes_screen import ProcessesScreen
 
 
 class Monitor(App[str]):

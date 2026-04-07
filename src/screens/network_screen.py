@@ -3,14 +3,13 @@ from typing import Any, ClassVar, cast
 from textual import getters
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.containers import VerticalScroll, Container
+from textual.containers import Container, VerticalScroll
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import Header, Footer, DataTable
+from textual.widgets import DataTable, Footer, Header
 
-from src.utilities import NET_INTERVAL, get_network_stats, bytes_to_human, get_palette
-
+from src.utilities import NET_INTERVAL, bytes_to_human, get_network_stats, get_palette
 
 type NetworkStatsType = list[dict[str, str | int]]
 

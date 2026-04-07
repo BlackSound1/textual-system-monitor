@@ -4,10 +4,9 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
-from textual.widgets import Static, Header, Footer
+from textual.widgets import Footer, Header, Static
 
 from src.utilities import get_palette
-
 
 DESCRIPTION_STRING = """
 [bold underline]Textual System Monitor[/]

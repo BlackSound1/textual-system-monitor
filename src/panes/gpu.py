@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from src.utilities import get_gpu_data, RARE_INTERVAL, convert_adapter_ram, get_palette
+from src.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
 
 
 class GPU_Usage(Static):
