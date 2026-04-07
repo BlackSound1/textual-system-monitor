@@ -5,8 +5,8 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.widgets import Static
 
-from src.app import Monitor
 from main import run
+from src.app import Monitor
 from src.panes.gpu import GPU_Usage
 from src.screens.gpu_screen import GPU_Screen
 

@@ -3,13 +3,12 @@ from textual.screen import Screen
 from src.app import Monitor
 from src.screens.cpu_screen import CPU_Screen
 from src.screens.drive_screen import DriveScreen
+from src.screens.gpu_screen import GPU_Screen
 from src.screens.guide_screen import GuideScreen
 from src.screens.main_screen import MainScreen
 from src.screens.mem_screen import MemoryScreen
 from src.screens.network_screen import NetworkScreen
 from src.screens.processes_screen import ProcessesScreen
-from src.screens.gpu_screen import GPU_Screen
-
 
 type ScreenListType = list[tuple[type[Screen[None]], str]]
 
