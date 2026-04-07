@@ -1,6 +1,6 @@
 [project]
 name = "textual-system-monitor"
-version = "0.8.5"
+version = "0.8.6"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 authors = [
@@ -44,25 +44,25 @@ extend-select = [
     "E501",   # Enable line-too-long rule
      "UP",    # Enable pyupgrade rules
      "W",     # Enable pycodestyle warnings
-     "C90",  # Enable McCabe complexity
+     "C90",   # Enable McCabe complexity
      "B",     # Enable flake8-bugbear rules
      "A",     # Enable flake8-builtin rules
      "COM",   # Enable flake8-commas rules
-     "C4",     # Enable flake8-comprehensions rules
-     "ISC", # Enable flake8-implicit-str-concat rules
-     "ICN",  # Enable flake8-import-conventions rules
-     "PIE",  #  flake8-pie
-    #  "PT", # flake8-pytest-style
+     "C4",    # Enable flake8-comprehensions rules
+     "ISC",   # Enable flake8-implicit-str-concat rules
+     "ICN",   # Enable flake8-import-conventions rules
+     "PIE",   # Enable flake8-pie rules
+     "PT",    # Enable flake8-pytest-style rules
     # "Q", # flake8-quotes
-    # "RET", # flake8-return
+    "RET",    # Enable flake8-return rules
     # "SIM", # flake8-simplify
     # "TC", # flake8-type-checking
-    # "ARG", # flake8-unused-arguments
+    "ARG",    # Enable flake8-unused-arguments rules
     # "I", # isort
     # "PERF", # Perflint
     # "DOC", # pydoclint
     # "F", # Pyflakes
     # "PL", # Pylint
-    # "FURB", # refurb
+    "FURB",   # Enable refurb rules
     # "RUF", # Ruff specific rules
 ]
