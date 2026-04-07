@@ -111,6 +111,7 @@ class NetworkScreen(Screen[None]):
 
         :return: The ComposeResult featuring the structure of the Network Screen
         """
+        # ruff: disable[SIM117]
         yield Header(show_clock=True)
         with Container(id="network-container"):
             with VerticalScroll():

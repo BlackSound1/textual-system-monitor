@@ -78,10 +78,7 @@ def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
         return "0.0 B"
 
     # Determine the unit suffix based on the base
-    if base == 1024:
-        unit_suffix = 'i'
-    else:
-        unit_suffix = ''
+    unit_suffix = 'i' if base == 1024 else ''
 
     # Create a map of symbols and their corresponding thresholds
     symbol_map = {
@@ -270,20 +267,17 @@ def get_gpu_data() -> list[dict[str, str | int] | None]:
     wmi_object = WMI()
     video_controllers = wmi_object.Win32_VideoController()
 
-    gpu_data_list = []
-
-    for controller in video_controllers:
-        gpu_data_list.append({
-            "gpu": controller.Name,
-            "driver_version": controller.DriverVersion,
+    return [
+        {
+            "gpu": cast(str, controller.Name),
+            "driver_version": cast(str, controller.DriverVersion),
             "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
             "adapter_ram": bytes_to_human(controller.AdapterRAM),
-            "availability": AVAILABILITY_MAP.get(controller.Availability),
-            "refresh": controller.CurrentRefreshRate,
-            "status": controller.Status,
-        })
-
-    return gpu_data_list
+            "availability": cast(str, AVAILABILITY_MAP.get(controller.Availability)),
+            "refresh": cast(str, controller.CurrentRefreshRate),
+            "status": cast(str, controller.Status),
+        } for controller in video_controllers
+    ]
 
 
 def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
@@ -297,7 +291,7 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :param kb_size: The KB size to use in conversion
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
-    ram = int(float(adapter_ram.split(' ')[0]) * 1e9)
+    ram = int(float(adapter_ram.split(' ', maxsplit=1)[0]) * 1e9)
     return bytes_to_human(ram, kb_size)
 
 
