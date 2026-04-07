@@ -41,7 +41,7 @@ line-length = 120
 
 [tool.ruff.lint]
 extend-select = [
-    "E501",   # Enable line-too-long rule
+    "E501",  # Enable line-too-long rule
     "UP",    # Enable pyupgrade rules
     "W",     # Enable pycodestyle warnings
     "C90",   # Enable McCabe complexity
@@ -57,12 +57,12 @@ extend-select = [
     "ARG",   # Enable flake8-unused-arguments rules
     "F",     # Enable Pyflakes rules
     "FURB",  # Enable refurb rules
-    "PERF", # Perflint
-    # "Q", # flake8-quotes
-    "SIM", # flake8-simplify
+    "PERF",  # Perflint
+    "RUF",   # Ruff specific rules
+    "SIM",   # flake8-simplify
+    "Q",     # flake8-quotes
     # "TC", # flake8-type-checking
     # "I", # isort
     # "DOC", # pydoclint
     # "PL", # Pylint
-    # "RUF", # Ruff specific rules
 ]
