@@ -2,11 +2,11 @@ from src.utilities import bytes_to_human
 
 
 async def test_documentation_examples() -> None:
-    assert bytes_to_human(10_000) == '9.8 KiB'
-    assert bytes_to_human(100_001_221) == '95.4 MiB'
+    assert bytes_to_human(10_000) == "9.8 KiB"
+    assert bytes_to_human(100_001_221) == "95.4 MiB"
 
 async def test_bytes_only() -> None:
-    assert bytes_to_human(100) == '100.0 B'
+    assert bytes_to_human(100) == "100.0 B"
 
 async def test_neg_bytes() -> None:
     assert bytes_to_human(-1) == "0.0 B"

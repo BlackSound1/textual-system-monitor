@@ -17,12 +17,12 @@ async def test_clicks() -> None:
     """
 
     SCREENS: list[tuple[str, type[Screen[None]], str]] = [
-        ("#processes", ProcessesScreen, 'p'),
-        ("#drives", DriveScreen, 'd'),
-        ("#mem", MemoryScreen, 'm'),
-        ("#cpu", CPU_Screen, 'c'),
-        ("#network", NetworkScreen, 'n'),
-        ("#gpu", GPU_Screen, 'v'),
+        ("#processes", ProcessesScreen, "p"),
+        ("#drives", DriveScreen, "d"),
+        ("#mem", MemoryScreen, "m"),
+        ("#cpu", CPU_Screen, "c"),
+        ("#network", NetworkScreen, "n"),
+        ("#gpu", GPU_Screen, "v"),
     ]
 
     app = Monitor()
