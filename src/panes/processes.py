@@ -1,5 +1,5 @@
-from typing import cast
 from collections.abc import Iterator
+from typing import cast
 
 from psutil import Process, process_iter
 from textual import getters

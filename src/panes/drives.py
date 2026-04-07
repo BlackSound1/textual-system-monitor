@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from ..utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_string, get_palette
+from ..utilities import RARE_INTERVAL, bytes_to_human, get_color_formatted_string, get_palette
 
 
 class DriveUsage(Static):
