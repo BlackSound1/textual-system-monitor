@@ -34,8 +34,8 @@ async def test_clicks() -> None:
 
             # Click on the screen and assert that we are on the correct screen
             await pilot.click(screen_class)
-            assert type(app.screen) == screen_type
+            assert type(app.screen) is screen_type
 
             # Press the key to go back to the main screen and assert that we are on the main screen
             await pilot.press(screen_key)
-            assert type(app.screen) == MainScreen
+            assert type(app.screen) is MainScreen

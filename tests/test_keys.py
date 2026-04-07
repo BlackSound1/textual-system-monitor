@@ -35,7 +35,7 @@ async def test_keys_main() -> None:
     async with app.run_test() as pilot:
 
         # Make sure we are on the main screen to begin
-        assert type(app.screen) == MainScreen
+        assert type(app.screen) is MainScreen
 
         # Go through each screen in the SCREENS list
         for screen_class, key in SCREENS:
@@ -43,12 +43,12 @@ async def test_keys_main() -> None:
             # Press the key and assert that we are on the correct screen
             await pilot.press(key)
             await pilot.pause()
-            assert type(app.screen) == screen_class
+            assert type(app.screen) is screen_class
 
             # Go back to the main screen and assert that we are back there
             await pilot.press(key)
             await pilot.pause()
-            assert type(app.screen) == MainScreen
+            assert type(app.screen) is MainScreen
 
 
 async def test_keys_relative() -> None:
@@ -72,7 +72,7 @@ async def test_keys_relative() -> None:
     async with app.run_test() as pilot:
 
         # Make sure we are on the main screen to begin
-        assert type(app.screen) == MainScreen
+        assert type(app.screen) is MainScreen
 
         # Go through each screen in the SCREENS list
         for screen_class, key in SCREENS:
@@ -80,7 +80,7 @@ async def test_keys_relative() -> None:
             # Press the key and assert that we are on the correct screen
             await pilot.press(key)
             await pilot.pause()
-            assert type(app.screen) == screen_class
+            assert type(app.screen) is screen_class
 
 
 async def test_keys_relative_reverse() -> None:
@@ -104,7 +104,7 @@ async def test_keys_relative_reverse() -> None:
     async with app.run_test() as pilot:
 
         # Make sure we are on the main screen to begin
-        assert type(app.screen) == MainScreen
+        assert type(app.screen) is MainScreen
 
         # Iterate through the screens and their corresponding keys
         for screen_class, key in SCREENS:
@@ -112,5 +112,4 @@ async def test_keys_relative_reverse() -> None:
             # Press the key and assert that we are on the correct screen
             await pilot.press(key)
             await pilot.pause()
-            assert type(app.screen) == screen_class
-
+            assert type(app.screen) is screen_class
