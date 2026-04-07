@@ -128,6 +128,7 @@ class DriveScreen(Screen[None]):
 
         :return: The ComposeResult featuring the Drive Screen structure
         """
+        # ruff: disable[SIM117]
         yield Header(show_clock=True)
         with Container(id="drive-screen-container"):
             with VerticalScroll():
