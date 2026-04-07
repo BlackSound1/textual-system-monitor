@@ -25,11 +25,11 @@ class Stats(Static):
         Set the border colors according to the current themes palette
         """
         palette = get_palette(self.app.theme)
-        self.drives.styles.border = ('round', palette['red'])
-        self.mem.styles.border = ('round', palette['yellow'])
-        self.cpu.styles.border = ('round', palette['blue'])
-        self.net.styles.border = ('round', palette['green'])
-        self.gpu.styles.border = ('round', palette['pink'])
+        self.drives.styles.border = ("round", palette["red"])
+        self.mem.styles.border = ("round", palette["yellow"])
+        self.cpu.styles.border = ("round", palette["blue"])
+        self.net.styles.border = ("round", palette["green"])
+        self.gpu.styles.border = ("round", palette["pink"])
 
     def on_mount(self) -> None:
         """
@@ -47,5 +47,5 @@ class Stats(Static):
         yield DriveUsage(id="drives")
         yield MemUsage(id="mem")
         yield CPU_Usage(id="cpu")
-        yield NetInfo(id='network')
+        yield NetInfo(id="network")
         yield GPU_Usage(id="gpu")

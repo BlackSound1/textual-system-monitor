@@ -54,7 +54,7 @@ class DriveUsage(Static):
 
         from src.app import Monitor  # Need to import here to avoid circular import
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         palette = get_palette(self.app.theme)
 
@@ -63,15 +63,15 @@ class DriveUsage(Static):
         # Next, go through each updated disk, get its info, and update the content of the Static with
         # the updated info for each drive
         for disk in disks:
-            options = disk['opts']
-            device = str(disk['device']).replace(":\\", '')
-            fs = disk['fstype'] or 'N/A'
+            options = disk["opts"]
+            device = str(disk["device"]).replace(":\\", "")
+            fs = disk["fstype"] or "N/A"
 
             # If the drive is a CD drive, treat it differently
             if options == "cdrom":
                 static_content += f"Disk: {device} | Options: {options}\n\n"
             else:
-                usage = disk_usage(disk['mountpoint'])
+                usage = disk_usage(disk["mountpoint"])
                 used = bytes_to_human(usage.used, kb_size)
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
@@ -110,4 +110,4 @@ class DriveUsage(Static):
         :return: The ComposeResult featuring the VerticalScroll and Static
         """
         with VerticalScroll():
-            yield Static(id='drives_pane_static')
+            yield Static(id="drives_pane_static")
