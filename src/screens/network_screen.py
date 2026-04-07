@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 from textual import getters
 from textual.app import ComposeResult
@@ -19,7 +19,7 @@ class NetworkScreen(Screen[None]):
 
     BORDER_TITLE = f"Network - Updated every {NET_INTERVAL}s"
     CSS_PATH = "../styles/network_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -54,7 +54,7 @@ class NetworkScreen(Screen[None]):
 
         from src.app import Monitor
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         # Clear the table and add the columns
         self.table.clear(columns=True)
@@ -88,13 +88,13 @@ class NetworkScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(NET_INTERVAL, self.update_io)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_palette(self.app.theme)['green'])
+        self.container.styles.border = ("round", get_palette(self.app.theme)["green"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_palette(self.app.theme)['green'])
+            self.container.styles.border = ("round", get_palette(self.app.theme)["green"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

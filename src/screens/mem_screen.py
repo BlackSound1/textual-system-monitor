@@ -1,4 +1,4 @@
-from typing import cast
+from typing import ClassVar, cast
 
 from textual import getters
 from textual.app import ComposeResult
@@ -15,7 +15,7 @@ from src.utilities import get_mem_data, get_palette, bytes_to_human, compute_per
 class MemoryScreen(Screen[None]):
     BORDER_TITLE = f"Memory - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/mem_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -54,27 +54,27 @@ class MemoryScreen(Screen[None]):
         from src.app import Monitor
 
         # Get KB size
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         # Update total information
-        value, denom = bytes_to_human(data['total'], kb_size).split(' ')
+        value, denom = bytes_to_human(data["total"], kb_size).split(" ")
         self.total_label.update(f"Total Memory ({denom}):  ")
         self.total_digits.update(f"{value}")
 
         # Update available information
-        value, denom = bytes_to_human(data['available'], kb_size).split(' ')
+        value, denom = bytes_to_human(data["available"], kb_size).split(" ")
         self.avail_label.update(f"Available Memory ({denom}):  ")
         self.avail_digits.update(f"{value}")
 
         # Update used information
-        value, denom = bytes_to_human(data['used'], kb_size).split(' ')
+        value, denom = bytes_to_human(data["used"], kb_size).split(" ")
         self.used_label.update(f"Used Memory ({denom}):  ")
         self.used_digits.update(f"{value}")
 
         # Update percentage information
         palette = get_palette(self.app.theme)
-        pct, color = compute_percentage_color(data['percent'])
-        self.perc_digits.update(f'{pct}')
+        pct, color = compute_percentage_color(data["percent"])
+        self.perc_digits.update(f"{pct}")
         self.perc_digits.styles.color = palette[color]
 
     def compose(self) -> ComposeResult:
@@ -105,13 +105,13 @@ class MemoryScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_mem_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_palette(self.app.theme)['yellow'])
+        self.container.styles.border = ("round", get_palette(self.app.theme)["yellow"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_palette(self.app.theme)['yellow'])
+            self.container.styles.border = ("round", get_palette(self.app.theme)["yellow"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

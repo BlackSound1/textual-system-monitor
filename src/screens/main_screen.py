@@ -1,4 +1,5 @@
 import logging
+from typing import ClassVar
 
 from textual import getters
 from textual.app import ComposeResult
@@ -18,7 +19,7 @@ logging.basicConfig(handlers=[TextualHandler()], level=logging.WARNING)
 
 class MainScreen(Screen[None]):
     CSS_PATH = "../styles/main_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -26,7 +27,7 @@ class MainScreen(Screen[None]):
         Binding(key="d", action="app.switch_screen('drive')", description="Drives"),
         Binding(key="m", action="app.switch_screen('mem')", description="Memory"),
         Binding(key="v", action="app.switch_screen('gpu')", description="GPU"),
-        Binding(key='g', action="app.switch_screen('guide')", description='Guide'),
+        Binding(key="g", action="app.switch_screen('guide')", description="Guide"),
     ]
 
     processes = getters.query_one("#processes", expect_type=Processes)
@@ -35,13 +36,13 @@ class MainScreen(Screen[None]):
         """
         Perform initial setup for the Main Screen
         """
-        self.processes.styles.border = ('round', get_palette(self.app.theme)['orange'])
+        self.processes.styles.border = ("round", get_palette(self.app.theme)["orange"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.processes.styles.border = ('round', get_palette(self.app.theme)['orange'])
+            self.processes.styles.border = ("round", get_palette(self.app.theme)["orange"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

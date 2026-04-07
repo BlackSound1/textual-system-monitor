@@ -1,4 +1,4 @@
-from typing import cast
+from typing import ClassVar, cast
 
 from psutil import disk_partitions, disk_usage
 from textual import getters
@@ -16,7 +16,7 @@ from src.utilities import bytes_to_human, RARE_INTERVAL, get_color_formatted_str
 class DriveScreen(Screen[None]):
     BORDER_TITLE = f"Drive Usage - Updated every {RARE_INTERVAL}s"
     CSS_PATH = "../styles/drive_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -67,7 +67,7 @@ class DriveScreen(Screen[None]):
 
         from src.app import Monitor
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         palette = get_palette(self.app.theme)
 
@@ -76,15 +76,15 @@ class DriveScreen(Screen[None]):
 
         # Next, go through each updated disk, get its info, and add it to the table
         for disk in disks:
-            options = disk['opts']
-            device = disk['device']
-            fs = disk['fstype'] or 'N/A'
+            options = disk["opts"]
+            device = disk["device"]
+            fs = disk["fstype"] or "N/A"
 
             # If the drive is a CD drive, treat it differently
             if options == "cdrom":
                 self.table.add_row(device, options, "N/A", "N/A", "N/A", "N/A", "N/A")
             else:
-                usage = disk_usage(disk['mountpoint'])
+                usage = disk_usage(disk["mountpoint"])
                 used = bytes_to_human(usage.used, kb_size)
                 free = bytes_to_human(usage.free, kb_size)
                 total = bytes_to_human(usage.total, kb_size)
@@ -105,13 +105,13 @@ class DriveScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(RARE_INTERVAL, self.update_disks)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_palette(self.app.theme)['red'])
+        self.container.styles.border = ("round", get_palette(self.app.theme)["red"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_palette(self.app.theme)['red'])
+            self.container.styles.border = ("round", get_palette(self.app.theme)["red"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
