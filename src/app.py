@@ -30,11 +30,11 @@ class Monitor(App[str]):
     }
 
     CONTEXT = {
-        "kb_size": 1024
+        "kb_size": 1024,
     }
 
     BINDINGS = [
-        Binding(key='/', action='app.switch_base', description='Change KB Size')
+        Binding(key='/', action='app.switch_base', description='Change KB Size'),
     ]
 
     def on_mount(self) -> None:

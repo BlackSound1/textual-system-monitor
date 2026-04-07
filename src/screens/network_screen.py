@@ -73,11 +73,11 @@ class NetworkScreen(Screen[None]):
             upload = bytes_to_human(new_bytes_sent, kb_size)
             upload_speed = bytes_to_human(
                 round((new_bytes_sent - old_bytes_sent) / NET_INTERVAL, 2),
-                kb_size
+                kb_size,
             )
             download_speed = bytes_to_human(
                 round((new_bytes_recv - old_bytes_recv) / NET_INTERVAL, 2),
-                kb_size
+                kb_size,
             )
 
             self.table.add_row(f"[green]{interface}[/]", download, download_speed, upload, upload_speed)

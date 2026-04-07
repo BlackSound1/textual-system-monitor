@@ -22,7 +22,7 @@ async def test_clicks() -> None:
         ("#mem", MemoryScreen, 'm'),
         ("#cpu", CPU_Screen, 'c'),
         ("#network", NetworkScreen, 'n'),
-        ("#gpu", GPU_Screen, 'v')
+        ("#gpu", GPU_Screen, 'v'),
     ]
 
     app = Monitor()

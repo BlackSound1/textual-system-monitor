@@ -26,8 +26,8 @@ class Processes(Static):
         sorted(
             get_non_zero_procs(procs),
             key=lambda x: cast(float, x.info.get('cpu_percent')),
-            reverse=True
-        )[:10]
+            reverse=True,
+        )[:10],
     )
 
     static = getters.query_one("#procs_pane_static", expect_type=Static)
@@ -40,7 +40,7 @@ class Processes(Static):
         self.processes = sorted(
             get_non_zero_procs(procs),
             key=lambda x: x.info['cpu_percent'],
-            reverse=True
+            reverse=True,
         )[:10]
 
     def watch_processes(self, procs: Iterator[Process]) -> None:

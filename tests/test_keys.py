@@ -27,7 +27,7 @@ async def test_keys_main() -> None:
         (CPU_Screen, "c"),
         (NetworkScreen, "n"),
         (GPU_Screen, "v"),
-        (GuideScreen, "g")
+        (GuideScreen, "g"),
     ]
 
     app = Monitor()

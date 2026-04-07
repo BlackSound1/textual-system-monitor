@@ -96,7 +96,7 @@ class DriveScreen(Screen[None]):
                     get_color_formatted_string(palette, usage.percent),
                     total,
                     used,
-                    free
+                    free,
                 )
 
     def on_mount(self) -> None:

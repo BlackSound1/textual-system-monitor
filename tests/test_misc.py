@@ -48,8 +48,8 @@ async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
         'adapter_ram': '1.0 GB',
         'availability': 'Running',
         'refresh': '1',
-        'status': 'OK'
-    }
+        'status': 'OK',
+    },
 ])
 async def test_gpu_pane_gpu_data_windows(_: list[dict[str, str]]) -> None:
     """On Windows, GPU data should be populated"""
@@ -101,8 +101,8 @@ async def test_gpu_screen_linux_empty_Static() -> None:
         'adapter_ram': '1.0 GB',
         'availability': 'Running',
         'refresh': '1',
-        'status': 'OK'
-    }
+        'status': 'OK',
+    },
 ])
 async def test_gpu_screen_gpu_data_windows(_: list[dict[str, str]]) -> None:
     """On Windows, GPU data should be populated"""
