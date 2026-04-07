@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Container, VerticalScroll
@@ -99,9 +101,9 @@ def _get_formatted_monitoring_string(theme: str) -> str:
 
 class GuideScreen(Screen[None]):
     CSS_PATH = "../styles/guide_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
-        Binding(key='g', action="app.switch_screen('main')", description='Main Screen'),
+        Binding(key="g", action="app.switch_screen('main')", description="Main Screen"),
         Binding(key="/", action="", description=""),
     ]
 

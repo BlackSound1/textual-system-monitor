@@ -21,11 +21,11 @@ class Processes(Static):
     initial = True  # When app starts, want to wait a tick before displaying processes. This variable helps with that
 
     # Set the default processes value to an initial call to the function
-    procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+    procs = process_iter(["pid", "name", "username", "exe", "cpu_percent"])
     processes = reactive(
         sorted(
             get_non_zero_procs(procs),
-            key=lambda x: cast(float, x.info.get('cpu_percent')),
+            key=lambda x: cast(float, x.info.get("cpu_percent")),
             reverse=True,
         )[:10],
     )
@@ -36,10 +36,10 @@ class Processes(Static):
         """
         Update the list of processes with the top 10 by CPU load.
         """
-        procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+        procs = process_iter(["pid", "name", "username", "exe", "cpu_percent"])
         self.processes = sorted(
             get_non_zero_procs(procs),
-            key=lambda x: x.info['cpu_percent'],
+            key=lambda x: x.info["cpu_percent"],
             reverse=True,
         )[:10]
 
@@ -64,11 +64,11 @@ class Processes(Static):
         # Go through each updated process, get its info, and update the Static widget
         # with the new info for each process
         for proc in procs:
-            PID = proc.info['pid']
-            name = proc.info['name'] or 'N/A'
-            exe = proc.info['exe'] or 'N/A'
-            cpu_percent = get_color_formatted_string(palette, proc.info['cpu_percent'])
-            user_name = proc.info['username'] or 'N/A'
+            PID = proc.info["pid"]
+            name = proc.info["name"] or "N/A"
+            exe = proc.info["exe"] or "N/A"
+            cpu_percent = get_color_formatted_string(palette, proc.info["cpu_percent"])
+            user_name = proc.info["username"] or "N/A"
 
             # Add the new info for this process to the content of the Static widget
             static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [bold {palette['orange']}]{name}[/] | "

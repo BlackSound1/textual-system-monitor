@@ -1,5 +1,5 @@
 import sys
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 
 from textual.app import ComposeResult
 from textual.binding import Binding
@@ -16,7 +16,7 @@ from src.utilities import RARE_INTERVAL, get_gpu_data, convert_adapter_ram, get_
 class GPU_Screen(Screen[None]):
     BORDER_TITLE = f"GPU Info - Updated every {RARE_INTERVAL}s"
     CSS_PATH = "../styles/gpu_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('processes')", description="Processes"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -41,7 +41,7 @@ class GPU_Screen(Screen[None]):
 
         from src.app import Monitor
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
         return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
@@ -51,13 +51,13 @@ class GPU_Screen(Screen[None]):
         if sys.platform == "win32":
             self.gpu_data = [
                 {
-                    "gpu": gpu_info['gpu'],
-                    'driver_version': gpu_info['driver_version'],
-                    'resolution': gpu_info['resolution'],
-                    'adapter_ram': self.adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
-                    'availability': gpu_info['availability'],
-                    'refresh': gpu_info['refresh'],
-                    'status': gpu_info['status'],
+                    "gpu": gpu_info["gpu"],
+                    "driver_version": gpu_info["driver_version"],
+                    "resolution": gpu_info["resolution"],
+                    "adapter_ram": self.adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
+                    "availability": gpu_info["availability"],
+                    "refresh": gpu_info["refresh"],
+                    "status": gpu_info["status"],
                 }
                 for gpu_info in get_gpu_data() if gpu_info
             ]
@@ -84,13 +84,13 @@ class GPU_Screen(Screen[None]):
 
         # Then, for each video controller, update the Static Widget with its new information
         for gpu_info in gpu_data:
-            name = gpu_info['gpu']
-            version = gpu_info['driver_version']
-            resolution = gpu_info['resolution']
-            ram = gpu_info['adapter_ram']
-            availability = gpu_info['availability']
-            refresh = gpu_info['refresh']
-            status = gpu_info['status']
+            name = gpu_info["gpu"]
+            version = gpu_info["driver_version"]
+            resolution = gpu_info["resolution"]
+            ram = gpu_info["adapter_ram"]
+            availability = gpu_info["availability"]
+            refresh = gpu_info["refresh"]
+            status = gpu_info["status"]
 
             table.add_row(name, version, resolution, ram, availability, refresh, status)
 
@@ -106,13 +106,13 @@ class GPU_Screen(Screen[None]):
             return
 
         container.border_title = self.BORDER_TITLE
-        container.styles.border = ('round', get_palette(self.app.theme)['pink'])
+        container.styles.border = ("round", get_palette(self.app.theme)["pink"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            container.styles.border = ('round', get_palette(self.app.theme)['pink'])
+            container.styles.border = ("round", get_palette(self.app.theme)["pink"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 
@@ -137,6 +137,6 @@ class GPU_Screen(Screen[None]):
                 else:
                     yield Static(
                         "GPU information not currently supported on non-Windows systems...",
-                        id='gpu_screen_empty',
+                        id="gpu_screen_empty",
                     )
         yield Footer()

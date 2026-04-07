@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, ClassVar, cast
 from collections.abc import Iterator
 
 from psutil import Process, process_iter
@@ -21,11 +21,11 @@ def _get_procs(sort: bool) -> Iterator[Process] | list[Process]:
     :param sort: Whether to sort the processes by CPU load
     :return: The list of processes (possibly sorted)
     """
-    procs = process_iter(['pid', 'name', 'username', 'exe', 'cpu_percent'])
+    procs = process_iter(["pid", "name", "username", "exe", "cpu_percent"])
     if sort:
         procs = sorted(
             get_non_zero_procs(procs),
-            key=lambda x: cast(float, x.info.get('cpu_percent')),
+            key=lambda x: cast(float, x.info.get("cpu_percent")),
             reverse=True,
         )
     return procs
@@ -34,7 +34,7 @@ def _get_procs(sort: bool) -> Iterator[Process] | list[Process]:
 class ProcessesScreen(Screen[None]):
     BORDER_TITLE = f"Processes - Updated every {UNCOMMON_INTERVAL}s"
     CSS_PATH = "../styles/processes_css.tcss"
-    BINDINGS = [
+    BINDINGS: ClassVar = [
         Binding(key="q", action="app.quit", description="Quit"),
         Binding(key="p", action="app.switch_screen('main')", description="Main Screen"),
         Binding(key="c", action="app.switch_screen('cpu')", description="CPU"),
@@ -109,11 +109,11 @@ class ProcessesScreen(Screen[None]):
         # with the new info for each process
         for proc in procs:
             info = proc.info
-            PID = info['pid']
-            name = info['name'] or 'N/A'
-            exe = info['exe'] or 'N/A'
-            cpu_percent = get_color_formatted_string(palette, info['cpu_percent'])
-            user_name = info['username'] or 'N/A'
+            PID = info["pid"]
+            name = info["name"] or "N/A"
+            exe = info["exe"] or "N/A"
+            cpu_percent = get_color_formatted_string(palette, info["cpu_percent"])
+            user_name = info["username"] or "N/A"
 
             # Only colorize the name if it's not "N/A"
             if name != "N/A":
@@ -127,13 +127,13 @@ class ProcessesScreen(Screen[None]):
         """
         self.update_timer = self.set_interval(UNCOMMON_INTERVAL, self.update_processes)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
+        self.container.styles.border = ("round", get_palette(self.app.theme)["orange"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_palette(self.app.theme)['orange'])
+            self.container.styles.border = ("round", get_palette(self.app.theme)["orange"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

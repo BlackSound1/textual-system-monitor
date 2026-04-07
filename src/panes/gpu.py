@@ -31,7 +31,7 @@ class GPU_Usage(Static):
 
         from src.app import Monitor  # Need to import here to avoid circular import
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
         return convert_adapter_ram(adapter_ram, kb_size)
 
     def update_gpu_data(self) -> None:
@@ -41,13 +41,13 @@ class GPU_Usage(Static):
         if sys.platform == "win32":
             self.gpu_data = [
              {
-                 "gpu": gpu_info['gpu'],
-                 'driver_version': gpu_info['driver_version'],
-                 'resolution': gpu_info['resolution'],
-                 'adapter_ram': self._adapter_ram_wrapper(cast(str, gpu_info['adapter_ram'])),
-                 'availability': gpu_info['availability'],
-                 'refresh': gpu_info['refresh'],
-                 'status': gpu_info['status'],
+                 "gpu": gpu_info["gpu"],
+                 "driver_version": gpu_info["driver_version"],
+                 "resolution": gpu_info["resolution"],
+                 "adapter_ram": self._adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
+                 "availability": gpu_info["availability"],
+                 "refresh": gpu_info["refresh"],
+                 "status": gpu_info["status"],
              }
              for gpu_info in get_gpu_data() if gpu_info
             ]
@@ -67,7 +67,7 @@ class GPU_Usage(Static):
         except NoMatches:
             return
 
-        green = get_palette(self.app.theme)['green']
+        green = get_palette(self.app.theme)["green"]
 
         static_content = ""
 

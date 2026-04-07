@@ -1,4 +1,4 @@
-from typing import cast
+from typing import ClassVar, cast
 
 from textual import getters
 from textual.app import ComposeResult
@@ -16,15 +16,15 @@ class CPU_Screen(Screen[None]):
 
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/cpu_css.tcss"
-    BINDINGS = [
-        Binding(key='q', action='app.quit', description='Quit'),
-        Binding(key='p', action='app.switch_screen("processes")', description='Processes'),
-        Binding(key='c', action='app.switch_screen("main")', description='Main Screen'),
-        Binding(key='n', action='app.switch_screen("network")', description='Network'),
-        Binding(key='d', action='app.switch_screen("drive")', description='Drives'),
-        Binding(key='m', action='app.switch_screen("mem")', description='Memory'),
-        Binding(key='v', action='app.switch_screen("gpu")', description='GPU'),
-        Binding(key='/', action='', description=''),
+    BINDINGS: ClassVar = [
+        Binding(key="q", action="app.quit", description="Quit"),
+        Binding(key="p", action='app.switch_screen("processes")', description="Processes"),
+        Binding(key="c", action='app.switch_screen("main")', description="Main Screen"),
+        Binding(key="n", action='app.switch_screen("network")', description="Network"),
+        Binding(key="d", action='app.switch_screen("drive")', description="Drives"),
+        Binding(key="m", action='app.switch_screen("mem")', description="Memory"),
+        Binding(key="v", action='app.switch_screen("gpu")', description="GPU"),
+        Binding(key="/", action="", description=""),
     ]
 
     update_timer: Timer
@@ -50,9 +50,9 @@ class CPU_Screen(Screen[None]):
         palette = get_palette(self.app.theme)
 
         # Get the updated overall data
-        cores = cpu_data['cores']
-        overall = cpu_data['overall']
-        indiv_list = cast(list[float], cpu_data['individual'])  # To please static analyzer
+        cores = cpu_data["cores"]
+        overall = cpu_data["overall"]
+        indiv_list = cast(list[float], cpu_data["individual"])  # To please static analyzer
         individual = [get_color_formatted_string(palette, core) for core in indiv_list]
 
         # Update the Static Widget
@@ -86,13 +86,13 @@ class CPU_Screen(Screen[None]):
         """
         self.update_timer = self.set_interval(COMMON_INTERVAL, self.update_cpu_data)
         self.container.border_title = self.BORDER_TITLE
-        self.container.styles.border = ('round', get_palette(self.app.theme)['blue'])
+        self.container.styles.border = ("round", get_palette(self.app.theme)["blue"])
 
         def _on_theme_change() -> None:
             """
             Update the border color based on the theme
             """
-            self.container.styles.border = ('round', get_palette(self.app.theme)['blue'])
+            self.container.styles.border = ("round", get_palette(self.app.theme)["blue"])
 
         self.watch(self.app, "theme", _on_theme_change, init=False)
 

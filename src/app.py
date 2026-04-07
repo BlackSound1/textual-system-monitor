@@ -29,12 +29,12 @@ class Monitor(App[str]):
         "gpu": GPU_Screen,
     }
 
-    CONTEXT = {
+    CONTEXT: ClassVar = {
         "kb_size": 1024,
     }
 
-    BINDINGS = [
-        Binding(key='/', action='app.switch_base', description='Change KB Size'),
+    BINDINGS: ClassVar = [
+        Binding(key="/", action="app.switch_base", description="Change KB Size"),
     ]
 
     def on_mount(self) -> None:
@@ -47,4 +47,4 @@ class Monitor(App[str]):
         """
         Toggles the app-wide KB size between 1000 and 1024.
         """
-        self.CONTEXT['kb_size'] = 1000 if self.CONTEXT['kb_size'] == 1024 else 1024
+        self.CONTEXT["kb_size"] = 1000 if self.CONTEXT["kb_size"] == 1024 else 1024

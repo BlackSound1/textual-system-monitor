@@ -78,28 +78,28 @@ def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
         return "0.0 B"
 
     # Determine the unit suffix based on the base
-    unit_suffix = 'i' if base == 1024 else ''
+    unit_suffix = "i" if base == 1024 else ""
 
     # Create a map of symbols and their corresponding thresholds
     symbol_map = {
-        f'K{unit_suffix}': base ** 1,
-        f'M{unit_suffix}': base ** 2,
-        f'G{unit_suffix}': base ** 3,
-        f'T{unit_suffix}': base ** 4,
-        f'P{unit_suffix}': base ** 5,
-        f'E{unit_suffix}': base ** 6,
-        f'Z{unit_suffix}': base ** 7,
-        f'Y{unit_suffix}': base ** 8,
+        f"K{unit_suffix}": base ** 1,
+        f"M{unit_suffix}": base ** 2,
+        f"G{unit_suffix}": base ** 3,
+        f"T{unit_suffix}": base ** 4,
+        f"P{unit_suffix}": base ** 5,
+        f"E{unit_suffix}": base ** 6,
+        f"Z{unit_suffix}": base ** 7,
+        f"Y{unit_suffix}": base ** 8,
     }
 
     # For each symbol, check if the number of bytes is greater than the corresponding threshold
     for symbol, threshold in reversed(list(symbol_map.items())):
         if abs(num_bytes) >= threshold:
             value = num_bytes / threshold
-            return f'{value:.1f} {symbol}B'
+            return f"{value:.1f} {symbol}B"
 
     # If the number of bytes is lower than any threshold, return the number of bytes as-is
-    return f'{num_bytes:.1f} B'
+    return f"{num_bytes:.1f} B"
 
 
 """
@@ -122,7 +122,7 @@ def get_network_stats() -> list[dict[str, str | int]]:
             }
             for interface, stats in net_io_counters(pernic=True).items()
         ),
-        key=lambda stats: stats['bytes_recv'],
+        key=lambda stats: stats["bytes_recv"],
         reverse=True,
     )
 
@@ -221,9 +221,9 @@ def update_CPU_static(cpu_data: dict[str, int | float | list[float] | None], pal
     """
 
     # Get updated CPU data
-    cores = cpu_data['cores']
-    overall = cast(float, cpu_data['overall'])
-    individual = display_percentages_CPU(cast(list[float], cpu_data['individual']), palette)  # Colorize the percentages
+    cores = cpu_data["cores"]
+    overall = cast(float, cpu_data["overall"])
+    individual = display_percentages_CPU(cast(list[float], cpu_data["individual"]), palette)  # Colorize the percentages
 
     # Return the string to update the relevant Static with
     return f"Cores: {cores}\n\nOverall: {get_color_formatted_string(palette, overall)} %\n\nPer Core: {individual}\n\n"
@@ -291,7 +291,7 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :param kb_size: The KB size to use in conversion
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
-    ram = int(float(adapter_ram.split(' ', maxsplit=1)[0]) * 1e9)
+    ram = int(float(adapter_ram.split(" ", maxsplit=1)[0]) * 1e9)
     return bytes_to_human(ram, kb_size)
 
 
@@ -319,157 +319,157 @@ COLOR UTILITIES
 
 
 COLOR_MAP = {
-    'textual-light': {
-        'orange': "#FF8C00",
-        'red': "#FF0000",
-        'yellow': "#F3CD00",
-        'blue': "#7272f6",
-        'green': "#008000",
-        'pink': "#FF1493",
+    "textual-light": {
+        "orange": "#FF8C00",
+        "red": "#FF0000",
+        "yellow": "#F3CD00",
+        "blue": "#7272f6",
+        "green": "#008000",
+        "pink": "#FF1493",
     },
-    'textual-dark': {
-        'orange': "#FEA62B",
-        'red': "#FF0000",
-        'yellow': "#FFFF00",
-        'blue': "#ADD8E6",
-        'green': "#90EE90",
-        'pink': "#FFC0CB",
+    "textual-dark": {
+        "orange": "#FEA62B",
+        "red": "#FF0000",
+        "yellow": "#FFFF00",
+        "blue": "#ADD8E6",
+        "green": "#90EE90",
+        "pink": "#FFC0CB",
     },
-    'nord': {
-        'orange': "#d08770",
-        'red': "#bf616a",
-        'yellow': "#ebcb8b",
-        'blue': "#88c0d0",
-        'green': "#a3be8c",
-        'pink': "#b48ead",
+    "nord": {
+        "orange": "#d08770",
+        "red": "#bf616a",
+        "yellow": "#ebcb8b",
+        "blue": "#88c0d0",
+        "green": "#a3be8c",
+        "pink": "#b48ead",
     },
-    'gruvbox': {
-        'orange': "#fe8019",
-        'red': "#fb4934",
-        'yellow': "#fabd2f",
-        'blue': "#83a598",
-        'green': "#8ec07c",
-        'pink': "#d3869b",
+    "gruvbox": {
+        "orange": "#fe8019",
+        "red": "#fb4934",
+        "yellow": "#fabd2f",
+        "blue": "#83a598",
+        "green": "#8ec07c",
+        "pink": "#d3869b",
     },
-    'catpuccin-mocha': {
-        'orange': "#fab387",
-        'red': "#f38ba8",
-        'yellow': "#f9e2af",
-        'blue': "#89b4fa",
-        'green': "#a6e3a1",
-        'pink': "#f5c2e7",
+    "catpuccin-mocha": {
+        "orange": "#fab387",
+        "red": "#f38ba8",
+        "yellow": "#f9e2af",
+        "blue": "#89b4fa",
+        "green": "#a6e3a1",
+        "pink": "#f5c2e7",
     },
-    'catpuccin-latte': {
-        'orange': "#fe640b",
-        'red': "#d20f39",
-        'yellow': "#df8e1d",
-        'blue': "#1e66f5",
-        'green': "#40a02b",
-        'pink': "#ea76cb",
+    "catpuccin-latte": {
+        "orange": "#fe640b",
+        "red": "#d20f39",
+        "yellow": "#df8e1d",
+        "blue": "#1e66f5",
+        "green": "#40a02b",
+        "pink": "#ea76cb",
     },
-    'catpuccin-frappe': {
-        'orange': "#ef9f76",
-        'red': "#e78284",
-        'yellow': "#e5c890",
-        'blue': "#8caaee",
-        'green': "#a6d189",
-        'pink': "#f4b8e4",
+    "catpuccin-frappe": {
+        "orange": "#ef9f76",
+        "red": "#e78284",
+        "yellow": "#e5c890",
+        "blue": "#8caaee",
+        "green": "#a6d189",
+        "pink": "#f4b8e4",
     },
-    'catpuccin-macchiato': {
-        'orange': "#f5a97f",
-        'red': "#ed8796",
-        'yellow': "#eed49f",
-        'blue': "#8aadf4",
-        'green': "#a6da95",
-        'pink': "#f5bde6",
+    "catpuccin-macchiato": {
+        "orange": "#f5a97f",
+        "red": "#ed8796",
+        "yellow": "#eed49f",
+        "blue": "#8aadf4",
+        "green": "#a6da95",
+        "pink": "#f5bde6",
     },
-    'dracula': {
-        'orange': "#ffb86c",
-        'red': "#ff5555",
-        'yellow': "#f1fa8c",
-        'blue': "#8be9fd",
-        'green': "#50fa7b",
-        'pink': "#ff79c6",
+    "dracula": {
+        "orange": "#ffb86c",
+        "red": "#ff5555",
+        "yellow": "#f1fa8c",
+        "blue": "#8be9fd",
+        "green": "#50fa7b",
+        "pink": "#ff79c6",
     },
-    'tokyo-night': {
-        'orange': "#ff9e64",
-        'red': "#f7768e",
-        'yellow': "#e0af68",
-        'blue': "#7aa2f7",
-        'green': "#41a6b5",
-        'pink': "#9d7cd8",
+    "tokyo-night": {
+        "orange": "#ff9e64",
+        "red": "#f7768e",
+        "yellow": "#e0af68",
+        "blue": "#7aa2f7",
+        "green": "#41a6b5",
+        "pink": "#9d7cd8",
     },
-    'monokai': {
-        'orange': "#ffb84d",
-        'red': "#ff56ad",
-        'yellow': "#ffff2f",
-        'blue': "#7effff",
-        'green': "#d6ff53",
-        'pink': "#e4bfff",
+    "monokai": {
+        "orange": "#ffb84d",
+        "red": "#ff56ad",
+        "yellow": "#ffff2f",
+        "blue": "#7effff",
+        "green": "#d6ff53",
+        "pink": "#e4bfff",
     },
-    'flexoki': {
-        'orange': "#da702c",
-        'red': "#d14d41",
-        'yellow': "#d0a215",
-        'blue': "#4385be",
-        'green': "#879a39",
-        'pink': "#ce5d97",
+    "flexoki": {
+        "orange": "#da702c",
+        "red": "#d14d41",
+        "yellow": "#d0a215",
+        "blue": "#4385be",
+        "green": "#879a39",
+        "pink": "#ce5d97",
     },
-    'solarized-light': {
-        'orange': "#cb4b16",
-        'red': "#dc322f",
-        'yellow': "#b58900",
-        'blue': "#268bd2",
-        'green': "#859900",
-        'pink': "#d33682",
+    "solarized-light": {
+        "orange": "#cb4b16",
+        "red": "#dc322f",
+        "yellow": "#b58900",
+        "blue": "#268bd2",
+        "green": "#859900",
+        "pink": "#d33682",
     },
-    'solarized-dark': {
-        'orange': "#d75f00",
-        'red': "#d70000",
-        'yellow': "#af8700",
-        'blue': "#0087ff",
-        'green': "#5f8700",
-        'pink': "#af005f",
+    "solarized-dark": {
+        "orange": "#d75f00",
+        "red": "#d70000",
+        "yellow": "#af8700",
+        "blue": "#0087ff",
+        "green": "#5f8700",
+        "pink": "#af005f",
     },
-    'rose-pine': {
-        'orange': "#ebbcba",
-        'red': "#eb6f92",
-        'yellow': "#f6c177",
-        'blue': "#31748f",
-        'green': "#9ccfd8",
-        'pink': "#c4a7e7",
+    "rose-pine": {
+        "orange": "#ebbcba",
+        "red": "#eb6f92",
+        "yellow": "#f6c177",
+        "blue": "#31748f",
+        "green": "#9ccfd8",
+        "pink": "#c4a7e7",
     },
-    'rose-pine-moon': {
-        'orange': "#ea9a97",
-        'red': "#eb6f92",
-        'yellow': "#f6c177",
-        'blue': "#3e8fb0",
-        'green': "#9ccfd8",
-        'pink': "#c4a7e7",
+    "rose-pine-moon": {
+        "orange": "#ea9a97",
+        "red": "#eb6f92",
+        "yellow": "#f6c177",
+        "blue": "#3e8fb0",
+        "green": "#9ccfd8",
+        "pink": "#c4a7e7",
     },
-    'rose-pine-dawn': {
-        'orange': "#d7827e",
-        'red': "#b4637a",
-        'yellow': "#ea9d34",
-        'blue': "#286983",
-        'green': "#56949f",
-        'pink': "#907aa9",
+    "rose-pine-dawn": {
+        "orange": "#d7827e",
+        "red": "#b4637a",
+        "yellow": "#ea9d34",
+        "blue": "#286983",
+        "green": "#56949f",
+        "pink": "#907aa9",
     },
-    'atom-one-dark': {
-        'orange': "#e06c75",
-        'red': "#be5046",
-        'yellow': "#e5c07b",
-        'blue': "#61afef",
-        'green': "#98c379",
-        'pink': "#c678dd",
+    "atom-one-dark": {
+        "orange": "#e06c75",
+        "red": "#be5046",
+        "yellow": "#e5c07b",
+        "blue": "#61afef",
+        "green": "#98c379",
+        "pink": "#c678dd",
     },
-    'atom-one-light': {
-        'orange': "#e45649",
-        'red': "#ca1243",
-        'yellow': "#c18401",
-        'blue': "#4078f2",
-        'green': "#50a14f",
-        'pink': "#a626a4",
+    "atom-one-light": {
+        "orange": "#e45649",
+        "red": "#ca1243",
+        "yellow": "#c18401",
+        "blue": "#4078f2",
+        "green": "#50a14f",
+        "pink": "#a626a4",
     },
 }
 
@@ -506,7 +506,7 @@ def get_palette(name: str) -> dict[str, str]:
     :param str name: The name of the current color theme.
     :return dict[str, str]: The color pallette as a dict.
     """
-    return COLOR_MAP.get(name, COLOR_MAP['textual-dark'])
+    return COLOR_MAP.get(name, COLOR_MAP["textual-dark"])
 
 
 def get_color_formatted_string(palette: dict[str, str], num: int | float) -> str:

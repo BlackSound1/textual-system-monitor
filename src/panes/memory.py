@@ -34,7 +34,7 @@ class MemUsage(Static):
 
         from src.app import Monitor
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         palette = get_palette(self.app.theme)
 

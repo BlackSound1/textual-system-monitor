@@ -39,7 +39,7 @@ class NetInfo(Static):
 
         from src.app import Monitor  # Need to import here to avoid circular import
 
-        kb_size = cast(Monitor, self.app).CONTEXT['kb_size']
+        kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 
         palette = get_palette(self.app.theme)
 
