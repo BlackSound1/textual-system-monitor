@@ -150,7 +150,7 @@ def update_network_static(
     static_content = ""
 
     # For each interface, calculate the new info and add it to the string to return
-    for old_stat, new_stat in zip(old_stats, new_stats):
+    for old_stat, new_stat in zip(old_stats, new_stats, strict=True):
         interface = old_stat["interface"]
         new_bytes_sent = cast(int, new_stat["bytes_sent"])
         old_bytes_sent = cast(int, old_stat["bytes_sent"])
