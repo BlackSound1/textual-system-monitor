@@ -1,5 +1,6 @@
 import sys
-from typing import Literal, Iterator, cast
+from typing import Literal, cast
+from collections.abc import Iterator
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
 
@@ -91,7 +92,7 @@ def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
         f'P{unit_suffix}': base ** 5,
         f'E{unit_suffix}': base ** 6,
         f'Z{unit_suffix}': base ** 7,
-        f'Y{unit_suffix}': base ** 8
+        f'Y{unit_suffix}': base ** 8,
     }
 
     # For each symbol, check if the number of bytes is greater than the corresponding threshold
@@ -120,12 +121,12 @@ def get_network_stats() -> list[dict[str, str | int]]:
             {
                 "interface": interface,
                 "bytes_sent": stats.bytes_sent,
-                "bytes_recv": stats.bytes_recv
+                "bytes_recv": stats.bytes_recv,
             }
             for interface, stats in net_io_counters(pernic=True).items()
         ),
         key=lambda stats: stats['bytes_recv'],
-        reverse=True
+        reverse=True,
     )
 
 
@@ -149,7 +150,7 @@ def update_network_static(
     static_content = ""
 
     # For each interface, calculate the new info and add it to the string to return
-    for old_stat, new_stat in zip(old_stats, new_stats):
+    for old_stat, new_stat in zip(old_stats, new_stats, strict=True):
         interface = old_stat["interface"]
         new_bytes_sent = cast(int, new_stat["bytes_sent"])
         old_bytes_sent = cast(int, old_stat["bytes_sent"])
@@ -160,11 +161,11 @@ def update_network_static(
         upload = bytes_to_human(new_bytes_sent, base)
         upload_speed = bytes_to_human(
             round((new_bytes_sent - old_bytes_sent) / NET_INTERVAL, 2),
-            base
+            base,
         )
         download_speed = bytes_to_human(
             round((new_bytes_recv - old_bytes_recv) / NET_INTERVAL, 2),
-            base
+            base,
         )
 
         static_content += (
@@ -189,7 +190,7 @@ def get_cpu_data() -> dict[str, int | None | float | list[float]]:
     return {
         "cores": cpu_count(),
         "overall": cpu_percent(percpu=False),
-        "individual": cpu_percent(percpu=True)
+        "individual": cpu_percent(percpu=True),
     }
 
 
@@ -247,7 +248,7 @@ def get_mem_data() -> dict[str, int | float]:
         "total": virtual_memory().total,
         "available": virtual_memory().available,
         "used": virtual_memory().used,
-        "percent": virtual_memory().percent
+        "percent": virtual_memory().percent,
     }
 
 

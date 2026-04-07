@@ -1,4 +1,5 @@
-from typing import Callable, ClassVar
+from typing import ClassVar
+from collections.abc import Callable
 
 from textual.app import App
 from textual.binding import Binding
@@ -29,11 +30,11 @@ class Monitor(App[str]):
     }
 
     CONTEXT = {
-        "kb_size": 1024
+        "kb_size": 1024,
     }
 
     BINDINGS = [
-        Binding(key='/', action='app.switch_base', description='Change KB Size')
+        Binding(key='/', action='app.switch_base', description='Change KB Size'),
     ]
 
     def on_mount(self) -> None:

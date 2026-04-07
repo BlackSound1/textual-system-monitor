@@ -42,7 +42,7 @@ class MemUsage(Static):
             f"Total Memory: {bytes_to_human(data['total'], kb_size)}\n\n"
             f"Available Memory: {bytes_to_human(data['available'], kb_size)}\n\n"
             f"Used: {bytes_to_human(data['used'], kb_size)}\n\n"
-            f"Percentage Used: {get_color_formatted_string(palette, data['percent'])} %"
+            f"Percentage Used: {get_color_formatted_string(palette, data['percent'])} %",
         )
 
     def on_click(self) -> None:

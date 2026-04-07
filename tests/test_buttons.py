@@ -23,7 +23,7 @@ async def test_process_screen_buttons():
         pause_button = process_screen.screen.query_one("#process-pause-button", expect_type=Button)
         sort_button = process_screen.screen.query_one("#process-sort-button", expect_type=Button)
 
-        assert type(process_screen) == ProcessesScreen
+        assert type(process_screen) is ProcessesScreen
 
         # Ensure initial state is correct
         assert not process_screen.paused

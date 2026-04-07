@@ -1,4 +1,5 @@
-from typing import Any, Iterator, cast
+from typing import Any, cast
+from collections.abc import Iterator
 
 from psutil import Process, process_iter
 from textual import getters
@@ -25,7 +26,7 @@ def _get_procs(sort: bool) -> Iterator[Process] | list[Process]:
         procs = sorted(
             get_non_zero_procs(procs),
             key=lambda x: cast(float, x.info.get('cpu_percent')),
-            reverse=True
+            reverse=True,
         )
     return procs
 
