@@ -40,35 +40,36 @@ async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
         assert gpu_pane.gpu_data == []
 
 
-@patch('src.panes.gpu.get_gpu_data', return_value=[
-    {
-        'gpu': 'MY GPU',
-        'driver_version': '1',
-        'resolution': '1920 x 1080',
-        'adapter_ram': '1.0 GB',
-        'availability': 'Running',
-        'refresh': '1',
-        'status': 'OK',
-    },
-])
-async def test_gpu_pane_gpu_data_windows(_: list[dict[str, str]]) -> None:
+async def test_gpu_pane_gpu_data_windows() -> None:
     """On Windows, GPU data should be populated"""
-    with patch('sys.platform', 'win32'):
-        app = Monitor()
-        app.CONTEXT['kb_size'] = 1000
-        async with app.run_test():
-            gpu_pane = app.screen.query_one(GPU_Usage)
-            gpu_pane.update_gpu_data()
-            data = cast(list[dict[str, str]], gpu_pane.gpu_data)
-            assert len(data) == 1
-            only_item = data[0]
-            assert only_item['gpu'] == 'MY GPU'
-            assert only_item['driver_version'] == '1'
-            assert only_item['resolution'] == '1920 x 1080'
-            assert only_item['adapter_ram'] == '1.0 GB'
-            assert only_item['availability'] == 'Running'
-            assert only_item['refresh'] == '1'
-            assert only_item['status'] == 'OK'
+
+    with patch('src.panes.gpu.get_gpu_data', return_value=[
+        {
+            'gpu': 'MY GPU',
+            'driver_version': '1',
+            'resolution': '1920 x 1080',
+            'adapter_ram': '1.0 GB',
+            'availability': 'Running',
+            'refresh': '1',
+            'status': 'OK',
+        },
+    ]):
+        with patch('sys.platform', 'win32'):
+            app = Monitor()
+            app.CONTEXT['kb_size'] = 1000
+            async with app.run_test():
+                gpu_pane = app.screen.query_one(GPU_Usage)
+                gpu_pane.update_gpu_data()
+                data = cast(list[dict[str, str]], gpu_pane.gpu_data)
+                assert len(data) == 1
+                only_item = data[0]
+                assert only_item['gpu'] == 'MY GPU'
+                assert only_item['driver_version'] == '1'
+                assert only_item['resolution'] == '1920 x 1080'
+                assert only_item['adapter_ram'] == '1.0 GB'
+                assert only_item['availability'] == 'Running'
+                assert only_item['refresh'] == '1'
+                assert only_item['status'] == 'OK'
 
 
 async def test_gpu_pane_linux_empty_Static() -> None:
@@ -93,37 +94,38 @@ async def test_gpu_screen_linux_empty_Static() -> None:
             assert static.content == "GPU information not currently supported on non-Windows systems..."
 
 
-@patch('src.screens.gpu_screen.get_gpu_data', return_value=[
-    {
-        'gpu': 'MY GPU',
-        'driver_version': '1',
-        'resolution': '1920 x 1080',
-        'adapter_ram': '1.0 GB',
-        'availability': 'Running',
-        'refresh': '1',
-        'status': 'OK',
-    },
-])
-async def test_gpu_screen_gpu_data_windows(_: list[dict[str, str]]) -> None:
+async def test_gpu_screen_gpu_data_windows() -> None:
     """On Windows, GPU data should be populated"""
-    with patch('sys.platform', 'win32'):
-        app = Monitor()
-        app.CONTEXT['kb_size'] = 1000
-        async with app.run_test() as pilot:
-            await pilot.press('v')
-            await pilot.pause()
-            gpu_screen = cast(GPU_Screen, app.screen)
-            gpu_screen.update_gpu_data()
-            data = cast(list[dict[str, str]], gpu_screen.gpu_data)
-            assert len(data) == 1
-            only_item = data[0]
-            assert only_item['gpu'] == 'MY GPU'
-            assert only_item['driver_version'] == '1'
-            assert only_item['resolution'] == '1920 x 1080'
-            assert only_item['adapter_ram'] == '1.0 GB'
-            assert only_item['availability'] == 'Running'
-            assert only_item['refresh'] == '1'
-            assert only_item['status'] == 'OK'
+
+    with patch('src.screens.gpu_screen.get_gpu_data', return_value=[
+        {
+            'gpu': 'MY GPU',
+            'driver_version': '1',
+            'resolution': '1920 x 1080',
+            'adapter_ram': '1.0 GB',
+            'availability': 'Running',
+            'refresh': '1',
+            'status': 'OK',
+        },
+    ]):
+        with patch('sys.platform', 'win32'):
+            app = Monitor()
+            app.CONTEXT['kb_size'] = 1000
+            async with app.run_test() as pilot:
+                await pilot.press('v')
+                await pilot.pause()
+                gpu_screen = cast(GPU_Screen, app.screen)
+                gpu_screen.update_gpu_data()
+                data = cast(list[dict[str, str]], gpu_screen.gpu_data)
+                assert len(data) == 1
+                only_item = data[0]
+                assert only_item['gpu'] == 'MY GPU'
+                assert only_item['driver_version'] == '1'
+                assert only_item['resolution'] == '1920 x 1080'
+                assert only_item['adapter_ram'] == '1.0 GB'
+                assert only_item['availability'] == 'Running'
+                assert only_item['refresh'] == '1'
+                assert only_item['status'] == 'OK'
 
 
 async def test_update_gpu_screen_data_on_linux() -> None:

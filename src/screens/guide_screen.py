@@ -94,7 +94,7 @@ def _get_formatted_monitoring_string(theme: str) -> str:
     :return: The formatted string with proper Rich color tags based on color theme
     """
 
-    return MONITORING_STRING.format(**{label: color for label, color in get_palette(theme).items()})
+    return MONITORING_STRING.format(**dict(get_palette(theme).items()))
 
 
 class GuideScreen(Screen[None]):
