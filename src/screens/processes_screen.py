@@ -1,4 +1,5 @@
-from typing import Any, Iterator, cast
+from typing import Any, cast
+from collections.abc import Iterator
 
 from psutil import Process, process_iter
 from textual import getters

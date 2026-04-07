@@ -1,4 +1,5 @@
-from typing import Callable, ClassVar
+from typing import ClassVar
+from collections.abc import Callable
 
 from textual.app import App
 from textual.binding import Binding

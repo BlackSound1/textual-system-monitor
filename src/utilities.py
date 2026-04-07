@@ -1,5 +1,6 @@
 import sys
-from typing import Literal, Iterator, cast
+from typing import Literal, cast
+from collections.abc import Iterator
 
 from psutil import net_io_counters, cpu_count, cpu_percent, virtual_memory, Process
 
