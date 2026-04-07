@@ -128,9 +128,8 @@ class DriveScreen(Screen[None]):
 
         :return: The ComposeResult featuring the Drive Screen structure
         """
-        # ruff: disable[SIM117]
         yield Header(show_clock=True)
-        with Container(id="drive-screen-container"):
+        with Container(id="drive-screen-container"):  # noqa: SIM117
             with VerticalScroll():
                 yield DataTable(id="drive-screen-table", cell_padding=2, show_cursor=False, zebra_stripes=True)
         yield Footer()

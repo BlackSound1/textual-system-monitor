@@ -111,9 +111,8 @@ class NetworkScreen(Screen[None]):
 
         :return: The ComposeResult featuring the structure of the Network Screen
         """
-        # ruff: disable[SIM117]
         yield Header(show_clock=True)
-        with Container(id="network-container"):
+        with Container(id="network-container"):  # noqa: SIM117
             with VerticalScroll():
                 yield DataTable(id="network-screen-table", show_cursor=False, zebra_stripes=True)
         yield Footer()

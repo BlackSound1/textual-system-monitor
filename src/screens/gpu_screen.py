@@ -129,9 +129,8 @@ class GPU_Screen(Screen[None]):
 
         :return: The ComposeResult featuring the structure of the GPU Screen
         """
-        # ruff: disable[SIM117]
         yield Header(show_clock=True)
-        with Container(id="gpu-container"):
+        with Container(id="gpu-container"):  # noqa: SIM117
             with VerticalScroll():
                 if sys.platform == "win32":
                     yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
