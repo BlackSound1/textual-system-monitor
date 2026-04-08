@@ -110,6 +110,7 @@ class GuideScreen(Screen[None]):
         """
         Perform initial setup for the Guide Screen
         """
+
         def _on_theme_change() -> None:
             """
             Update the text colors based on the theme

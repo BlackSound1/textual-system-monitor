@@ -59,12 +59,13 @@ class GPU_Screen(Screen[None]):
                     "refresh": gpu_info["refresh"],
                     "status": gpu_info["status"],
                 }
-                for gpu_info in get_gpu_data() if gpu_info
+                for gpu_info in get_gpu_data()
+                if gpu_info
             ]
         else:
             self.gpu_data = None
 
-    def watch_gpu_data(self, gpu_data:  list[dict[str, str | int]]) -> None:
+    def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
         """
         Watch `gpu_data` and update the Static Widget with the new information
 
@@ -79,8 +80,7 @@ class GPU_Screen(Screen[None]):
 
         # Clear the table and add the columns
         table.clear(columns=True)
-        table.add_columns("GPU", "Driver Version", "Resolution", "Adapter RAM",
-                          "Availability", "Refresh", "Status")
+        table.add_columns("GPU", "Driver Version", "Resolution", "Adapter RAM", "Availability", "Refresh", "Status")
 
         # Then, for each video controller, update the Static Widget with its new information
         for gpu_info in gpu_data:
