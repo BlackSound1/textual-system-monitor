@@ -77,9 +77,11 @@ class DriveUsage(Static):
                 total = bytes_to_human(usage.total, kb_size)
 
                 # Add the new info for this drive to the content of the Static widget
-                static_content += (f"Disk: {device} | Options: {options} | Filesystem: {fs} | "
-                                   f"Usage: {get_color_formatted_string(palette, usage.percent)} % | "
-                                   f"Total: {total} | Used: {used} | Free: {free}\n\n")
+                static_content += (
+                    f"Disk: {device} | Options: {options} | Filesystem: {fs} | "
+                    f"Usage: {get_color_formatted_string(palette, usage.percent)} % | "
+                    f"Total: {total} | Used: {used} | Free: {free}\n\n"
+                )
 
         # Update the content of the Static widget with the new info for all drives
         self.static.update(static_content)
