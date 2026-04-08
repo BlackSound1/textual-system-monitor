@@ -28,10 +28,8 @@ async def test_clicks() -> None:
     app = Monitor()
 
     async with app.run_test() as pilot:
-
         # Iterate over each screen
         for screen_class, screen_type, screen_key in SCREENS:
-
             # Click on the screen and assert that we are on the correct screen
             await pilot.click(screen_class)
             assert type(app.screen) is screen_type

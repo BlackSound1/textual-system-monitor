@@ -43,17 +43,23 @@ async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
 async def test_gpu_pane_gpu_data_windows() -> None:
     """On Windows, GPU data should be populated"""
 
-    with patch("src.panes.gpu.get_gpu_data", return_value=[
-        {
-            "gpu": "MY GPU",
-            "driver_version": "1",
-            "resolution": "1920 x 1080",
-            "adapter_ram": "1.0 GB",
-            "availability": "Running",
-            "refresh": "1",
-            "status": "OK",
-        },
-    ]), patch("sys.platform", "win32"):
+    with (
+        patch(
+            "src.panes.gpu.get_gpu_data",
+            return_value=[
+                {
+                    "gpu": "MY GPU",
+                    "driver_version": "1",
+                    "resolution": "1920 x 1080",
+                    "adapter_ram": "1.0 GB",
+                    "availability": "Running",
+                    "refresh": "1",
+                    "status": "OK",
+                },
+            ],
+        ),
+        patch("sys.platform", "win32"),
+    ):
         app = Monitor()
         app.CONTEXT["kb_size"] = 1000
         async with app.run_test():
@@ -96,17 +102,23 @@ async def test_gpu_screen_linux_empty_Static() -> None:
 async def test_gpu_screen_gpu_data_windows() -> None:
     """On Windows, GPU data should be populated"""
 
-    with patch("src.screens.gpu_screen.get_gpu_data", return_value=[
-        {
-            "gpu": "MY GPU",
-            "driver_version": "1",
-            "resolution": "1920 x 1080",
-            "adapter_ram": "1.0 GB",
-            "availability": "Running",
-            "refresh": "1",
-            "status": "OK",
-        },
-    ]), patch("sys.platform", "win32"):
+    with (
+        patch(
+            "src.screens.gpu_screen.get_gpu_data",
+            return_value=[
+                {
+                    "gpu": "MY GPU",
+                    "driver_version": "1",
+                    "resolution": "1920 x 1080",
+                    "adapter_ram": "1.0 GB",
+                    "availability": "Running",
+                    "refresh": "1",
+                    "status": "OK",
+                },
+            ],
+        ),
+        patch("sys.platform", "win32"),
+    ):
         app = Monitor()
         app.CONTEXT["kb_size"] = 1000
         async with app.run_test() as pilot:
@@ -158,11 +170,14 @@ async def test_gpu_screen_no_container_found() -> None:
     app = Monitor()
     async with app.run_test():
         gpu_screen = GPU_Screen()
-        with patch.object(
-            gpu_screen.screen,
-            "query_one",
-            side_effect=NoMatches("", ""),
-        ), patch.object(gpu_screen, "watch") as mock_watch:
+        with (
+            patch.object(
+                gpu_screen.screen,
+                "query_one",
+                side_effect=NoMatches("", ""),
+            ),
+            patch.object(gpu_screen, "watch") as mock_watch,
+        ):
             gpu_screen.on_mount()
             mock_watch.assert_not_called()
             gpu_screen.on_unmount()  # Force dismounting to kill the timer
