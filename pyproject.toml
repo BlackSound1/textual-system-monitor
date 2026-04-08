@@ -69,3 +69,7 @@ extend-select = [
     # "DOC", # pydoclint
     # "PL", # Pylint
 ]
+
+ignore = [
+    "COM812",  # Ignore absence of trailing commas. Formatter handles that
+]
