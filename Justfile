@@ -74,3 +74,15 @@ show kind:
     else
         find tests -name "*.py" -not -name "__init__.py" -print
     fi
+
+
+# Use Ruff to check the whole project, given the linter rules in pyproject.toml
+[group('util')]
+check:
+    @uv run ruff check
+
+
+# Use Ruff to format the whole project
+[group('util')]
+format:
+    @uv run ruff format
