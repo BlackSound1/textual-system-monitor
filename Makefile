@@ -65,6 +65,24 @@ test-buttons:   ## Use Pytest to test the buttons only
 	@uv run pytest --asyncio-mode=auto tests/test_buttons.py
 
 
+.PHONY: test-color
+test-color:   ## Use Pytest to test the percentage colors only
+	@echo ""
+	@uv run pytest --asyncio-mode=auto tests/test_percent_color.py
+
+
+.PHONY: test-bytes
+test-bytes:   ## Use Pytest to test the bytes only
+	@echo ""
+	@uv run pytest --asyncio-mode=auto tests/test_bytes.py
+
+
+.PHONY: test-misc
+test-misc:   ## Use Pytest to test the miscellaneous tests only
+	@echo ""
+	@uv run pytest --asyncio-mode=auto tests/test_misc.py
+
+
 .PHONY: cov
 cov:   ## Use Pytest to generate code coverage
 	@echo ""
