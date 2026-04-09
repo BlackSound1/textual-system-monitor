@@ -50,12 +50,15 @@ test:   ## Use Pytest to test the whole app
 
 
 .PHONY: test-%
-test-%:   ## Use Pytest to test parts of the app
-	@echo ""
-	@uv run pytest $(PYTEST_ARGS) $(if $(filter test-%, $@), \
-		$(if $(filter test-color, $@), tests/test_percent_color.py, \
-		tests/test_$(subst test-,,$@).py), \
-		tests)
+test-%:   ## Use Pytest to test parts of the app (clicks, keys, buttons, color, bytes, misc)
+	@valid_targets="clicks keys buttons color bytes misc"; \
+	target=$(subst test-,,$@); \
+	if ! echo "$$valid_targets" | grep -q "$$target"; then \
+		echo "Error: Invalid test target '$$target'. Valid options: $$valid_targets"; \
+		exit 1; \
+	fi; \
+	echo ""; \
+	uv run pytest $(PYTEST_ARGS) $(if $(filter test-color, $@), tests/test_percent_color.py, tests/test_$(subst test-,,$@).py)
 
 
 .PHONY: cov
