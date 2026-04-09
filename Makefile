@@ -8,6 +8,8 @@ else
 	VENV_CMD := "source venv/bin/activate"
 endif
 
+PYTEST_ARGS := "--asyncio-mode=auto"
+
 
 .PHONY: install
 install:   ## Install dependencies to a virtual env, if not using UV
@@ -44,43 +46,16 @@ run-dev:   ## Run app in dev mode
 .PHONY: test
 test:   ## Use Pytest to test the whole app
 	@echo ""
-	@uv run pytest --asyncio-mode=auto tests
+	@uv run pytest $(PYTEST_ARGS) tests
 
 
-.PHONY: test-clicks
-test-clicks:   ## Use Pytest to test the clicks only
+.PHONY: test-%
+test-%:   ## Use Pytest to test parts of the app
 	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_clicks.py
-
-
-.PHONY: test-keys
-test-keys:   ## Use Pytest to test the key presses only
-	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_keys.py
-
-
-.PHONY: test-buttons
-test-buttons:   ## Use Pytest to test the buttons only
-	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_buttons.py
-
-
-.PHONY: test-color
-test-color:   ## Use Pytest to test the percentage colors only
-	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_percent_color.py
-
-
-.PHONY: test-bytes
-test-bytes:   ## Use Pytest to test the bytes only
-	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_bytes.py
-
-
-.PHONY: test-misc
-test-misc:   ## Use Pytest to test the miscellaneous tests only
-	@echo ""
-	@uv run pytest --asyncio-mode=auto tests/test_misc.py
+	@uv run pytest $(PYTEST_ARGS) $(if $(filter test-%, $@), \
+		$(if $(filter test-color, $@), tests/test_percent_color.py, \
+		tests/test_$(subst test-,,$@).py), \
+		tests)
 
 
 .PHONY: cov
@@ -126,5 +101,5 @@ show-src:  ## Show all source files
 .PHONY: help
 help:   ## Show this help
 	@echo -e "\nCommands:\n"
-	@egrep '^[a-zA-Z_-]+:.*?## .*' Makefile | sort |
+	@egrep '^[%a-zA-Z_-]+:.*?## .*' Makefile | sort |
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
