@@ -8,6 +8,7 @@ VENV_CMD := if os() == "windows" {
     "source venv/bin/activate"
 }
 
+PYTEST_ARGS := "--asyncio-mode=auto"
 
 # Run app. Use -d for dev mode
 [group('run')]
@@ -22,7 +23,7 @@ run dev='':
 [arg("only", long, short='o', pattern='clicks|keys|buttons|color|bytes|misc|', help='Test the app')]
 test only='':
     @echo ""
-    uv run pytest --asyncio-mode=auto {{ 
+    uv run pytest {{PYTEST_ARGS}} {{ 
         if only == "color" { "tests/test_percent_color.py" }
         else if only != "" { "tests/test_" + only + ".py" }
         else { "tests" }
@@ -33,7 +34,7 @@ test only='':
 [group('testing')]
 cov:
     @echo ""
-    @uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
+    @uv run pytest {{PYTEST_ARGS}} tests --cov=. --cov-branch
 
 
 # Launch the Textual console. Used in debugging
