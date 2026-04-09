@@ -15,7 +15,6 @@ type NetworkStatsType = list[dict[str, str | int]]
 
 
 class NetworkScreen(Screen[None]):
-
     BORDER_TITLE = f"Network - Updated every {NET_INTERVAL}s"
     CSS_PATH = "../styles/network_css.tcss"
     BINDINGS: ClassVar = [

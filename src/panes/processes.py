@@ -71,8 +71,10 @@ class Processes(Static):
             user_name = proc.info["username"] or "N/A"
 
             # Add the new info for this process to the content of the Static widget
-            static_content += (f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [bold {palette['orange']}]{name}[/] | "
-                               f"Username: {user_name} | EXE: {exe}\n\n")
+            static_content += (
+                f"PID: {PID} | CPU Load: {cpu_percent} % | Name: [bold {palette['orange']}]{name}[/] | "
+                f"Username: {user_name} | EXE: {exe}\n\n"
+            )
 
         # Update the content of the Static widget with the new info for all processes
         self.static.update(static_content)

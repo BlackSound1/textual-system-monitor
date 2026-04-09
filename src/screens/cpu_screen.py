@@ -13,7 +13,6 @@ from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_d
 
 
 class CPU_Screen(Screen[None]):
-
     BORDER_TITLE = f"CPU Usage - Updated every {COMMON_INTERVAL}s"
     CSS_PATH = "../styles/cpu_css.tcss"
     BINDINGS: ClassVar = [

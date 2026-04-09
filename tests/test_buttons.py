@@ -14,7 +14,6 @@ async def test_process_screen_buttons():
     DELAY = 0.2
 
     async with app.run_test() as pilot:
-
         # Get the Processes Screen
         await pilot.press("p")
         process_screen = app.screen

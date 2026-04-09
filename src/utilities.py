@@ -82,14 +82,14 @@ def bytes_to_human(num_bytes: float, base: int = 1024) -> str:
 
     # Create a map of symbols and their corresponding thresholds
     symbol_map = {
-        f"K{unit_suffix}": base ** 1,
-        f"M{unit_suffix}": base ** 2,
-        f"G{unit_suffix}": base ** 3,
-        f"T{unit_suffix}": base ** 4,
-        f"P{unit_suffix}": base ** 5,
-        f"E{unit_suffix}": base ** 6,
-        f"Z{unit_suffix}": base ** 7,
-        f"Y{unit_suffix}": base ** 8,
+        f"K{unit_suffix}": base**1,
+        f"M{unit_suffix}": base**2,
+        f"G{unit_suffix}": base**3,
+        f"T{unit_suffix}": base**4,
+        f"P{unit_suffix}": base**5,
+        f"E{unit_suffix}": base**6,
+        f"Z{unit_suffix}": base**7,
+        f"Y{unit_suffix}": base**8,
     }
 
     # For each symbol, check if the number of bytes is greater than the corresponding threshold
@@ -128,10 +128,10 @@ def get_network_stats() -> list[dict[str, str | int]]:
 
 
 def update_network_static(
-        new_stats: list[dict[str,  str | int]],
-        old_stats: list[dict[str,  str | int]],
-        base: int,
-        palette: dict[str, str],
+    new_stats: list[dict[str, str | int]],
+    old_stats: list[dict[str, str | int]],
+    base: int,
+    palette: dict[str, str],
 ) -> str:
     """
     Generate a string containing the updated network info for each interface
@@ -276,7 +276,8 @@ def get_gpu_data() -> list[dict[str, str | int] | None]:
             "availability": cast(str, AVAILABILITY_MAP.get(controller.Availability)),
             "refresh": cast(str, controller.CurrentRefreshRate),
             "status": cast(str, controller.Status),
-        } for controller in video_controllers
+        }
+        for controller in video_controllers
     ]
 
 
