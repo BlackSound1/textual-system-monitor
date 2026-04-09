@@ -78,6 +78,16 @@ lint:    ## Use Flake8 to lint the Python files
 	@uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
 
+.PHONY: check
+check:    ## Use Ruff to check the whole project, given the linter rules in pyproject.toml
+	@uv run ruff check
+
+
+.PHONY: format
+format:    ## Use Ruff to format the whole project
+	@uv run ruff format
+
+
 .PHONY: console
 console:  ## Show the Textual console. Used in debugging
 	@uv run textual console -x EVENT -x SYSTEM -x DEBUG
@@ -93,11 +103,6 @@ show-tests: $(test_files)   ## Show all test files
 show-src:  ## Show all source files
 	@echo -e ""
 	@find . -path ./.venv -prune -o -path ./tests -prune -o -name "*.py" -not -name "__init__.py" -print
-
-
-.PHONY: hello
-hello:  ## Show "Hello World"
-	@echo -e "\nHello World"
 
 
 .PHONY: help
