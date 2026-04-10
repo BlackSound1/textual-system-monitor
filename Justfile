@@ -43,14 +43,6 @@ console:
     @uv run textual console -x EVENT -x SYSTEM -x DEBUG
 
 
-# Use Flake8 to lint the Python files
-[group('dev')]
-lint:
-    @echo ""
-    @uv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
-    @uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-
 # If not using UV, install dependencies to a virtual env. Use -d to install dev dependencies, too
 [group('util')]
 [arg("dev", long, short='d', value="requirements_dev", help="Install dev dependencies, too")]
@@ -77,9 +69,9 @@ show kind:
     fi
 
 
-# Use Ruff to check the whole project, given the linter rules in pyproject.toml
+# Use Ruff to lint the whole project, given the rules in pyproject.toml
 [group('util')]
-check:
+lint:
     @uv run ruff check
 
 
