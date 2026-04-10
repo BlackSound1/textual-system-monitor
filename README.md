@@ -136,7 +136,7 @@ seeing its implementation, use `just --choose`.
   throughout the app)
 - Textual (framework)
 - Pytest (test framework)
-- Flake8 (linter)
+- Ruff (linter and formatter)
 - Make (build tool/ command runner)
 - Just (optional command runner)
 

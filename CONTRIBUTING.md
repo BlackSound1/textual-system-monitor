@@ -39,12 +39,9 @@ To develop the app:
    make lint
    ```
 
-   The output should be:
-
-   ```sh
-   0
-   0
-   ```
+   All checks should pass. If you are contributing, make sure all linter checks
+   pass before making a pull request, even though I have a CI/CD step to lint
+   upon PR.
 
 After those steps are done, have 2 terminals open. I use 2 instances of Bash in
 Windows Terminal.
