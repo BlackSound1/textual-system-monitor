@@ -7,6 +7,7 @@ on:
     paths:
       - '**/*.py'  # Run the job only when Python files change
       - 'Makefile'  # Run the job when Makefile changes
+      - 'Justfile'  # Run the job when Justfile changes
       - '.github/workflows/system-monitor.yml'  # Run the job when system-monitor.yml changes
   pull_request:
     branches:
@@ -14,6 +15,7 @@ on:
     paths:
       - '**/*.py'  # Run the job only when Python files change
       - 'Makefile'  # Run the job when Makefile changes
+      - 'Justfile'  # Run the job when Justfile changes
       - '.github/workflows/system-monitor.yml'  # Run the job when system-monitor.yml changes
 
 permissions:
@@ -33,7 +35,7 @@ jobs:
           python-version-file: ".python-version"
       - name: Install uv
         uses: astral-sh/setup-uv@v7
-      - name: Lint with Flake8
-        run: uv run make lint
+      - name: Lint with Ruff
+        run: uv run ruff check
       - name: Test with Pytest
         run: uv run make test
