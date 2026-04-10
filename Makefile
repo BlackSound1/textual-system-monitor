@@ -12,7 +12,7 @@ PYTEST_ARGS := "--asyncio-mode=auto"
 
 
 .PHONY: install
-install:   ## Install dependencies to a virtual env, if not using UV
+install:  ## Install dependencies to a virtual env, if not using UV
 	@if command -v uv &> /dev/null; then \
 	 echo "UV found. Install dependencies by running the app with 'make run'"; \
 	else \
@@ -23,7 +23,7 @@ install:   ## Install dependencies to a virtual env, if not using UV
 
 
 .PHONY: install-dev
-install-dev:   ## Install ALL dependencies to a virtual env, if not using UV
+install-dev:  ## Install ALL dependencies to a virtual env, if not using UV
 	@if command -v uv &> /dev/null; then \
 	 echo "UV found. Install dependencies by running the app with 'make run'"; \
 	else \
@@ -34,23 +34,23 @@ install-dev:   ## Install ALL dependencies to a virtual env, if not using UV
 
 
 .PHONY: run
-run:   ## Run app
+run:  ## Run app
 	@uv run textual run main.py
 
 
 .PHONY: run-dev
-run-dev:   ## Run app in dev mode
+run-dev:  ## Run app in dev mode
 	@uv run textual run --dev main.py
 
 
 .PHONY: test
-test:   ## Use Pytest to test the whole app
+test:  ## Use Pytest to test the whole app
 	@echo ""
 	@uv run pytest $(PYTEST_ARGS) tests
 
 
 .PHONY: test-%
-test-%:   ## Use Pytest to test parts of the app (clicks, keys, buttons, color, bytes, misc)
+test-%:  ## Use Pytest to test parts of the app (clicks, keys, buttons, color, bytes, misc)
 	@valid_targets="clicks keys buttons color bytes misc"; \
 	target=$(subst test-,,$@); \
 	if ! echo "$$valid_targets" | grep -q "$$target"; then \
@@ -62,25 +62,18 @@ test-%:   ## Use Pytest to test parts of the app (clicks, keys, buttons, color, 
 
 
 .PHONY: cov
-cov:   ## Use Pytest to generate code coverage
+cov:  ## Use Pytest to generate code coverage
 	@echo ""
 	@uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
 
 
-.PHONY: lint
-lint:    ## Use Flake8 to lint the Python files
-	@echo ""
-	@uv run flake8 *.py --count --select=E9,F63,F7,F82 --show-source --statistics
-	@uv run flake8 *.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-
 .PHONY: check
-check:    ## Use Ruff to check the whole project, given the linter rules in pyproject.toml
+lint:  ## Use Ruff to lint the whole project, given the rules in pyproject.toml
 	@uv run ruff check
 
 
 .PHONY: format
-format:    ## Use Ruff to format the whole project
+format:  ## Use Ruff to format the whole project
 	@uv run ruff format
 
 
@@ -90,7 +83,7 @@ console:  ## Show the Textual console. Used in debugging
 
 
 .PHONY: show-tests
-show-tests: $(test_files)   ## Show all test files
+show-tests: $(test_files)  ## Show all test files
 	@echo -e ""
 	@find tests -name "*.py" -not -name "__init__.py" -print
 
@@ -102,7 +95,7 @@ show-src:  ## Show all source files
 
 
 .PHONY: help
-help:   ## Show this help
+help:  ## Show this help
 	@echo -e "\nCommands:\n"
 	@egrep '^[%a-zA-Z_-]+:.*?## .*' Makefile | sort |
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
