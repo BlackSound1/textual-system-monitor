@@ -38,4 +38,4 @@ jobs:
       - name: Lint with Ruff
         run: uv run ruff check
       - name: Test with Pytest
-        run: uv run make test
+        run: uv run pytest --asyncio-mode=auto tests
