@@ -1,6 +1,6 @@
 [project]
 name = "textual-system-monitor"
-version = "0.8.12"
+version = "0.8.13"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 authors = [
@@ -19,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "psutil==5.9.8",
-    "textual==8.2.2",
+    "textual==8.2.3",
     "wmi==1.5.1 ; sys_platform == 'win32'",
 ]
 
