@@ -19,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
     "psutil==5.9.8",
-    "textual==8.2.2",
+    "textual==8.2.3",
     "wmi==1.5.1 ; sys_platform == 'win32'",
 ]
 
