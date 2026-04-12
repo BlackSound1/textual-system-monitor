@@ -15,7 +15,7 @@ PYTEST_ARGS := "--asyncio-mode=auto"
 [group('dev')]
 [arg("dev", long, short='d', value="--dev", help="Run the app in dev mode")]
 run dev='':
-    @uv run textual run "{{dev}}" main.py
+    @uv run textual run "{{dev}}" textual_system_monitor.app:Monitor
 
 
 # Use Pytest to test the app, either wholly, or a subset of it

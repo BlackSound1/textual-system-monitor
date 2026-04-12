@@ -35,12 +35,12 @@ install-dev:  ## Install ALL dependencies to a virtual env, if not using UV
 
 .PHONY: run
 run:  ## Run app
-	@uv run textual run main.py
+	@uv run textual run textual_system_monitor.app:Monitor
 
 
 .PHONY: run-dev
 run-dev:  ## Run app in dev mode
-	@uv run textual run --dev main.py
+	@uv run textual run --dev textual_system_monitor.app:Monitor
 
 
 .PHONY: test
