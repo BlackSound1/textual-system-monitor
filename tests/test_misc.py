@@ -27,7 +27,7 @@ async def test_run_calls_monitor_run() -> None:
     """
     Test that when the app starts, the `run()` method calls `Monitor.run()`
     """
-    with patch("src.app.Monitor.run") as mock_monitor_run:
+    with patch("textual_system_monitor.app.Monitor.run") as mock_monitor_run:
         run()
         mock_monitor_run.assert_called_once()
 
@@ -45,7 +45,7 @@ async def test_gpu_pane_gpu_data_windows() -> None:
 
     with (
         patch(
-            "src.panes.gpu.get_gpu_data",
+            "textual_system_monitor.panes.gpu.get_gpu_data",
             return_value=[
                 {
                     "gpu": "MY GPU",
@@ -104,7 +104,7 @@ async def test_gpu_screen_gpu_data_windows() -> None:
 
     with (
         patch(
-            "src.screens.gpu_screen.get_gpu_data",
+            "textual_system_monitor.screens.gpu_screen.get_gpu_data",
             return_value=[
                 {
                     "gpu": "MY GPU",
