@@ -9,7 +9,13 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Digits, Footer, Header, Label
 
-from textual_system_monitor.utilities import COMMON_INTERVAL, bytes_to_human, compute_percentage_color, get_mem_data, get_palette
+from textual_system_monitor.utilities import (
+    COMMON_INTERVAL,
+    bytes_to_human,
+    compute_percentage_color,
+    get_mem_data,
+    get_palette,
+)
 
 
 class MemoryScreen(Screen[None]):

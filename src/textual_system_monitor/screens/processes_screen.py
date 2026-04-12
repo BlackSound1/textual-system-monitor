@@ -11,7 +11,12 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Button, DataTable, Footer, Header
 
-from textual_system_monitor.utilities import UNCOMMON_INTERVAL, get_color_formatted_string, get_non_zero_procs, get_palette
+from textual_system_monitor.utilities import (
+    UNCOMMON_INTERVAL,
+    get_color_formatted_string,
+    get_non_zero_procs,
+    get_palette,
+)
 
 
 def _get_procs(sort: bool) -> Iterator[Process] | list[Process]:
