@@ -67,9 +67,14 @@ cov:  ## Use Pytest to generate code coverage
 	@uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
 
 
-.PHONY: check
+.PHONY: lint
 lint:  ## Use Ruff to lint the whole project, given the rules in pyproject.toml
 	@uv run ruff check
+
+
+.PHONY: lint-fix
+lint-fix:  ## Use Ruff to lint the whole project, given the rules in pyproject.toml. Then fix errors
+	@uv run ruff check --fix
 
 
 .PHONY: format
