@@ -37,7 +37,7 @@ class NetInfo(Static):
         :param new: The list of new interface info to use
         """
 
-        from src.app import Monitor  # Need to import here to avoid circular import
+        from textual_system_monitor.app import Monitor  # Need to import here to avoid circular import
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 

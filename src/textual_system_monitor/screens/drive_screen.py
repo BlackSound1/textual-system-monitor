@@ -10,7 +10,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import DataTable, Footer, Header
 
-from src.utilities import RARE_INTERVAL, bytes_to_human, get_color_formatted_string, get_palette
+from textual_system_monitor.utilities import RARE_INTERVAL, bytes_to_human, get_color_formatted_string, get_palette
 
 
 class DriveScreen(Screen[None]):
@@ -65,7 +65,7 @@ class DriveScreen(Screen[None]):
         :param disks: The list of new disks to render
         """
 
-        from src.app import Monitor
+        from textual_system_monitor.app import Monitor
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 

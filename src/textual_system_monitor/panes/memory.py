@@ -32,7 +32,7 @@ class MemUsage(Static):
         :param data: The new memory data
         """
 
-        from src.app import Monitor
+        from textual_system_monitor.app import Monitor
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 

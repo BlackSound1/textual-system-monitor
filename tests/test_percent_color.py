@@ -1,4 +1,4 @@
-from src.utilities import compute_percentage_color
+from textual_system_monitor.utilities import compute_percentage_color
 
 
 async def test_percent_green():

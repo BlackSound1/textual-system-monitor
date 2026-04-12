@@ -1,13 +1,13 @@
 from textual.screen import Screen
 
-from src.app import Monitor
-from src.screens.cpu_screen import CPU_Screen
-from src.screens.drive_screen import DriveScreen
-from src.screens.gpu_screen import GPU_Screen
-from src.screens.main_screen import MainScreen
-from src.screens.mem_screen import MemoryScreen
-from src.screens.network_screen import NetworkScreen
-from src.screens.processes_screen import ProcessesScreen
+from textual_system_monitor.app import Monitor
+from textual_system_monitor.screens.cpu_screen import CPU_Screen
+from textual_system_monitor.screens.drive_screen import DriveScreen
+from textual_system_monitor.screens.gpu_screen import GPU_Screen
+from textual_system_monitor.screens.main_screen import MainScreen
+from textual_system_monitor.screens.mem_screen import MemoryScreen
+from textual_system_monitor.screens.network_screen import NetworkScreen
+from textual_system_monitor.screens.processes_screen import ProcessesScreen
 
 
 async def test_clicks() -> None:

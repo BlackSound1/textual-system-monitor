@@ -6,7 +6,7 @@ from textual.containers import Container, VerticalScroll
 from textual.screen import Screen
 from textual.widgets import Footer, Header, Static
 
-from src.utilities import get_palette
+from textual_system_monitor.utilities import get_palette
 
 DESCRIPTION_STRING = """
 [bold underline]Textual System Monitor[/]

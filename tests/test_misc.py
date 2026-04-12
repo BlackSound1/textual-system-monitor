@@ -6,9 +6,9 @@ from textual.css.query import NoMatches
 from textual.widgets import Static
 
 from main import run
-from src.app import Monitor
-from src.panes.gpu import GPU_Usage
-from src.screens.gpu_screen import GPU_Screen
+from textual_system_monitor.app import Monitor
+from textual_system_monitor.panes.gpu import GPU_Usage
+from textual_system_monitor.screens.gpu_screen import GPU_Screen
 
 
 async def test_change_KB_base() -> None:
