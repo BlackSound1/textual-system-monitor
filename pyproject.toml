@@ -72,3 +72,7 @@ extend-select = [
 ignore = [
     "COM812",  # Ignore absence of trailing commas. Formatter handles that
 ]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
