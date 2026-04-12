@@ -63,7 +63,7 @@ install dev='requirements':
 show kind:
     #!/usr/bin/env bash
     if [ {{kind}} == 'src' ]; then
-        find . -path ./.venv -prune -o -path ./tests -prune -o -name "*.py" -not -name "__init__.py" -print
+        find src/textual_system_monitor -name "*.py" -not -name "__init__.py" -print
     else
         find tests -name "*.py" -not -name "__init__.py" -print
     fi

@@ -91,7 +91,7 @@ show-tests: $(test_files)  ## Show all test files
 .PHONY: show-src
 show-src:  ## Show all source files
 	@echo -e ""
-	@find . -path ./.venv -prune -o -path ./tests -prune -o -name "*.py" -not -name "__init__.py" -print
+	@find src/textual_system_monitor -name "*.py" -not -name "__init__.py" -print
 
 
 .PHONY: help
