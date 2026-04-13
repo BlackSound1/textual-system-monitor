@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import DataTable, Footer, Header
 
-from src.utilities import NET_INTERVAL, bytes_to_human, get_network_stats, get_palette
+from textual_system_monitor.utilities import NET_INTERVAL, bytes_to_human, get_network_stats, get_palette
 
 type NetworkStatsType = list[dict[str, str | int]]
 
@@ -50,7 +50,7 @@ class NetworkScreen(Screen[None]):
         :param new_stats: The list of new interface info to use
         """
 
-        from src.app import Monitor
+        from textual_system_monitor.app import Monitor
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
 

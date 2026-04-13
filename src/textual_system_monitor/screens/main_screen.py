@@ -9,7 +9,7 @@ from textual.logging import TextualHandler
 from textual.screen import Screen
 from textual.widgets import Footer, Header
 
-from src.utilities import get_palette
+from textual_system_monitor.utilities import get_palette
 
 from ..panes.processes import Processes
 from ..panes.stats import Stats

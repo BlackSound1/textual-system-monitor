@@ -2,7 +2,7 @@ from textual import getters
 from textual.app import ComposeResult
 from textual.widgets import Static
 
-from src.utilities import get_palette
+from textual_system_monitor.utilities import get_palette
 
 from .cpu import CPU_Usage
 from .drives import DriveUsage

@@ -35,12 +35,12 @@ install-dev:  ## Install ALL dependencies to a virtual env, if not using UV
 
 .PHONY: run
 run:  ## Run app
-	@uv run textual run main.py
+	@uv run textual run textual_system_monitor.app:Monitor
 
 
 .PHONY: run-dev
 run-dev:  ## Run app in dev mode
-	@uv run textual run --dev main.py
+	@uv run textual run --dev textual_system_monitor.app:Monitor
 
 
 .PHONY: test
@@ -67,9 +67,14 @@ cov:  ## Use Pytest to generate code coverage
 	@uv run pytest --asyncio-mode=auto tests --cov=. --cov-branch
 
 
-.PHONY: check
+.PHONY: lint
 lint:  ## Use Ruff to lint the whole project, given the rules in pyproject.toml
 	@uv run ruff check
+
+
+.PHONY: lint-fix
+lint-fix:  ## Use Ruff to lint the whole project, given the rules in pyproject.toml. Then fix errors
+	@uv run ruff check --fix
 
 
 .PHONY: format
@@ -91,7 +96,7 @@ show-tests: $(test_files)  ## Show all test files
 .PHONY: show-src
 show-src:  ## Show all source files
 	@echo -e ""
-	@find . -path ./.venv -prune -o -path ./tests -prune -o -name "*.py" -not -name "__init__.py" -print
+	@find src/textual_system_monitor -name "*.py" -not -name "__init__.py" -print
 
 
 .PHONY: help

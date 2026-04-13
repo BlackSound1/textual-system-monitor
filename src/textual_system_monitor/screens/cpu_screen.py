@@ -9,7 +9,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import DataTable, Footer, Header, Static
 
-from src.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_palette
+from textual_system_monitor.utilities import COMMON_INTERVAL, get_color_formatted_string, get_cpu_data, get_palette
 
 
 class CPU_Screen(Screen[None]):

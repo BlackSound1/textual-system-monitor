@@ -8,7 +8,7 @@ from textual.reactive import reactive
 from textual.timer import Timer
 from textual.widgets import Static
 
-from src.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
+from textual_system_monitor.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
 
 
 class GPU_Usage(Static):
@@ -29,7 +29,7 @@ class GPU_Usage(Static):
         :return: The `bytes_to_human` representation of the adapter RAM
         """
 
-        from src.app import Monitor  # Need to import here to avoid circular import
+        from textual_system_monitor.app import Monitor  # Need to import here to avoid circular import
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
         return convert_adapter_ram(adapter_ram, kb_size)

@@ -15,7 +15,7 @@ PYTEST_ARGS := "--asyncio-mode=auto"
 [group('dev')]
 [arg("dev", long, short='d', value="--dev", help="Run the app in dev mode")]
 run dev='':
-    @uv run textual run "{{dev}}" main.py
+    @uv run textual run "{{dev}}" textual_system_monitor.app:Monitor
 
 
 # Use Pytest to test the app, either wholly, or a subset of it
@@ -63,7 +63,7 @@ install dev='requirements':
 show kind:
     #!/usr/bin/env bash
     if [ {{kind}} == 'src' ]; then
-        find . -path ./.venv -prune -o -path ./tests -prune -o -name "*.py" -not -name "__init__.py" -print
+        find src/textual_system_monitor -name "*.py" -not -name "__init__.py" -print
     else
         find tests -name "*.py" -not -name "__init__.py" -print
     fi
@@ -71,8 +71,9 @@ show kind:
 
 # Use Ruff to lint the whole project, given the rules in pyproject.toml
 [group('util')]
-lint:
-    @uv run ruff check
+[arg("fix", long, short='f', value="--fix", help="Check for linter errors and fix them")]
+lint fix='':
+    @uv run ruff check {{fix}}
 
 
 # Use Ruff to format the whole project

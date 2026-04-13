@@ -9,7 +9,13 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import Digits, Footer, Header, Label
 
-from src.utilities import COMMON_INTERVAL, bytes_to_human, compute_percentage_color, get_mem_data, get_palette
+from textual_system_monitor.utilities import (
+    COMMON_INTERVAL,
+    bytes_to_human,
+    compute_percentage_color,
+    get_mem_data,
+    get_palette,
+)
 
 
 class MemoryScreen(Screen[None]):
@@ -51,7 +57,7 @@ class MemoryScreen(Screen[None]):
         :param data: The new memory data
         """
 
-        from src.app import Monitor
+        from textual_system_monitor.app import Monitor
 
         # Get KB size
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]

@@ -1,4 +1,4 @@
-from src.utilities import bytes_to_human
+from textual_system_monitor.utilities import bytes_to_human
 
 
 async def test_documentation_examples() -> None:

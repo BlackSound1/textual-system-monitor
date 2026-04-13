@@ -10,7 +10,7 @@ from textual.screen import Screen
 from textual.timer import Timer
 from textual.widgets import DataTable, Footer, Header, Static
 
-from src.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
+from textual_system_monitor.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
 
 
 class GPU_Screen(Screen[None]):
@@ -39,7 +39,7 @@ class GPU_Screen(Screen[None]):
         :return: The `bytes_to_human` representation of the adapter RAM
         """
 
-        from src.app import Monitor
+        from textual_system_monitor.app import Monitor
 
         kb_size = cast(Monitor, self.app).CONTEXT["kb_size"]
         return convert_adapter_ram(adapter_ram, kb_size)

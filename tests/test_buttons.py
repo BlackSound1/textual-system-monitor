@@ -1,7 +1,7 @@
 from textual.widgets import Button
 
-from src.app import Monitor
-from src.screens.processes_screen import ProcessesScreen
+from textual_system_monitor.app import Monitor
+from textual_system_monitor.screens.processes_screen import ProcessesScreen
 
 
 async def test_process_screen_buttons():

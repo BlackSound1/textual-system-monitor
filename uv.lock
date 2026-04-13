@@ -892,8 +892,8 @@ wheels = [
 
 [[package]]
 name = "textual-system-monitor"
-version = "0.8.13"
-source = { virtual = "." }
+version = "1.0.0"
+source = { editable = "." }
 dependencies = [
     { name = "psutil" },
     { name = "textual" },
