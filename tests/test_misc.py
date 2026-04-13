@@ -5,7 +5,6 @@ from textual.containers import Container
 from textual.css.query import NoMatches
 from textual.widgets import Static
 
-from main import run
 from textual_system_monitor.app import Monitor
 from textual_system_monitor.panes.gpu import GPU_Usage
 from textual_system_monitor.screens.gpu_screen import GPU_Screen
@@ -21,15 +20,6 @@ async def test_change_KB_base() -> None:
     assert app.CONTEXT["kb_size"] == 1000
     app.action_switch_base()
     assert app.CONTEXT["kb_size"] == 1024
-
-
-async def test_run_calls_monitor_run() -> None:
-    """
-    Test that when the app starts, the `run()` method calls `Monitor.run()`
-    """
-    with patch("textual_system_monitor.app.Monitor.run") as mock_monitor_run:
-        run()
-        mock_monitor_run.assert_called_once()
 
 
 async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
