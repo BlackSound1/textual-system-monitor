@@ -58,3 +58,6 @@ When contributing, **always** work from a branch other than `main`. Name your br
 something meaningful. Push to your 
 own remote branch (because you forked it). Create a pull request from your forked
 branch into my `main` branch.
+
+Once your branch is reasonably complete, go to `pyproject.toml` and increase the `version` field
+according to typical SemVer rules.
