@@ -1,6 +1,6 @@
 [project]
 name = "textual-system-monitor"
-version = "1.0.2"
+version = "1.0.3"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 authors = [{ name = "BlackSound1" }]
