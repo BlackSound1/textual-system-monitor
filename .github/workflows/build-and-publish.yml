@@ -6,6 +6,9 @@ on:
             - 'v*'
     workflow_dispatch:  # Allow manual triggering
 
+permissions:
+    contents: read
+
 jobs:
     build:
         name: Build wheels on ${{ matrix.os }}
