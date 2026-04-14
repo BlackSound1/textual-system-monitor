@@ -3,22 +3,25 @@ name = "textual-system-monitor"
 version = "1.0.1"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
-authors = [
-    { name = "BlackSound1" }
-]
+authors = [{ name = "BlackSound1" }]
 license = { file = "LICENSE.md" }
 requires-python = ">=3.12"
 keywords = ["python", "textual", "tui", "uv", "terminal"]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Environment :: Console",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3 :: Only",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: POSIX :: Linux",
+    "Typing :: Typed",
 ]
 dependencies = [
-    "psutil==5.9.8",
+    "psutil>=6.0.0",
     "textual==8.2.3",
     "wmi==1.5.1 ; sys_platform == 'win32'",
 ]
@@ -40,27 +43,27 @@ line-length = 120
 
 [tool.ruff.lint]
 extend-select = [
-    "E501",  # Enable line-too-long rule
-    "UP",    # Enable pyupgrade rules
-    "W",     # Enable pycodestyle warnings
-    "C90",   # Enable McCabe complexity
-    "B",     # Enable flake8-bugbear rules
-    "A",     # Enable flake8-builtin rules
-    "COM",   # Enable flake8-commas rules
-    "C4",    # Enable flake8-comprehensions rules
-    "ISC",   # Enable flake8-implicit-str-concat rules
-    "ICN",   # Enable flake8-import-conventions rules
-    "PIE",   # Enable flake8-pie rules
-    "PT",    # Enable flake8-pytest-style rules
-    "RET",   # Enable flake8-return rules
-    "ARG",   # Enable flake8-unused-arguments rules
-    "F",     # Enable Pyflakes rules
-    "FURB",  # Enable refurb rules
-    "PERF",  # Enable Perflint rules
-    "RUF",   # Enable Ruff specific rules
-    "SIM",   # Enable flake8-simplify rules
-    "Q",     # Enable flake8-quotes rules
-    "I",     # Enable isort rules
+    "E501", # Enable line-too-long rule
+    "UP",   # Enable pyupgrade rules
+    "W",    # Enable pycodestyle warnings
+    "C90",  # Enable McCabe complexity
+    "B",    # Enable flake8-bugbear rules
+    "A",    # Enable flake8-builtin rules
+    "COM",  # Enable flake8-commas rules
+    "C4",   # Enable flake8-comprehensions rules
+    "ISC",  # Enable flake8-implicit-str-concat rules
+    "ICN",  # Enable flake8-import-conventions rules
+    "PIE",  # Enable flake8-pie rules
+    "PT",   # Enable flake8-pytest-style rules
+    "RET",  # Enable flake8-return rules
+    "ARG",  # Enable flake8-unused-arguments rules
+    "F",    # Enable Pyflakes rules
+    "FURB", # Enable refurb rules
+    "PERF", # Enable Perflint rules
+    "RUF",  # Enable Ruff specific rules
+    "SIM",  # Enable flake8-simplify rules
+    "Q",    # Enable flake8-quotes rules
+    "I",    # Enable isort rules
 
     # Unused rules for now:
 
@@ -70,7 +73,7 @@ extend-select = [
 ]
 
 ignore = [
-    "COM812",  # Ignore absence of trailing commas. Formatter handles that
+    "COM812", # Ignore absence of trailing commas. Formatter handles that
 ]
 
 [build-system]
