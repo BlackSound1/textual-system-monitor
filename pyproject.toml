@@ -1,6 +1,6 @@
 [project]
 name = "textual-system-monitor"
-version = "1.0.0"
+version = "1.0.1"
 description = "A simple system monitor in Python, using Textual"
 readme = "README.md"
 authors = [
@@ -79,3 +79,15 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 tsm = "textual_system_monitor:main"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true
+
+[[tool.uv.index]]
+name = "pypi"
+url = "https://upload.pypi.org/simple/"
+publish-url = "https://upload.pypi.org/legacy/"
+explicit = true
