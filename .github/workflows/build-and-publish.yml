@@ -63,12 +63,15 @@ jobs:
               path: dist/*.tar.gz
 
     publish:
-        name: Publish to TestPyPI
+        name: Publish to PyPI (or TestPyPI)
         needs: [ build, build-sdist ]
         runs-on: ubuntu-latest
+        # environment:
+        #     name: testpypi
+        #     url: https://test.pypi.org/p/textual-system-monitor
         environment:
-            name: testpypi
-            url: https://test.pypi.org/p/textual-system-monitor
+            name: pypi
+            url: https://pypi.org/p/textual-system-monitor
 
         steps:
             - uses: actions/download-artifact@v8

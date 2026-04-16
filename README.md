@@ -4,9 +4,32 @@ A beautiful system monitoring terminal app created in Python, using Textual.
 
 This is the main page, where you can see live-updating readouts for all system stats:
 
-![Somewhat Feature Complete Design](images/Mar5_2026Screenshot.png)
+![Somewhat Feature Complete Design](images/Apr15_2026Screenshot.png)
 
-**Note**: Personal info has been censored, the orange bars are not present in the real app.
+**Note**: Personal info has been censored. Screenshot from Windows.
+
+# Getting Started
+
+This is a terminal app, so you should have a terminal to use and knowledge of how to use it.
+
+You should have Python >= 3.12 and [Pipx](https://github.com/pypa/pipx).
+
+Easily install with Pipx because this is a standalone package not
+intended to be used in a larger app.
+
+```sh
+  pipx install textual-system-monitor
+```
+
+Run with
+
+```sh
+  tsm
+```
+
+That's it!
+
+You could probably also install with normal Pip if you wanted to.
 
 # Features
 
@@ -47,86 +70,6 @@ The right-hand side shows various system stats.
 - **CPU Usage**: Shows the current load of each system core, as well as overall CPU load.
 - **Network Info**: Shows the status of each connected network interface.
 - **GPU Info**: Shows the status of the GPU.
-
-# Requirements
-
-- **A terminal emulator** like Alacritty, Git Bash, GhosTTY, Windows Terminal, Warp,
-etc. If you don't have one, then this app won't work for you because it's a
-terminal-only app. It *may* be possible to run this in Windows Command Prompt if you
-add UV and Make to your `$PATH`, but I haven't tested it.
-
-- **Git**. You need Git to get this code onto your computer to run it. If you don't have Git, get it [here](https://git-scm.com/).
-
-- **UV**. UV is a nice Python version manager, package manager, and 
-environment manager. I feel it's the future of Python. It can be used even without 
-having Python on your system. In case you don't have it, then you must have CPython
-installed separately.
-
-  The version of CPython used is 3.12. Higher is, of course, also possible.
-
-- **Make**. Make is a build tool that can also be used as a command runner (although
-it's not designed to be such like Just). Throughout this guide, `make` commands will be used.
-In case you don't have Make or can't get it easily, you can just look in the
-`Makefile` for that command name and copy-and-paste the actual command(s) it refers
-to (without the `@`) into your terminal and run it that way. More complicated,
-multi-stage commands like `make install` need to be read carefully to figure out
-what actual commands to run in your terminal manually.
-
-  It's possible to get Make on Windows: [Read here](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows).
-
-
-# Getting Started
-
-Clone with:
-
-```shell
-git clone https://github.com/BlackSound1/textual-system-monitor.git tsm && \\
-  cd tsm
-```
-
-If you don't have UV, install dependencies in a local virtual environment using 
-Python's own Pip:
-
-```sh
-make install
-```
-
-If this doesn't work for some reason, `requirements.txt` is provided for
-your convenience. Install them however you know how to install
-dependencies.
-
-After dependencies are installed (or if you have UV), simply run the app with
-
-```sh
-make run
-```
-
-# Make
-
-To see a list of available `make` commands and their uses, use:
-
-```sh
-make help
-```
-
-# Just
-
-As I briefly mentioned earlier, Make is a build tool, not really a command runner. The fact that
-Make can be used as a command runner is a useful byproduct of its other abilities.
-For a true command runner, I use Just. It's a newer tool that I think is kind of neat.
-It's not a requirement for this project because I only have it doing things Make does.
-
-Check it out here: https://just.systems/man/en/introduction.html.
-
-Similar to Make, instead of using `make run`, you would use `just run`, etc.
-
-One of the advantages of Just is that its commands can accept arguments, so I was able to simplify
-and condense several of the Make targets into single Just commands. I'm sure there's a way to
-simplify my `Makefile` to better resemble the `Justfile`, but Just makes the process quite easy.
-
-For a list of commands, use `just` or `just --list`. For usage instructions,
-use `just --usage <COMMAND>`. To choose a command in an interactive picker while 
-seeing its implementation, use `just --choose`.
 
 # Stack
 
