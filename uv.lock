@@ -906,7 +906,7 @@ wheels = [
 
 [[package]]
 name = "textual-system-monitor"
-version = "1.0.4"
+version = "1.0.5"
 source = { editable = "." }
 dependencies = [
     { name = "psutil" },
