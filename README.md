@@ -12,13 +12,21 @@ This is the main page, where you can see live-updating readouts for all system s
 
 This is a terminal app, so you should have a terminal to use and knowledge of how to use it.
 
-You should have Python >= 3.12 and [Pipx](https://github.com/pypa/pipx).
+You should have Python >= 3.12.
 
-Easily install with Pipx because this is a standalone package not
-intended to be used in a larger app.
+Because this is a standalone application not intended to be used in a larger app, it's easy (and most sensible) to 
+run with [Pipx](https://github.com/pypa/pipx) or [UV](https://github.com/astral-sh/uv).
+
+Install with:
 
 ```sh
   pipx install textual-system-monitor
+```
+
+or:
+
+```sh
+  uv tool install textual-system-monitor
 ```
 
 Run with
