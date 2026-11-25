@@ -126,6 +126,21 @@ tag:  ## Create an annotated Git tag (vMAJOR.MINOR.PATCH) and push it to origin.
 	echo "Created and pushed tag '$$TAG'"
 
 
+.PHONY: bump
+bump:  ## Bump the TSM version (major/minor/patch) without committing. Usage: make bump level=major|minor|patch
+	@set -euo pipefail; \
+	if [ -z "$(level)" ]; then \
+		echo "Error: level is required. Usage: make bump level=major|minor|patch" >&2; \
+		exit 1; \
+	fi
+	LEVEL="$(level)"
+	case "$$LEVEL" in \
+		major|minor|patch) ;; \
+		*) echo "Error: level must be one of: major, minor, patch (got '$${LEVEL}')" >&2; exit 1 ;; \
+	esac
+	uv version --bump "$$LEVEL"
+
+
 .PHONY: help
 help:  ## Show this help
 	@echo -e "\nCommands:\n"
