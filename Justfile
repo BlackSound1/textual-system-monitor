@@ -113,3 +113,10 @@ tag git_tag:
     git push origin "$TAG"
 
     echo "Created and pushed tag '$TAG'"
+
+
+# Bump the TSM version (major/minor/patch) without committing
+[group('util')]
+[arg("level", pattern="major|minor|patch", help="The TSM version part to bump: major, minor, or patch")]
+bump level:
+    @uv version --bump "{{level}}"
