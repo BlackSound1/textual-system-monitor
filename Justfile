@@ -80,3 +80,36 @@ lint fix='':
 [group('util')]
 format:
     @uv run ruff format
+
+
+# Create an annotated Git tag (vMAJOR.MINOR.PATCH) and push it to origin
+[group('util')]
+[arg("git_tag", help="The Git tag to create (vMAJOR.MINOR.PATCH or MAJOR.MINOR.PATCH)")]
+tag git_tag:
+    #!/usr/bin/env bash
+    set -euo pipefail # Enable Bash strict-mode
+
+    TAG_INPUT="{{git_tag}}"
+
+    if [[ ! "$TAG_INPUT" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo "Error: tag must be in the form vMAJOR.MINOR.PATCH (got '$TAG_INPUT')" >&2
+        exit 1
+    fi
+
+    BASE_VERSION="${TAG_INPUT#v}" # Strips the leading v, if any
+    TAG="v$BASE_VERSION"
+
+    if git rev-parse "$TAG" >/dev/null 2>&1; then
+        echo "Error: tag '$TAG' already exists locally" >&2
+        exit 1
+    fi
+
+    if git ls-remote --tags origin | grep -q "refs/tags/$TAG$"; then
+        echo "Error: tag '$TAG' already exists on origin" >&2
+        exit 1
+    fi
+
+    git tag -a "$TAG" -m "Version $BASE_VERSION"
+    git push origin "$TAG"
+
+    echo "Created and pushed tag '$TAG'"
