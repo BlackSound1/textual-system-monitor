@@ -99,6 +99,48 @@ show-src:  ## Show all source files
 	@find src/textual_system_monitor -name "*.py" -not -name "__init__.py" -print
 
 
+.PHONY: tag
+tag:  ## Create an annotated Git tag (vMAJOR.MINOR.PATCH) and push it to origin. Usage: make tag git_tag=vMAJOR.MINOR.PATCH
+	@set -euo pipefail; \
+	if [ -z "$(git_tag)" ]; then \
+		echo "Error: git_tag is required. Usage: make tag git_tag=vMAJOR.MINOR.PATCH" >&2; \
+		exit 1; \
+	fi
+	TAG_INPUT="$(git_tag)"
+	if [[ ! "$$TAG_INPUT" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then \
+		echo "Error: tag must be in the form vMAJOR.MINOR.PATCH (got '$${TAG_INPUT}')" >&2; \
+		exit 1; \
+	fi
+	BASE_VERSION="$${TAG_INPUT#v}"
+	TAG="v$$BASE_VERSION"
+	if git rev-parse "$$TAG" >/dev/null 2>&1; then \
+		echo "Error: tag '$$TAG' already exists locally" >&2; \
+		exit 1; \
+	fi
+	if git ls-remote --tags origin | grep -q "refs/tags/$$TAG$$"; then \
+		echo "Error: tag '$$TAG' already exists on origin" >&2; \
+		exit 1; \
+	fi
+	git tag -a "$$TAG" -m "Version $$BASE_VERSION"
+	git push origin "$$TAG"
+	echo "Created and pushed tag '$$TAG'"
+
+
+.PHONY: bump
+bump:  ## Bump the TSM version (major/minor/patch) without committing. Usage: make bump level=major|minor|patch
+	@set -euo pipefail; \
+	if [ -z "$(level)" ]; then \
+		echo "Error: level is required. Usage: make bump level=major|minor|patch" >&2; \
+		exit 1; \
+	fi
+	LEVEL="$(level)"
+	case "$$LEVEL" in \
+		major|minor|patch) ;; \
+		*) echo "Error: level must be one of: major, minor, patch (got '$${LEVEL}')" >&2; exit 1 ;; \
+	esac
+	uv version --bump "$$LEVEL"
+
+
 .PHONY: help
 help:  ## Show this help
 	@echo -e "\nCommands:\n"
