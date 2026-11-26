@@ -15,8 +15,6 @@ try:
 except ImportError:  # pragma: no cover - pynvml is optional
     pynvml = None
 
-NVIDIA_VENDOR_ID = "0x10de"  # Standard PCI vendor ID for NVIDIA
-
 
 def _run_command(cmd: list[str]) -> str:
     """
