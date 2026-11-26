@@ -25,6 +25,7 @@ dependencies = [
     "psutil>=6.0.0",
     "textual==8.2.3",
     "wmi==1.5.1 ; sys_platform == 'win32'",
+    "nvidia-ml-py ; sys_platform == 'linux'",
 ]
 
 [project.urls]
