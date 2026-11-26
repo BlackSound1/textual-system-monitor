@@ -1,4 +1,3 @@
-import sys
 from typing import cast
 
 from textual.app import ComposeResult
@@ -38,22 +37,19 @@ class GPU_Usage(Static):
         """
         Update GPU data
         """
-        if sys.platform == "win32":
-            self.gpu_data = [
-                {
-                    "gpu": gpu_info["gpu"],
-                    "driver_version": gpu_info["driver_version"],
-                    "resolution": gpu_info["resolution"],
-                    "adapter_ram": self._adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
-                    "availability": gpu_info["availability"],
-                    "refresh": gpu_info["refresh"],
-                    "status": gpu_info["status"],
-                }
-                for gpu_info in get_gpu_data()
-                if gpu_info
-            ]
-        else:
-            self.gpu_data = []
+        self.gpu_data = [
+            {
+                "gpu": gpu_info["gpu"],
+                "driver_version": gpu_info["driver_version"],
+                "resolution": gpu_info["resolution"],
+                "adapter_ram": self._adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
+                "availability": gpu_info["availability"],
+                "refresh": gpu_info["refresh"],
+                "status": gpu_info["status"],
+            }
+            for gpu_info in get_gpu_data()
+            if gpu_info
+        ]
 
     def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
         """
@@ -83,6 +79,9 @@ class GPU_Usage(Static):
                 f"[bold {green}]Refresh[/]: {gpu['refresh']} Hz\n"
                 f"[bold {green}]Status[/]: {gpu['status']}\n"
             )
+
+        if not static_content:
+            static_content = "GPU information not currently supported..."
 
         static.update(static_content)
 
@@ -120,7 +119,4 @@ class GPU_Usage(Static):
         :return: The ComposeResult
         """
         with VerticalScroll():
-            if sys.platform == "win32":
-                yield Static(id="gpu_pane_static")
-            else:
-                yield Static("GPU information not currently supported on non-Windows systems...", id="gpu_pane_empty")
+            yield Static(id="gpu_pane_static")

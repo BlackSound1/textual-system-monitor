@@ -1,4 +1,3 @@
-import sys
 from typing import Any, ClassVar, cast
 
 from textual.app import ComposeResult
@@ -8,7 +7,7 @@ from textual.css.query import NoMatches
 from textual.reactive import reactive
 from textual.screen import Screen
 from textual.timer import Timer
-from textual.widgets import DataTable, Footer, Header, Static
+from textual.widgets import DataTable, Footer, Header
 
 from textual_system_monitor.utilities import RARE_INTERVAL, convert_adapter_ram, get_gpu_data, get_palette
 
@@ -48,22 +47,19 @@ class GPU_Screen(Screen[None]):
         """
         Update GPU data
         """
-        if sys.platform == "win32":
-            self.gpu_data = [
-                {
-                    "gpu": gpu_info["gpu"],
-                    "driver_version": gpu_info["driver_version"],
-                    "resolution": gpu_info["resolution"],
-                    "adapter_ram": self.adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
-                    "availability": gpu_info["availability"],
-                    "refresh": gpu_info["refresh"],
-                    "status": gpu_info["status"],
-                }
-                for gpu_info in get_gpu_data()
-                if gpu_info
-            ]
-        else:
-            self.gpu_data = None
+        self.gpu_data = [
+            {
+                "gpu": gpu_info["gpu"],
+                "driver_version": gpu_info["driver_version"],
+                "resolution": gpu_info["resolution"],
+                "adapter_ram": self.adapter_ram_wrapper(cast(str, gpu_info["adapter_ram"])),
+                "availability": gpu_info["availability"],
+                "refresh": gpu_info["refresh"],
+                "status": gpu_info["status"],
+            }
+            for gpu_info in get_gpu_data()
+            if gpu_info
+        ]
 
     def watch_gpu_data(self, gpu_data: list[dict[str, str | int]]) -> None:
         """
@@ -93,6 +89,9 @@ class GPU_Screen(Screen[None]):
             status = gpu_info["status"]
 
             table.add_row(name, version, resolution, ram, availability, refresh, status)
+
+        if not gpu_data:
+            table.add_row("GPU information not currently supported...", "", "", "", "", "", "")
 
     def on_mount(self) -> None:
         """
@@ -132,11 +131,5 @@ class GPU_Screen(Screen[None]):
         yield Header(show_clock=True)
         with Container(id="gpu-container"):  # noqa: SIM117
             with VerticalScroll():
-                if sys.platform == "win32":
-                    yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
-                else:
-                    yield Static(
-                        "GPU information not currently supported on non-Windows systems...",
-                        id="gpu_screen_empty",
-                    )
+                yield DataTable(id="gpu-screen-table", show_cursor=False, zebra_stripes=True)
         yield Footer()
