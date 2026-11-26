@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from textual.containers import Container
 from textual.css.query import NoMatches
-from textual.widgets import Static
+from textual.widgets import DataTable, Static
 
 from textual_system_monitor.app import Monitor
 from textual_system_monitor.panes.gpu import GPU_Usage
@@ -22,12 +22,51 @@ async def test_change_KB_base() -> None:
     assert app.CONTEXT["kb_size"] == 1024
 
 
-async def test_gpu_pane_linux_gpu_data_nonwindows() -> None:
-    """Non-Windows platforms should have no GPU data"""
-    with patch("sys.platform", "linux"):
-        gpu_pane = GPU_Usage()
-        gpu_pane.update_gpu_data()
-        assert gpu_pane.gpu_data == []
+async def test_gpu_pane_gpu_data() -> None:
+    """Linux platforms should have GPU data when available"""
+    with patch(
+        "textual_system_monitor.panes.gpu.get_gpu_data",
+        return_value=[
+            {
+                "gpu": "MY GPU",
+                "driver_version": "1",
+                "resolution": "1920 x 1080",
+                "adapter_ram": "1.0 GB",
+                "availability": "Available",
+                "refresh": "60",
+                "status": "OK",
+            },
+        ],
+    ):
+        app = Monitor()
+        app.CONTEXT["kb_size"] = 1000
+        async with app.run_test():
+            gpu_pane = app.screen.query_one(GPU_Usage)
+            gpu_pane.update_gpu_data()
+            assert len(gpu_pane.gpu_data) == 1
+            only_item = gpu_pane.gpu_data[0]
+            assert only_item["gpu"] == "MY GPU"
+            assert only_item["driver_version"] == "1"
+            assert only_item["resolution"] == "1920 x 1080"
+            assert only_item["adapter_ram"] == "1.0 GB"
+            assert only_item["availability"] == "Available"
+            assert only_item["refresh"] == "60"
+            assert only_item["status"] == "OK"
+
+
+async def test_gpu_pane_no_gpu_data() -> None:
+    """GPU pane with no GPU data has an empty list"""
+    app = Monitor()
+    async with app.run_test():
+        with patch(
+            "textual_system_monitor.panes.gpu.get_gpu_data",
+            return_value=[],
+        ):
+            gpu_pane = app.screen.query_one(GPU_Usage)
+            gpu_pane.update_gpu_data()
+            assert gpu_pane.gpu_data == []
+            static = gpu_pane.query_one("#gpu_pane_static", expect_type=Static)
+            assert static.content == "GPU information not currently supported..."
 
 
 async def test_gpu_pane_gpu_data_windows() -> None:
@@ -67,26 +106,44 @@ async def test_gpu_pane_gpu_data_windows() -> None:
             assert only_item["status"] == "OK"
 
 
-async def test_gpu_pane_linux_empty_Static() -> None:
-    """Non-Windows platforms should have the empty version of the GPU pane static"""
-    with patch("sys.platform", "linux"):
-        app = Monitor()
-        async with app.run_test():
-            gpu_pane = app.screen.query_one(GPU_Usage)
-            static = gpu_pane.query_one("#gpu_pane_empty", expect_type=Static)
-            assert static.content == "GPU information not currently supported on non-Windows systems..."
+async def test_gpu_pane_static_exists() -> None:
+    """GPU pane static widget always exists"""
+    app = Monitor()
+    async with app.run_test():
+        gpu_pane = app.screen.query_one(GPU_Usage)
+        static = gpu_pane.query_one("#gpu_pane_static", expect_type=Static)
+        assert static is not None
 
 
-async def test_gpu_screen_linux_empty_Static() -> None:
-    """Make sure Linux has an empty Static on the GPU screen"""
-    with patch("sys.platform", "linux"):
-        app = Monitor()
-        async with app.run_test() as pilot:
+async def test_gpu_screen_table_exists() -> None:
+    """GPU screen table widget always exists"""
+    app = Monitor()
+    async with app.run_test() as pilot:
+        await pilot.press("v")
+        await pilot.pause()
+        gpu_screen = app.screen
+        table = gpu_screen.query_one("#gpu-screen-table", expect_type=DataTable)
+        assert table is not None
+
+
+async def test_gpu_screen_no_gpu_data_message() -> None:
+    """Linux platforms with no GPU data should show a not supported message in the table"""
+    app = Monitor()
+    async with app.run_test() as pilot:
+        with patch(
+            "textual_system_monitor.screens.gpu_screen.get_gpu_data",
+            return_value=[],
+        ):
             await pilot.press("v")
             await pilot.pause()
-            gpu_screen = app.screen
-            static = gpu_screen.query_one("#gpu_screen_empty", expect_type=Static)
-            assert static.content == "GPU information not currently supported on non-Windows systems..."
+            gpu_screen = cast(GPU_Screen, app.screen)
+            gpu_screen.update_gpu_data()
+            table = gpu_screen.query_one("#gpu-screen-table", expect_type=DataTable)
+            row_count = table.row_count
+            assert row_count == 1
+            # First cell of the first row should contain the not supported message
+            first_cell = table.get_cell_at((0, 0))
+            assert "not currently supported" in first_cell
 
 
 async def test_gpu_screen_gpu_data_windows() -> None:
@@ -128,16 +185,19 @@ async def test_gpu_screen_gpu_data_windows() -> None:
             assert only_item["status"] == "OK"
 
 
-async def test_update_gpu_screen_data_on_linux() -> None:
-    """On Linux, after updating GPU data on the GPU Screen, the GPU data should be None"""
-    with patch("sys.platform", "linux"):
+async def test_update_gpu_screen_data() -> None:
+    """On Linux, after updating GPU data on the GPU Screen, the GPU data should be a list"""
+    with patch(
+        "textual_system_monitor.screens.gpu_screen.get_gpu_data",
+        return_value=[],
+    ):
         app = Monitor()
         async with app.run_test() as pilot:
             await pilot.press("v")
             await pilot.pause()
             gpu_screen = cast(GPU_Screen, app.screen)
             gpu_screen.update_gpu_data()
-            assert gpu_screen.gpu_data is None
+            assert gpu_screen.gpu_data == []
 
 
 async def test_gpu_screen_border_change() -> None:
