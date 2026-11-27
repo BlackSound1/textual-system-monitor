@@ -1,3 +1,6 @@
+import importlib.metadata
+import tomllib
+from pathlib import Path
 from typing import ClassVar
 
 from textual.app import ComposeResult
@@ -8,8 +11,24 @@ from textual.widgets import Footer, Header, Static
 
 from textual_system_monitor.utilities import get_palette
 
-DESCRIPTION_STRING = """
-[bold underline]Textual System Monitor[/]
+project_version: str | None = None
+
+# Try to get the version from installed package metadata first,
+# then fall back to reading pyproject.toml relative to this module.
+try:
+    project_version = importlib.metadata.version("textual-system-monitor")
+except importlib.metadata.PackageNotFoundError:
+    # Fall back to reading pyproject.toml directly for development setups
+    _pyproject_path = Path(__file__).resolve().parent.parent / "pyproject.toml"
+    if _pyproject_path.exists():
+        with open(_pyproject_path, "rb") as f:
+            data = tomllib.load(f)
+        project_version = data["project"]["version"]
+    else:
+        project_version = "0.0.0"
+
+DESCRIPTION_STRING = f"""
+[bold underline]Textual System Monitor v{project_version}[/]
 
 Created in Python using Textual.
 
