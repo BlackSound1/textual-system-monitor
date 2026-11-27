@@ -1,3 +1,5 @@
+[![Sanity Check](https://github.com/BlackSound1/textual-system-monitor/actions/workflows/system-monitor.yml/badge.svg)](https://github.com/BlackSound1/textual-system-monitor/actions/workflows/system-monitor.yml)
+
 # Textual System Monitor
 
 A beautiful system monitoring terminal app created in Python, using Textual.
