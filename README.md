@@ -1,3 +1,5 @@
+[![Sanity Check](https://github.com/BlackSound1/textual-system-monitor/actions/workflows/system-monitor.yml/badge.svg)](https://github.com/BlackSound1/textual-system-monitor/actions/workflows/system-monitor.yml)
+
 # Textual System Monitor
 
 A beautiful system monitoring terminal app created in Python, using Textual.
@@ -42,8 +44,7 @@ You could probably also install with normal Pip if you wanted to.
 # Features
 
 For this project, Windows is a first-class citizen and features are developed with
-Windows in mind. It also works on Linux (at least Ubuntu), but GPU information is
-not implemented.
+Windows in mind. It also works on Linux (at least Ubuntu and Arch).
 
 - All information live-updates. Some information updates slowly to be more performant. Other information, like CPU load, updates multiple times a second.
 - Percentages (indicating load) are color-coordinated according to certain thresholds. High percentages are <span style="color: red;">red</span>, medium percentages are <span style="color: yellow;">yellow</span>, and low percentages are
@@ -77,7 +78,9 @@ The right-hand side shows various system stats.
 - **Memory Usage**: Shows the current status of the system's memory.
 - **CPU Usage**: Shows the current load of each system core, as well as overall CPU load.
 - **Network Info**: Shows the status of each connected network interface.
-- **GPU Info**: Shows the status of the GPU.
+- **GPU Info**: Shows the status of the GPU. *Not guaranteed to work on your machine.* On Windows, we use WMI to get a unified, vendor-agnostic view into GPU driver info.
+                On Linux, we have no such luxury and graphics driver info needs to be considered vendor-at-a-time. Since I only have Windows and Linux (Ubuntu and Arch) computers
+                with Nvidia and Intel Integrated graphics, I can't test other graphics configurations.
 
 # Stack
 
