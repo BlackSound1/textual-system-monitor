@@ -13,8 +13,7 @@ from textual_system_monitor.utilities import get_palette
 
 project_version: str | None = None
 
-# Try to get the version from installed package metadata first,
-# then fall back to reading pyproject.toml relative to this module.
+# Try to get the version from installed package metadata first
 try:
     project_version = importlib.metadata.version("textual-system-monitor")
 except importlib.metadata.PackageNotFoundError:
