@@ -298,7 +298,10 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :param kb_size: The KB size to use in conversion
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
-    ram = int(float(adapter_ram.split(" ", maxsplit=1)[0]) * 1e9)
+    try:
+        ram = int(float(adapter_ram.split(" ", maxsplit=1)[0]) * 1e9)
+    except ValueError:
+        return adapter_ram
     return bytes_to_human(ram, kb_size)
 
 
