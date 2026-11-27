@@ -7,6 +7,9 @@ from psutil import Process, cpu_count, cpu_percent, net_io_counters, virtual_mem
 if sys.platform == "win32":
     from wmi import WMI
 
+if sys.platform == "linux":
+    from textual_system_monitor.gpu_linux import get_gpu_data_linux
+
 """
 CONSTANTS
 """
@@ -256,29 +259,32 @@ GPU UTILITIES
 
 def get_gpu_data() -> list[dict[str, str | int] | None]:
     """
-    Get GPU data from WMI
+    Get GPU data from WMI on Windows, or from platform-specific sources on Linux.
 
     :return: The list of GPU data, per video controller.
     """
 
-    if sys.platform != "win32":
-        return []
+    if sys.platform == "win32":
+        wmi_object = WMI()
+        video_controllers = wmi_object.Win32_VideoController()
 
-    wmi_object = WMI()
-    video_controllers = wmi_object.Win32_VideoController()
+        return [
+            {
+                "gpu": cast(str, controller.Name),
+                "driver_version": cast(str, controller.DriverVersion),
+                "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
+                "adapter_ram": bytes_to_human(controller.AdapterRAM),
+                "availability": cast(str, AVAILABILITY_MAP.get(controller.Availability)),
+                "refresh": cast(str, controller.CurrentRefreshRate),
+                "status": cast(str, controller.Status),
+            }
+            for controller in video_controllers
+        ]
 
-    return [
-        {
-            "gpu": cast(str, controller.Name),
-            "driver_version": cast(str, controller.DriverVersion),
-            "resolution": f"{controller.CurrentHorizontalResolution} x {controller.CurrentVerticalResolution}",
-            "adapter_ram": bytes_to_human(controller.AdapterRAM),
-            "availability": cast(str, AVAILABILITY_MAP.get(controller.Availability)),
-            "refresh": cast(str, controller.CurrentRefreshRate),
-            "status": cast(str, controller.Status),
-        }
-        for controller in video_controllers
-    ]
+    if sys.platform == "linux":
+        return get_gpu_data_linux()
+
+    return []
 
 
 def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
@@ -292,7 +298,10 @@ def convert_adapter_ram(adapter_ram: str, kb_size: int) -> str:
     :param kb_size: The KB size to use in conversion
     :return: The string corresponding to the given adapters RAM, converted to a human-readable string
     """
-    ram = int(float(adapter_ram.split(" ", maxsplit=1)[0]) * 1e9)
+    try:
+        ram = int(float(adapter_ram.split(" ", maxsplit=1)[0]) * 1e9)
+    except ValueError:
+        return adapter_ram
     return bytes_to_human(ram, kb_size)
 
 
